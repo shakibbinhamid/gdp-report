@@ -121,7 +121,33 @@ Referring to a table example: As show in \textbf{Table \ref{tab:myTable}}. \\
 \end{tabular}
 %Use of captionof allows 'Table' instead of default 'Figure' 
 \captionof{table}{My Table Example} 
-\label{tab:myTable}
+\label{tab:myTable} 
+\vspace{0.4cm}
+
+When a larger table is needed that would fit better on a landscape page, the \texttt{rotating} package can be used and a \texttt{sidewaystable} defined as shown in the example on the next page: \textbf{Table \ref{tab:mySidewaysTable}}.
+
+\begin{sidewaystable}
+  \begin{tabular}{ |p{0.5cm}|p{7cm}|p{7cm}|p{7cm}|  } 
+    \hline
+        \multicolumn{4}{|c|}{Sideways Table Title Example} \\
+     \hline
+        \multicolumn{1}{|c|}{id} & 
+        \multicolumn{1}{|c|}{Column Heading} & 
+        \multicolumn{1}{|c|}{Column Heading} & 
+        \multicolumn{1}{|c|}{Column Heading}  \\
+     \hline
+        1 & Field 1,1 & Field 1,2 & Field 1,3 \\
+     \hline
+        2 & Field 2,1 & Field 2,2 & Field 2,3 \\
+     \hline
+        3 & Field 3,1 & Field 3,2 & Field 3,3 \\
+     \hline
+
+  \end{tabular}
+  \captionof{table}{My Sideways Table Example} 
+  \label{tab:mySidewaysTable}
+\end{sidewaystable}
+
 
 \section{Code Listing}
 \label{sec:code-listing}
@@ -170,4 +196,3 @@ Name.prototype = {
 
 \section{References}
 References are written in \texttt{references.bib} file. I will demo you personally about how to write references. Each reference has a key and you can refer it like this \cite{Belk:2014}.\\
-
