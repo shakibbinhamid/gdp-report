@@ -44,27 +44,27 @@ You should place the figures in the \texttt{figures} folder. They should be tran
 
 All figures must have captions as well. Sub figures may be left caption less, as long as the entire figure has caption.\\
 
-You can use minipage to insert subfigures as done in \textbf{Figure \ref{fig:subfig-minipage}}. This is the recommended way. Otherwise you can use \textbf{Figure \ref{fig:prob1_6_1}}\\
+You can use minipage to insert subfigures as done in \textbf{Figure \ref{fig:subfig-minipage}}. This is the recommended way. Otherwise you can use \textbf{Figure \ref{fig:right-side-minipage}}\\
 
 \begin{figure}[!htb]
     \centering
     \begin{minipage}{.5\textwidth}
         \centering
         \includegraphics[width=0.25\textheight]{exm.jpg}
-        \caption{$dt=0.1$}
-        \label{fig:prob1_6_2}
+        \caption{Left side image}
+        \label{fig:left side minipage}
     \end{minipage}%
     \begin{minipage}{0.5\textwidth}
         \centering
         \includegraphics[width=0.25\textheight]{exm.jpg}
-        \caption{$dt =$}
-        \label{fig:prob1_6_1}
+        \caption{Right side image}
+        \label{fig:right-side-minipage}
     \end{minipage}
     \caption{Subfigures using minipage}
     \label{fig:subfig-minipage}
 \end{figure}
 
-The subfigure package has caused me problems before, I suggest against it. Similarly, you can use \textbf{Figure \ref{fig:sidecaption-fig}} to have side by side caption or text. I suggest against it. Use two minipages - one side normal figure, other side text for the figure.
+The subfigure package has caused me problems before, I suggest against it. Similarly, you can use \textbf{Figure \ref{fig:sidecaption-fig}} to have side by side caption or text. You can refer to subfigures as well like \textbf{Figure \ref{fig:left-side-image}} I suggest against it. Use two minipages - one side normal figure, other side text for the figure.
 
 \begin{figure}[!hbt]
     \centering
@@ -91,4 +91,83 @@ The subfigure package has caused me problems before, I suggest against it. Simil
   \label{fig:sidecaption-fig}
 \end{SCfigure}
 
-\cite{Belk:2014}
+\section{Adding Tables}
+\label{sec:adding-tables}
+
+Tables must be labeled with usual labeling convention. Also the use of \texttt{multicol} package allows for centering text in table fields and merging of fields as shown in the example below.
+
+Referring to a table example: As show in \textbf{Table \ref{tab:myTable}}. \\
+
+%Column widths dependent on page width/margins
+\begin{tabular}{ |p{0.5cm}|p{4cm}|p{4cm}|p{4cm}|  } 
+
+ \hline
+ 	%Example of column merging
+ 	\multicolumn{4}{|c|}{Table Title Example} \\
+ \hline
+ 	%Examples of centering text
+ 	\multicolumn{1}{|c|}{id} & 
+ 	\multicolumn{1}{|c|}{Column Heading} & 
+ 	\multicolumn{1}{|c|}{Column Heading} & 
+ 	\multicolumn{1}{|c|}{Column Heading}  \\
+ \hline
+ 	1 & Field 1,1 & Field 1,2 & Field 1,3 \\
+ \hline
+ 	2 & Field 2,1 & Field 2,2 & Field 2,3 \\
+ \hline
+ 	3 & Field 3,1 & Field 3,2 & Field 3,3 \\
+ \hline
+ 
+\end{tabular}
+%Use of captionof allows 'Table' instead of default 'Figure' 
+\captionof{table}{My Table Example} 
+\label{tab:myTable}
+
+\section{Code Listing}
+\label{sec:code-listing}
+
+You can add code snippets as seen in \textbf{Listing \ref{lst:listing-main}} or \textbf{Listing \ref{lst:side-listing}} full width or mini page listing.
+
+\begin{minipage}{.5\textwidth}
+\begin{lstlisting}[caption=My Javascript Example]
+Name.prototype = {
+  methodName: function(params){
+    var doubleQuoteString = "some text";
+    var singleQuoteString = 'some more text';
+    // this is a comment
+    document.createElement('h3');
+    $('#system').append("This looks great");
+    return false;
+  }
+}
+\end{lstlisting}
+\label{lst:side-listing}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[width=0.25\textheight]{exm.jpg}
+	\caption{Right side image}
+	\label{fig:right-side-minipage}
+\end{minipage}
+
+\begin{lstlisting}[caption=JS Code Snippet]
+Name.prototype = {
+  methodName: function(params){
+    var doubleQuoteString = "some text";
+    var singleQuoteString = 'some more text';
+    // this is a comment
+    if(this.confirmed != null && typeof(this.confirmed) == Boolean && this.confirmed == true){
+      document.createElement('h3');
+      $('#system').append("This looks great");
+      return false;
+    } else {
+      throw new Error;
+    }
+  }
+}
+\end{lstlisting}
+\label{lst:listing-main}
+
+\section{References}
+References are written in \texttt{references.bib} file. I will demo you personally about how to write references. Each reference has a key and you can refer it like this \cite{Belk:2014}.\\
+
