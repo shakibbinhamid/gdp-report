@@ -1,0 +1,94 @@
+\chapter{Introduction}
+\label{chap:introduction}
+
+\section{Location of files}
+\label{sec:location-files}
+Chapters go in \texttt{chapters} folder. Figures in \texttt{images} folder. No content must be written elsewhere. All content must lie in chapters files'. We may need to create files for sections, if chapters get too big.
+
+\section{Writing Content}
+\label{sec:content}
+You must not write live on Overleaf! I cannot emphasize it enough! Download the project as a git repo from the options on overleaf. Then write what you need to write, compile locally, then once everything compiles nice and well, put it on overleaf.
+
+\section{Formatting}
+\label{sec:formatting}
+
+End each paragraph with a double backslash always.\\
+
+\subsection{Labeling}
+\label{subsec:labeling}
+Make sure you label 'every component' with a label like above. Chapters will have labels as \texttt{chap:name}, sections as \texttt{sec:name} and so on.
+
+\subsubsection{Naming labels}
+\label{subsubsec:naming-labels}
+Use all small alphabets in labels, separated by dash (-).\\
+
+This way we can refer any Chapter, Section, Table, Figure, sub components etc.
+
+\subsection{Referring Components}
+\label{subsec:referring-components}
+
+You should do bold-face for reference as follows -
+
+\textbf{Section \ref{subsubsec:naming-labels}} is about how to name labels and \textbf{Chapter \ref{chap:introduction}} is the introduction.
+
+\subsection{Figures}
+
+You should place the figures in the \texttt{figures} folder. They should be transparent background in most cases, named all lower cases with dashes. You must label them as \texttt{fig:name}\\
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.3\textwidth]{exm.jpg}
+  	\caption{Normal figure}
+ 	\label{fig:normal-figure}
+\end{figure}
+
+All figures must have captions as well. Sub figures may be left caption less, as long as the entire figure has caption.\\
+
+You can use minipage to insert subfigures as done in \textbf{Figure \ref{fig:subfig-minipage}}. This is the recommended way. Otherwise you can use \textbf{Figure \ref{fig:prob1_6_1}}\\
+
+\begin{figure}[!htb]
+    \centering
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.25\textheight]{exm.jpg}
+        \caption{$dt=0.1$}
+        \label{fig:prob1_6_2}
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.25\textheight]{exm.jpg}
+        \caption{$dt =$}
+        \label{fig:prob1_6_1}
+    \end{minipage}
+    \caption{Subfigures using minipage}
+    \label{fig:subfig-minipage}
+\end{figure}
+
+The subfigure package has caused me problems before, I suggest against it. Similarly, you can use \textbf{Figure \ref{fig:sidecaption-fig}} to have side by side caption or text. I suggest against it. Use two minipages - one side normal figure, other side text for the figure.
+
+\begin{figure}[!hbt]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{exm.jpg}
+        \caption{Left side image}
+        \label{fig:left-side-image}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{exm.jpg}
+        \caption{Right Side Image}
+        \label{fig:right-side-image}
+    \end{subfigure}
+    \caption{Side by side figures using subfigures}
+    \label{fig:subfigure}
+\end{figure}
+
+\begin{SCfigure}
+  \centering
+  \caption{Side label with possibly a large amount of text. This is how you would write it}
+  \includegraphics[width=0.3\textwidth]{exm.jpg}% filename
+  \label{fig:sidecaption-fig}
+\end{SCfigure}
+
+\cite{Belk:2014}

@@ -1,0 +1,77 @@
+\documentclass[12pt, twoside]{report}
+%% subsection level
+\setcounter{secnumdepth}{5}
+
+%% margins, paper size
+\usepackage[a4paper,width=150mm,left=30mm,right=30mm,top=24mm,bottom=24mm,bindingoffset=5mm]{geometry}
+
+%% set up the header and footer area
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[RO,LE]{\thepage}
+\fancyhead[LO]{\leftmark}
+\fancyhead[RE]{\leftmark}
+\fancyfoot{}
+
+%% no indentation for paragraphs
+\setlength{\parindent}{0pt}
+
+\usepackage[utf8]{inputenc}
+
+%% set the graphics path
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+%% for coloring hyperlinks and urls
+\usepackage[colorlinks]{hyperref}
+\usepackage{breakurl}
+
+%% for sub figure captions
+\usepackage{caption}
+\usepackage{subcaption}
+
+%% for caption on the side of the image
+\usepackage{sidecap}
+
+%% multiple column support
+\usepackage{multicol}
+
+%% to use colors
+\usepackage{color}
+
+%% draws nice sideways tables
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage[figuresright]{rotating}
+
+%% bibliography setup
+\bibliographystyle{ieeetr}
+
+\begin{document}
+
+%% preambles
+\input{preambles/title}
+\input{preambles/abstract}
+\input{preambles/declaration}
+\input{preambles/acknowledgements}
+
+%% content list
+\tableofcontents
+\listoffigures
+\listoftables
+
+%% main body
+\input{chapters/chapter_1}
+\input{chapters/chapter_2}
+
+%% bibliography
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliography{references}
+
+%% appendix
+\appendix
+\input{appendices/appendix_a}
+\input{appendices/appendix_b}
+
+\end{document}
