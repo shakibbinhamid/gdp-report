@@ -3,8 +3,10 @@
 
 \section{Tom Contribution}
 \textbf{Supervisor Meeting} : All
-\textbf{Amount of Work} : 35 Hours a week.
-\textbf{Contribution} : 
+\newline
+\textbf{Amount of Work} : 35 Hours a week
+\newline
+\textbf{Contribution} :
 \begin{itemize}
 	\item 80\% of the synote server code for payment feature - policies, controllers, services
 		\begin{itemize}
@@ -20,7 +22,7 @@
 		\begin{itemize}
 			\item Unit and Integration tests for controllers, services and policies
 			\item Achieve ~100\% coverage (lines and branches) on the payment system code
-		\end{itemize}		 
+		\end{itemize}
 	\item 10\% of front end code for payment feature
 		\begin{itemize}
 			\item Add the UI for saved cards
@@ -43,16 +45,18 @@
 
 \section{Vlad Contribution}
 \label{sec:vlad-contribution}
-\textbf{Supervisor Meeting} : All but 2 - personal reasons.
-\textbf{Amount of Work} : 30 Hours a week.
-\textbf{Contribution} : 
+\textbf{Supervisor Meeting} : All but 2 - personal reasons
+\newline
+\textbf{Amount of Work} : 30 Hours a week
+\newline
+\textbf{Contribution} :
 
 \begin{itemize}
 	\item 25\% of the code in test framework
 		\begin{itemize}
 			\item Helped create the testing methodology
 			\item World definition to encapsulate the common dependencies in one place
-			\item Hooks per test-run and per scenario 
+			\item Hooks per test-run and per scenario
 			\item Generate html and json reporting
 		\end{itemize}
 	\item 20\% of the CI for Synote
@@ -60,16 +64,53 @@
 			\item Install the first plugins for Jenkins on remote server
 			\item Set up webhook for code change detection and build trigger
 			\item Add database migration script to Jenkins
-		\end{itemize}		 
+		\end{itemize}
 	\item 20\% of contribution document for Synote from our team
 		\begin{itemize}
-			\item Add the database migration contribution methodology.
+			\item Add the database migration contribution methodology
 		\end{itemize}
 	\item 5\% of Synote backend code base
 		\begin{itemize}
 			\item Add additional support for database cleanup and setup
 			\item Initial research and prototype for 2 main project milestones: e2e testing framework \& Jenkins CI
-			\item Research on Protractor, JavaScript testing frameworks.
+			\item Research on Protractor, JavaScript testing frameworks
+		\end{itemize}
+\end{itemize}
+
+\section{Deepak Contribution}
+\label{sec:deepak-contribution}
+\textbf{Supervisor Meeting} : All but 1 - Job interview
+\newline
+\textbf{Amount of Work} : 30 Hours a week
+\newline
+\textbf{Contribution} :
+
+\begin{itemize}
+	\item 70\% of frontend code for payment feature
+		\begin{itemize}
+			\item Controllers for buying credits, credits history
+			\item Service for handling validation, Stripe communication
+      \item Promisifying callback methods to fit coding convention e.g.Stripe tokenisation method
+			\item Responsive views for buying credits and credits history
+      \item Refactored code to use live validation instead of Toastr messages
+      \item Built a new alerts infrastructure to for ease of testing
+		\end{itemize}
+	\item 70\% of the e2e tests for the payment feature
+		\begin{itemize}
+			\item Wrote e2e tests for testing the payment feature
+			\item Tried to cover as many scenarios as possible for optimum coverage
+		\end{itemize}
+	\item 10\% of the e2e test framework code for the payment feature
+		\begin{itemize}
+			\item Added generic methods while writing tests
+      \item Created page specific methods needed for tests
+		\end{itemize}
+	\item Research on Angular libraries, CgBusy, Front end elements, CSS etc.
+  \item Research 3rd party testing tools; Ghost Inspector and Applitools
+    \begin{itemize}
+			\item Tried writing tests which were failing when written in our framework
+			\item Analysed advantages and disadvantages of these tools
+      \item Looked into how easily they can be integrated into our CI process
 		\end{itemize}
 \end{itemize}
 
@@ -78,7 +119,7 @@
 
 \textbf{Supervisor Meeting} : All but 2 - Job interviews
 \newline
-\textbf{Amount of Work} : 35 Hours a week.
+\textbf{Amount of Work} : 35 Hours a week
 \newline
 \textbf{Contribution} :
 
@@ -109,7 +150,7 @@
  \begin{itemize}
   \item Write the first few test cases.
  \end{itemize}
- \item 60\% of the CI set up for Synote on experiment deployment.
+ \item 60\% of the CI set up for Synote on experiment deployment
  \begin{itemize}
   \item Install Jenkins on remote server, create user permissions and setup reverse proxy server
   \item Made the e2e tests runnable on remote servers (without a display) by using x-server (Xvfb), upgrading the deployment server (after estimating the ram and cpu requirements)
