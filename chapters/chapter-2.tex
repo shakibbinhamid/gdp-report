@@ -1,6 +1,64 @@
 \chapter{Project Management}
 \label{chap:project-management}
 
+Common software project management goals that relate to a GDP are as follows \cite{iansommerville2011} -
+
+\begin{itemize}
+
+  \item Timely delivery to the customer
+  \item Meeting the customer's expectations
+  \item Maintain a well-functioning development team
+
+\end{itemize}
+
+Shakib was the project manager for GDP 8. In this chapter we will analyse how we were able to achieve the above goals and how we could improve our management practices.
+
+\section{Risk Analysis}
+\label{sec:risk-analysis}
+
+We will begin with risk analysis, since our management techniques evolved through our efforts of migitating the major risks.
+
+\begin{center}
+
+\begin{longtable}{ |p{5.7cm}|p{2cm}|p{2.2cm}|p{2.7cm}|  }
+
+ \hline
+ 	%Example of column merging
+ 	\multicolumn{4}{|c|}{Risk Analysis} \\
+ \hline
+ 	%Examples of centering text
+ 	\multicolumn{1}{|c|}{Risk} &
+ 	\multicolumn{1}{|c|}{Affects} &
+ 	\multicolumn{1}{|c|}{Probability} &
+ 	\multicolumn{1}{|c|}{Effect}  \\
+  \hline
+ 	 Goals are not clear & Project, Product & Very High & Catastrophic \\
+   \hline
+   Software not to specification & Product & Very High & Catastrophic \\
+   \hline
+   Changing requirements & Project, Product & High & Serious \\
+  \hline
+  Team member unavailable/left & Project & Very High & Serious \\
+  \hline
+  Technologies unavilable, e.g. VM & Product & Very High & Serious \\
+  \hline
+  Underperforming software & Product & Low & Tolerable \\
+  \hline
+  Payment system faulty & Product & Very Low & Catastrophic \\
+  \hline
+  Continuous integration faulty & Product & Very Low & Tolerable \\
+  \hline
+
+\end{longtable}
+
+%Use of captionof allows 'Table' instead of default 'Figure'
+\captionof{table}{Risk Analysis}
+\label{tab:risk}
+
+\end{center}
+
+In the following sections we discuss how we managed the risks and in turn managed our project.
+
 \section{Pre-project Planning}
 \label{sec:pre-project-planning}
 
@@ -12,21 +70,58 @@
 
 \section{Weekly Meetings}
 \label{sec:weekly-meetings}
+We met both the supervisor and the client at least once each week since start of the term. The goals of these meetings were -
 
-\section{Dividing Work}
-\label{sec:dividing-work}
+\begin{itemize}
+
+  \item Demonstrate the current progress
+  \item Prioritise the tasks for the following week
+  \item Ensure that the client is satisfied with the direction and progress
+
+\end{itemize}
+
+The meetings mitigated the risk of not meeting the specification and guarded us from veering off to undesirable directions.\\
+
+A key focus during these meetings was to clarify the project goals, deliverables and the success criteria. This made us confident in our progress each week, since we could justify our project direction during the demonstrations based on the agreed success criteria from the previous meetings. We tried to be as empirical as possible in estimating our work during the meetings so that we neither over-estimate, nor under-estimate the difficulty. This, in turn, not only helped us achieve our initial goals, but helped us further extend the deliverables to Synote's first attempt at continuous integration. \\
+
+We also met our client at least once more each week, as well as contact over \textit{Slack} to ensure that we were following his coding conventions, which in turn greatly helped when we merged our code each week.
+
+\section{Team Management}
+\label{sec:people-management}
+Our project manager, Shakib, focused on the following to guide his team management \cite{iansommerville2011}-
+
+\begin{itemize}
+
+  \item Team members gain new skills
+  \item They feel included in the project
+  \item Each member is treated idendically
+  \item Manager is honest about the team's progress and the individual's contribution
+
+\end{itemize}
+
+The following sections better explain how the team managed the skills and tasks among themselves.
+
+\subsection{Dividing Work}
+\label{subsec:dividing-work}
+The team started a weekly team meeting after the first progress seminar, after feedback from the supervisor. During this meeting we set our personal weekly tasks. Previously, it was done informally.\\
+
+Usually, after the weekly meeting (Section \ref{sec:weekly-meetings}), we had 4-5 different major tasks for the week. The team members that were present during the team meeting picked the tasks they preferred. Otherwise, the manager assigned a task if any member was absent or did not have a preferrence. Finally, he picked the remaining tasks.\\
+
+During the week, if a team member finished his own task, he started others' remaining tasks if they were unavailable or helped out with ongoing ones. Similarly, if one's task depended on another's task and it was blocking the former's progress, they would either work together, or continue the other's work while they may be unavailable to work. Every effort was made to ensure that no team member spends a development day without a task.
+
+\subsection{Team Skills}
+\label{subsec:team-skills}
+A major
+
+
 
 \section{Code Quality Management}
 \label{sec:code-quality-management}
 
+
 \section{Code Submission Process}
 \label{sec:code-submission-process}
 
-\section{Team Skills}
-\label{sec:team-skills}
 
 \section{Following Gantt Chart}
 \label{sec:following-gantt-chart}
-
-\section{Risk Analysis}
-\label{sec:risk-analysis}
