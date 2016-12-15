@@ -13,9 +13,9 @@
 \subsection{Introduction}
 \label{sec:payment-intro}
 
-E-Commerce has existed in various forms since the 1970's with its seminal act being a drug deal between Stanford and MIT students\cite{power-mike-online-highs}. Later that same decade Michael Aldrich demonstrated the first online shopping system. This system was used in 1984 for the first time to buy groceries from Tesco, marking the first true Business-To-Customer online transaction \cite{winterman-kelly-online-shopper}. Since Sir Tim Berners-Lee invented the World Wide Web, E-Commerce has grown substantially with industry revenue in the UK reaching \euro{157 billion} in 2016\cite{khaksar-2016}.\\ 
+E-Commerce has existed in various forms since the 1970's with its seminal act being a drug deal between Stanford and MIT students\cite{power-mike-online-highs}. Later that same decade Michael Aldrich demonstrated the first online shopping system. This system was used in 1984 for the first time to buy groceries from Tesco, marking the first true Business-To-Customer online transaction \cite{winterman-kelly-online-shopper}. Since Sir Tim Berners-Lee invented the World Wide Web, E-Commerce has grown substantially with industry revenue in the UK reaching \euro{157 billion} in 2016\cite{khaksar-2016}.\\
 
-The primary component of E-Commerce is the online payment system. A common approach for such systems is: Merchants collect payment information from customers, then send the information through a payment gateway to a payment processor which in turn pays into a merchant account. The way in which merchants collect payment information is an important concern which is handled in one of several ways discussed in \textbf{section \ref{subsec:gathering-payment-data}}.   
+The primary component of E-Commerce is the online payment system. A common approach for such systems is: Merchants collect payment information from customers, then send the information through a payment gateway to a payment processor which in turn pays into a merchant account. The way in which merchants collect payment information is an important concern which is handled in one of several ways discussed in \textbf{section \ref{subsec:gathering-payment-data}}.
 
 \subsection{Considerations}
 \label{subsec:considerations}
@@ -31,9 +31,9 @@ Security is an essential consideration for online payment systems. E-Commerce be
     \item of Integrity - Unalterable during transmission.
 \end{itemize}
 
-The Payment Card Industry (PCI) Security Standards Council, exists to develop standards which ensure the above criteria are met. The Data Security Standard (DSS) created by the PCI council "provides a baseline of technical and operational requirements designed to protect account data" and "applies to \textit{\textbf{all}} entities involved in payment card processing--including merchants"\cite{PCI-DSS}.\\ 
+The Payment Card Industry (PCI) Security Standards Council, exists to develop standards which ensure the above criteria are met. The Data Security Standard (DSS) created by the PCI council "provides a baseline of technical and operational requirements designed to protect account data" and "applies to \textit{\textbf{all}} entities involved in payment card processing--including merchants"\cite{PCI-DSS}.\\
 
-PCI DSS is intended to protect cardholder data that is "processed, stored or transmitted by merchants"\cite{PCI-DSS}. The forms of data in question are depicted in \textbf{Figure \ref{fig:card-data}}, each of which have guidelines associated with them regarding storage and protection. Payment gateway services handle most PCI DSS compliance to remove the burden from the merchant but in some cases, not all of it, as described in \textbf{section \ref{subsec:gathering-payment-data}}.        
+PCI DSS is intended to protect cardholder data that is "processed, stored or transmitted by merchants"\cite{PCI-DSS}. The forms of data in question are depicted in \textbf{Figure \ref{fig:card-data}}, each of which have guidelines associated with them regarding storage and protection. Payment gateway services handle most PCI DSS compliance to remove the burden from the merchant but in some cases, not all of it, as described in \textbf{Section \ref{subsec:gathering-payment-data}}.
 
 \begin{figure}[!hbt]
   	\centering
@@ -45,7 +45,7 @@ PCI DSS is intended to protect cardholder data that is "processed, stored or tra
 \subsubsection{Security}
 \label{subsec:security}
 
-Encryption is an essential security measure when transmitting payment information over a network and ensures that only a specified receiver can decrypt the information. PCI DSS dictates the use of Hypertext Transfer Protocol Secure (HTTPS) which use either Secure Sockets Layer (SSL) or Transport Layer Security (TLS) protocols that have an asymmetric Public Key Infrastructure (PKI) system. This means that information can be encrypted with one key at the sender and decrypted by a different key at the receiver or vice-versa\cite{comodo}.\\ 
+Encryption is an essential security measure when transmitting payment information over a network and ensures that only a specified receiver can decrypt the information. PCI DSS dictates the use of Hypertext Transfer Protocol Secure (HTTPS) which use either Secure Sockets Layer (SSL) or Transport Layer Security (TLS) protocols that have an asymmetric Public Key Infrastructure (PKI) system. This means that information can be encrypted with one key at the sender and decrypted by a different key at the receiver or vice-versa\cite{comodo}.\\
 
 To establish a secure connection over HTTPS, an HTTPS/SSL certificate is required, which creates a binding between an organizational identity and a domain name, server name or host name\cite{ssl-certificate}. This certificate is used during a handshake procedure between sender and receiver to establish a secure connection through which payment data may be sent.
 
@@ -62,14 +62,14 @@ The process of collecting a customer's payment information differs between payme
 
 Methods 1 \& 2 fully remove the burden of PCI DSS compliance from the merchant as both circumvent processing, storage and transmission on/through the merchants web service. Method 3 however, involves the merchant collecting the payment information, potentially performing validation on the input and sending the information to the payment gateway. It is important to distinguish at this time that the payment information is merely being handled on a client and not sent through the merchants server. To remain compliant with this method, the data has to be encrypted and sent directly through a secure connection to the payment gateway, where it can be tokenized. Such tokens can be processed and stored on a merchant's server in a compliant manner. A collection of payment gateway services and their supported data gathering methods are shown in \textbf{Table \ref{tab:gateway-providers}}. \\
 
-\centering
-\begin{tabular}{ |p{3.5cm}|p{1.75cm}|p{2cm}|p{2cm}|  } 
+\begin{center}
+\begin{tabular}{ |p{3.5cm}|p{1.75cm}|p{2cm}|p{2cm}|  }
  \hline
  	\multicolumn{4}{|c|}{Payment Gateway Services Data Gathering Methods} \\
  \hline
- 	\multicolumn{1}{|c|}{Provider} & 
- 	\multicolumn{1}{|c|}{Redirection} & 
- 	\multicolumn{1}{|c|}{Generated Form} & 
+ 	\multicolumn{1}{|c|}{Provider} &
+ 	\multicolumn{1}{|c|}{Redirection} &
+ 	\multicolumn{1}{|c|}{Generated Form} &
  	\multicolumn{1}{|c|}{Merchant Form}  \\
  \hline
  	Authorize.Net\cite{authorize-net} & \multicolumn{1}{|c|}{Yes} & \multicolumn{1}{|c|}{No} & \multicolumn{1}{|c|}{Yes} \\
@@ -83,9 +83,10 @@ Methods 1 \& 2 fully remove the burden of PCI DSS compliance from the merchant a
  	Braintree (PayPal)\cite{braintree} & \multicolumn{1}{|c|}{Yes} & \multicolumn{1}{|c|}{No} & \multicolumn{1}{|c|}{No} \\
  \hline
 \end{tabular}
-\captionof{table}{Payment Gateway Providers} 
-\label{tab:gateway-providers} 
+\captionof{table}{Payment Gateway Providers}
+\label{tab:gateway-providers}
 \vspace{0.4cm}
+\end{center}
 
 \section{Frameworks}
 \label{sec:frameworks}

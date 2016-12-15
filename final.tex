@@ -23,7 +23,7 @@
 \usepackage[utf8]{inputenc}
 
 %% tables have a bit more space in top and bottom in the rows
-\renewcommand{\arraystretch}{2}
+\renewcommand{\arraystretch}{1.5}
 
 %% set the graphics path
 \usepackage{graphicx}
@@ -62,6 +62,9 @@
 
 %% to make sure that floats don't go to next section
 \usepackage{placeins}
+
+%% pages over multiple pages
+\usepackage{longtable}
 
 \let\Oldsection\section
 \renewcommand{\section}{\FloatBarrier\Oldsection}
