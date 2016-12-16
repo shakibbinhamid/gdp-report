@@ -141,10 +141,31 @@ The manager, Shakib, emphasised on equality and inclusion of team members in the
 
 Similarly, all team members respected other's responsibilities and even contributed to alleviate other's issues, for example: fill in the hours if someone is unavailable for a job interview.
 
-
 \section{Code Quality Management}
 \label{sec:code-quality-management}
 
 
 \section{Code Submission Process}
 \label{sec:code-submission-process}
+
+We had the following goals in terms of code submissions -
+
+\begin{itemize}
+
+  \item Submit code to client weekly
+  \item Commit often
+  \item Review often
+  \item Reduce merge conflicts
+
+\end{itemize}
+
+In order to achieve the goals, we adopted a code submission strategy (\textbf{Figure \ref{fig:version-control}}). Shakib forked both the client's E2E testing and application repositories to create GDP8 repositories. The master branch of the GDP8 repositories were regarded stable and no direct commits were done on master branches. Instead feature branches were created from the GDP8 master branches, and each developer submitted code to the feature branch every day. At the end of the day, there would be no work left to be submitted to the feature branch.\\
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.8\textwidth]{commits.png}
+  	\caption{Version Control}
+ 	\label{fig:version-control}
+\end{figure}
+
+Once a feature was nearly complete, code review was performed on the feature branches. On Fridays, Shakib put the stable code on GDP8 master brances, as well as merged with the latest Client's master branch and repeated all the tests. This made sure that the client had minimal effort in merging our one week's worth of code. In fact, we had \textbf{\textit{no conflicts}} in submitting our code to the client and did not break any functionality on the client's existing repositories, even when there were multiple other groups working on the same repositories.
