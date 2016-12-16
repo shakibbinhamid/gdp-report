@@ -63,9 +63,9 @@ In the following sections we discuss how we managed the risks and in turn manage
 \label{sec:time-management}
 Since a 4th year MEng student should spend 2/3 of their time in GDP, we estimated that, we should each spend at least 30 hours/week (out of 50 hours/week). In our previous experience we found it very difficult to keep to strict hours, because of other commitments, e.g. societies, courseworks etc.\\
 
-To mitigate this risk, we booked a library room \textit{every weekday} for the entire 1st semester. This ensured that we always have a place to work together. We insisted to maximise our contact time, and in fact utilised the room bookings to the fullest by working above \textit{\textbf{30 hours}} together each week (Appendix \ref{appendix:team-member-contribution}).\\
+To mitigate this risk, we booked a library room \textit{every weekday} for the entire 1st semester. This ensured that we always have a place to work together. We insisted to maximise our contact time, and in fact utilised the room bookings to the fullest by working above \textit{\textbf{30 hours}} together each week (\textbf{Appendix \ref{appendix:team-member-contribution}}).\\
 
-We also estimated the work amount for other coursework in advance, and worked more on GDP in certain weeks. We kept our supervisor and our client well aware of our commitments each week so that we could prepare thusly. Our Gantt Chart in Appendix \ref{appendix:gantt-charts} demonstrates how well we followed our original plan, since work hours closely followed our initial estimates. In fact, the only change is that we finished our initial goals earlier than anticipated and could focus on further achievements like CI.
+We also estimated the work amount for other coursework in advance, and worked more on GDP in certain weeks. We kept our supervisor and our client well aware of our commitments each week so that we could prepare thusly. Our Gantt Chart in \textbf{Appendix \ref{appendix:gantt-charts}} demonstrates how well we followed our original plan, since work hours closely followed our initial estimates. In fact, the only change is that we finished our initial goals earlier than anticipated and could focus on further achievements like CI.
 
 \section{Weekly Meetings}
 \label{sec:weekly-meetings}
@@ -104,18 +104,40 @@ The following sections better explain how the team managed the skills and tasks 
 \label{subsec:dividing-work}
 The team started a weekly team meeting after the first progress seminar, after feedback from the supervisor. During this meeting we set our personal weekly tasks. Previously, it was done informally.\\
 
-Usually, after the weekly meeting (Section \ref{sec:weekly-meetings}), we had 4-5 different major tasks for the week. The team members that were present during the team meeting picked the tasks they preferred. Otherwise, the manager assigned a task if any member was absent or did not have a preferrence. Finally, he picked the remaining tasks.\\
+Usually, after the weekly meeting (\textbf{Section \ref{sec:weekly-meetings}}), we had 4-5 different major tasks for the week. The team members that were present during the team meeting picked the tasks they preferred. Otherwise, the manager assigned a task if any member was absent or did not have a preferrence. Finally, he picked the remaining tasks.\\
 
-During the week, if a team member finished his own task, he started others' remaining tasks if they were unavailable or helped out with ongoing ones. Similarly, if one's task depended on another's task and it was blocking the former's progress, they would either work together, or continue the other's work while they may be unavailable to work. Every effort was made to ensure that no team member spends a development day without a task.
+During the week, if a team member finished his own task, he started others' remaining tasks if they were unavailable or helped out with ongoing ones. Similarly, if one's task depended on another's task and it was blocking the former's progress, they would either work together, or continue the other's work while they may be unavailable to work. Every effort was made to ensure that no team member spends a development day without a task.\\
+
+\textbf{Appendix \ref{appendix:team-member-contribution}} clearly indicates each team member's individual contribution to the project, and \textbf{Appendix \ref{appendix:code-commits}} is the evidence in terms of code commits that they had produced. For example: Shakib performed nearly 60\% of the tasks of Synote's CI set up, Vlad and Tom each did 20\% of the tasks in CI, while Deepak wrote neaerly 70\% of the E2E test cases of payment feature.\\
+
+It must be noted though - not all contribution can be measured in terms of code line commits alone, since there were significant tasks that could not be commited as code - research for example, or when collaborated code was commited from a single user. So, we have included further diagrams to clarify when a team member contributed to the project in the following sections. \\
+
+\subsection{Collaboration}
+\label{subsec:collaboration}
+
+Even though we each had our personal tasks that we completed every week (as explained in \textbf{Section \ref{subsec:dividing-work}}), 25 - 30\% of our tasks were in fact joint effort. Similar to any well functioning software development group, we often divided our work and came together to combine our work to achieve a requirement.\\
+
+\textbf{Appendix \ref{appendix:team-collaboration}} clearly shows timelines of each team member's major tasks throughout the project and demonstrates where and when he collaborated with others.\\
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.8\textwidth]{deepak-collab-snip.png}
+  	\caption{Example of collaboration diagram}
+ 	\label{fig:deepak-collaboration-snippet}
+\end{figure}
+
+For example from \textbf{Figure \ref{fig:deepak-collaboration-snippet}}, which itself is a snippet from the appendix, we know that Deepak worked with Tom to integrate the initial server side REST API for the payment feature with his front end implementation.
 
 \subsection{Team Skills}
 \label{subsec:team-skills}
 
+A major concern was the team's lack of practical knowledge of JavaScript, specially when the entire Synote application is JavaScript based. Shakib was the most proficient in JavaScript and he worked with each team member to help them with JavaScript initially and mitigate the risk early. Similarly, the rest of the team worked hard in the first 4-5 weeks to overcome any technical difficulties, including learning promise based structures, dynamic typing, closures, and the frameworks - Sails, Angular, Protractor, Cucumber etc.\\
 
+The team has picked up a number of development skills after this project. Tom and Vlad are more confident in their JavaScript knowledge, Deepak is fluent in front end development in Angular and HTML 5 than ever before and finally Shakib is assured of his JavaScript, Linux and team managemenet skills. The team members are also more optimistic about their individual strengths, as well as the group synergy.
 
 \subsection{Team Inclusion and Honesty}
 \label{subsec:team-inclusion}
-The manager, Shakib, emphasised on equality and inclusion of team members in their contribution to the project. Each member was informed of other's contribution through a shared contribution document (Appendix \ref{appendix:team-member-contribution}). He also informed absent team members about group decisions after each meeting so that they feel included. Any discrepancy was openly discussed with the team member so that each team member feel equally valued, and no one is left unfair resentment.\\
+The manager, Shakib, emphasised on equality and inclusion of team members in their contribution to the project. Each member was informed of other's contribution through a shared contribution document (\textbf{Appendix \ref{appendix:team-member-contribution}}). He also informed absent team members about group decisions after each meeting so that they feel included. Any discrepancy was openly discussed with the team member so that each team member feel equally valued, and no one is left unfair resentment.\\
 
 Similarly, all team members respected other's responsibilities and even contributed to alleviate other's issues, for example: fill in the hours if someone is unavailable for a job interview.
 
