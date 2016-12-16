@@ -1,7 +1,7 @@
 \chapter{Project Management}
 \label{chap:project-management}
 
-Common software project management goals that relate to a GDP are as follows \cite{iansommerville2011} -
+Project management is often left as a side topic in university projects. This practice, sadly, often results in either the project not achieving its true potentials, or in worst cases catastrophic failure. It may be because of poor time management, unforseen risks for an unprepared team, a dominating project manager or the simple lack of teamwork between the team members. We believe that a GDP should have at least the following as their project management goals \cite{iansommerville2011} -
 
 \begin{itemize}
 
@@ -11,26 +11,25 @@ Common software project management goals that relate to a GDP are as follows \ci
 
 \end{itemize}
 
-Shakib was the project manager for GDP 8. In this chapter we will analyse how we were able to achieve the above goals and how we could improve our management practices.
+Shakib was the project manager for GDP 8. We are proud of the professionalism that we have demonstrated during the project. We were pragmatic in our time management, professional and honest in our communication with our supervisor and our client and finally managed our risks well. In this chapter we will analyse how we were able to achieve the above goals.
 
 \section{Risk Analysis}
 \label{sec:risk-analysis}
 
-We will begin with risk analysis, since our management techniques evolved through our efforts of migitating the major risks.
+We will begin with risk analysis, since our management techniques evolved through our efforts of migitating the major risks. In \textbf{Table \ref{tab:risk}} we list the \textit{major} risks - those that clearly affects the project and the products we produced.
+
+\pagebreak
 
 \begin{center}
 
-\begin{longtable}{ |p{5.7cm}|p{2cm}|p{2.2cm}|p{2.7cm}|  }
+\begin{longtable}{ |p{5.7cm}|p{2cm}|p{2.3cm}|p{2.7cm}| }
 
  \hline
  	%Example of column merging
  	\multicolumn{4}{|c|}{Risk Analysis} \\
  \hline
  	%Examples of centering text
- 	\multicolumn{1}{|c|}{Risk} &
- 	\multicolumn{1}{|c|}{Affects} &
- 	\multicolumn{1}{|c|}{Probability} &
- 	\multicolumn{1}{|c|}{Effect}  \\
+ 	Risk & Affects & Probability & Effect  \\
   \hline
  	 Goals are not clear & Project, Product & Very High & Catastrophic \\
    \hline
@@ -144,6 +143,19 @@ Similarly, all team members respected other's responsibilities and even contribu
 \section{Code Quality Management}
 \label{sec:code-quality-management}
 
+We had the following goals in terms of our JavaScript coding style and quality -
+
+\begin{itemize}
+
+  \item Follow the best practices in the industry
+  \item Follow the existing practices in Synote codebase
+  \item All code must be reviewed by at least another team member
+
+\end{itemize}
+
+We wanted to make sure that the client can easily add further functionality. So, we followed the conventions of Synote's lead developer. In fact, we documented the conventions we followed in the 'Contributing.md' document for Synote so that the future developers also follow the same conventions.\\
+
+As discussed before, code produced during pair programming was continuously reviewed by both team members. Similarly Shakib reviewed all code written by the team members before submitting the code to the client each week. Static checks to find usual JavaScript issues that may indicate bugs e.g. undeclared/unused variables etc. were also marked by 'linters' provided in the IDEs used. We also achieved almost complete test coverage in the payment feature through server side unit/integration and E2E tests (\textbf{Appendix \ref{appendix:server-test-cases}} and \textbf{\ref{appendix:e2e-testing}}). Finally, the client also often provided feedback about the code that we submitted and we refactored accordingly, for example: use of services in the client, promises throughout the application etc.
 
 \section{Code Submission Process}
 \label{sec:code-submission-process}
