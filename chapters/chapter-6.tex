@@ -4,6 +4,47 @@
 \section{Synote CI}
 \label{sec:synote-ci}
 
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
+sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+sudo apt-get update
+sudo apt-get install jenkins
+
+echo 'upstream jenkins {
+  server 127.0.0.1:8080 fail_timeout=0;
+}
+
+server {
+  listen 80;
+  server_name jenkins-cicd.synote.com;
+  return 301 https://$host$request_uri;
+}
+
+server {
+  listen 443 ssl;
+  server_name jenkins-cicd.synote.com;
+
+  ssl_certificate /etc/nginx/ssl/synote.com.crt;
+  ssl_certificate_key /etc/nginx/ssl/www.synote.com.key;
+
+  location / {
+    proxy_set_header        Host $host:$server_port;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Proto $scheme;
+    proxy_redirect http:// https://;
+    proxy_pass              http://jenkins;
+  }
+}' > /etc/nginx/sites-available/jenkins
+
+sudo service nginx restart
+
+\end{minted}
+\captionof{listing}{Example from external file}
+\label{listing:3}
+\end{listing}
+
 \subsection{Setting up Jenkins}
 \label{subsec:setting-up-jenkins}
 

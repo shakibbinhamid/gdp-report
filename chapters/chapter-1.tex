@@ -73,7 +73,7 @@ The subfigure package has caused me problems before, I suggest against it. Simil
         \caption{Left side image}
         \label{fig:left-side-image}
     \end{subfigure}
-    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.4\textwidth}
         \includegraphics[width=\textwidth]{exm.jpg}
@@ -99,16 +99,16 @@ Tables must be labeled with usual labeling convention. Also the use of \texttt{m
 Referring to a table example: As show in \textbf{Table \ref{tab:myTable}}. \\
 
 %Column widths dependent on page width/margins
-\begin{tabular}{ |p{0.5cm}|p{4cm}|p{4cm}|p{4cm}|  } 
+\begin{tabular}{ |p{0.5cm}|p{4cm}|p{4cm}|p{4cm}|  }
 
  \hline
  	%Example of column merging
  	\multicolumn{4}{|c|}{Table Title Example} \\
  \hline
  	%Examples of centering text
- 	\multicolumn{1}{|c|}{id} & 
- 	\multicolumn{1}{|c|}{Column Heading} & 
- 	\multicolumn{1}{|c|}{Column Heading} & 
+ 	\multicolumn{1}{|c|}{id} &
+ 	\multicolumn{1}{|c|}{Column Heading} &
+ 	\multicolumn{1}{|c|}{Column Heading} &
  	\multicolumn{1}{|c|}{Column Heading}  \\
  \hline
  	1 & Field 1,1 & Field 1,2 & Field 1,3 \\
@@ -117,23 +117,23 @@ Referring to a table example: As show in \textbf{Table \ref{tab:myTable}}. \\
  \hline
  	3 & Field 3,1 & Field 3,2 & Field 3,3 \\
  \hline
- 
+
 \end{tabular}
-%Use of captionof allows 'Table' instead of default 'Figure' 
-\captionof{table}{My Table Example} 
-\label{tab:myTable} 
+%Use of captionof allows 'Table' instead of default 'Figure'
+\captionof{table}{My Table Example}
+\label{tab:myTable}
 \vspace{0.4cm}
 
 When a larger table is needed that would fit better on a landscape page, the \texttt{rotating} package can be used and a \texttt{sidewaystable} defined as shown in the example on the next page: \textbf{Table \ref{tab:mySidewaysTable}}.
 
 \begin{sidewaystable}
-  \begin{tabular}{ |p{0.5cm}|p{7cm}|p{7cm}|p{7cm}|  } 
+  \begin{tabular}{ |p{0.5cm}|p{7cm}|p{7cm}|p{7cm}|  }
     \hline
         \multicolumn{4}{|c|}{Sideways Table Title Example} \\
      \hline
-        \multicolumn{1}{|c|}{id} & 
-        \multicolumn{1}{|c|}{Column Heading} & 
-        \multicolumn{1}{|c|}{Column Heading} & 
+        \multicolumn{1}{|c|}{id} &
+        \multicolumn{1}{|c|}{Column Heading} &
+        \multicolumn{1}{|c|}{Column Heading} &
         \multicolumn{1}{|c|}{Column Heading}  \\
      \hline
         1 & Field 1,1 & Field 1,2 & Field 1,3 \\
@@ -144,7 +144,7 @@ When a larger table is needed that would fit better on a landscape page, the \te
      \hline
 
   \end{tabular}
-  \captionof{table}{My Sideways Table Example} 
+  \captionof{table}{My Sideways Table Example}
   \label{tab:mySidewaysTable}
 \end{sidewaystable}
 
@@ -155,19 +155,28 @@ When a larger table is needed that would fit better on a landscape page, the \te
 You can add code snippets as seen in \textbf{Listing \ref{lst:listing-main}} or \textbf{Listing \ref{lst:side-listing}} full width or mini page listing.
 
 \begin{minipage}{.5\textwidth}
-\begin{lstlisting}[caption=My Javascript Example]
-Name.prototype = {
-  methodName: function(params){
-    var doubleQuoteString = "some text";
-    var singleQuoteString = 'some more text';
-    // this is a comment
-    document.createElement('h3');
-    $('#system').append("This looks great");
-    return false;
+  \begin{listing}[H]
+  \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+
+  Name.prototype = {
+    methodName: function(params){
+      var doubleQuoteString = "some text";
+      var singleQuoteString = 'some more text';
+      // this is a comment
+      if(this.confirmed != null && typeof(this.confirmed) == Boolean && this.confirmed == true){
+        document.createElement('h3');
+        $('#system').append("This looks great");
+        return false;
+      } else {
+        throw new Error;
+      }
+    }
   }
-}
-\end{lstlisting}
-\label{lst:side-listing}
+
+  \end{minted}
+  \captionof{listing}{caption}
+  \label{lst:label-for-listing}
+  \end{listing}
 \end{minipage}%
 \begin{minipage}{0.5\textwidth}
 	\centering
@@ -176,7 +185,9 @@ Name.prototype = {
 	\label{fig:right-side-minipage}
 \end{minipage}
 
-\begin{lstlisting}[caption=JS Code Snippet]
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+
 Name.prototype = {
   methodName: function(params){
     var doubleQuoteString = "some text";
@@ -191,12 +202,14 @@ Name.prototype = {
     }
   }
 }
-\end{lstlisting}
-\label{lst:listing-main}
 
+\end{minted}
+\captionof{listing}{caption}
+\label{lst:label-for-listing}
+\end{listing}
 
 \section{References}
-References are written in \texttt{references.bib} file. I will demo you personally about how to write references. Each reference has a key and you can refer it like this \cite{Belk:2014}.\\
+References are written in \texttt{references.bib} file. I will demo you personally about how to write references. Each reference has a key and you can refer it like this \cite{iansommerville2011}.\\
 
 
 \section{Directory Trees}
@@ -213,6 +226,3 @@ Directory trees are nice and simple using the package \texttt{dirtree} as shown 
 }
 \captionof{figure}{Directory Tree Example}
 \label{fig:dir-tree}
-
-
-

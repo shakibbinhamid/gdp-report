@@ -35,21 +35,24 @@ The first iteration of the payment feature requires simple functionality: A cust
  	\label{fig:simple-sequence}
 \end{figure}
 
-Step one is to create the endpoint to which a Stripe token and any additional required information can be posted. Sails has an API called Blueprint which creates RESTful routes when an endpoint is created with a \texttt{model} and \texttt{controller}. Further routes can be added to the endpoint route through the concept of action routes, thus a \texttt{controller} file named \texttt{CreditHistoryController.js} containing an action route of \texttt{topup} exposes the route: \texttt{/credithistory/topup}.\\
+Step one is to create the endpoint to which a Stripe token and any additional required information can be posted. Sails has an API called Blueprint which creates RESTful routes when an endp oint is created with a \texttt{model} and \texttt{controller}. Further routes can be added to the endpoint route through the concept of action routes, thus a \texttt{controller} file named \texttt{CreditHistoryController.js} containing an action route of \texttt{topup} exposes the route: \texttt{/credithistory/topup}.\\
 
 Making charges against a token requires Stripe's API \cite{stripe-api} which can be added using the \texttt{require} keyword and must include a secret key provided by Stripe. Stripe's API lists examples of functions in Node, but in the form of callbacks. As covered in \textbf{Section \ref{sec:synote}}, the convention is to use promises in favour of callbacks which altogether results in code similar to \textbf{Listing \ref{lst:stripe-charge}}.\\
 
 \hspace{0.1\textwidth}
 \begin{minipage}{.76\textwidth}
-\begin{lstlisting}[caption=Stripe Charge Promisified Example, label={lst:stripe-charge}]
-var stripe = require('stripe')(StripeSecretKey);
 
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray]{js}
 return stripe.charges.create({
         amount: cost,
         currency: "gbp",
         source: token.id
 });
-\end{lstlisting}
+\end{minted}
+\captionof{listing}{Stripe Charge Promisified Example}
+\label{lst:stripe-charge}
+\end{listing}
 \end{minipage}
 \hspace{0.1\textwidth}
 
@@ -66,7 +69,8 @@ The remaining task is recording the transaction and assigning purchased credits 
 
 \hspace{0.1\textwidth}
 \begin{minipage}{.72\textwidth}
-\begin{lstlisting}[caption=Section Of Migration File: v0.9.0-v0.10.0.sql, label={lst:migration-file}]
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{sql}
 DROP TABLE IF EXISTS `testing`;
 CREATE TABLE `testing` (
   `id` VARCHAR(255) NOT NULL,
@@ -77,37 +81,45 @@ CREATE TABLE `testing` (
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-\end{lstlisting}
+
+\end{minted}
+\captionof{listing}{Section Of Migration File: v0.9.0-v0.10.0.sql}
+\label{lst:migration-file}
+\end{listing}
 \end{minipage}
 \hspace{0.1\textwidth}
 
 A section of the \texttt{model} file required for Waterline ORM to interact with the database is shown in \textbf{Listing \ref{lst:credit-history-model}}. Each attribute of the \texttt{model} is a one-to-one mapping with a field in the corresponding table, in this case \texttt{stripeChargeResponse} is shown with a type of \texttt{text} which can clearly be seen in the \texttt{credithistory} table of \textbf{Figure \ref{fig:db-credit}}. This field exists to store a record of the charge response from Stripe and contains redacted PCI DSS compliant information such as the last four digits of the charged card. Also of note in \textbf{Listing \ref{lst:credit-history-model}} are two examples of Waterline functions: \texttt{findOne} and \texttt{update} which in this instance are part of a hook to update the quantity of credits for a user after a purchase. These functions are a subset of the available functions to Create, Read, Update and Destroy (CRUD) DB records.
 
-\begin{lstlisting}[caption=CreditHistory.js model file, label={lst:credit-history-model}]
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 module.exports = {
-    attributes: {
-		//Code omitted
-        stripeChargeResponse: {
-            type: "text",
-            isTopUp: true
-        },
-		//Code omitted
+  attributes: {
+    //Code omitted
+    stripeChargeResponse: {
+      type: "text",
+      isTopUp: true
     },
+    //Code omitted
+  },
 
-    afterCreate:function(history,cb){
-      Credit.findOne({id:history.credit})
-        .then(function(oldCredit){
-          var newAmount = oldCredit.amount+history.amount;
-          return Credit.update({id:history.credit},{amount:newAmount});
+  afterCreate:function(history,cb){
+    Credit.findOne({id:history.credit})
+      .then(function(oldCredit){
+        var newAmount = oldCredit.amount+history.amount;
+        return Credit.update({id:history.credit},{amount:newAmount});
       }).then(function(newCredit){
         cb();
       }).catch(function(err){
         cb(err);
       });
-    }
+  }
 };
 
-\end{lstlisting}
+\end{minted}
+\captionof{listing}{CreditHistory.js model file}
+\label{lst:credit-history-model}
+\end{listing}
 
 The second iteration of the payment feature requires extended functionality: A customer must be able to save payment information for faster future purchases. Stripe provides a method of saving cards which encapsulates data sources such as payment cards in a \textit{customer} object. The ID of a customer object can be used to charge a user's default payment or source, or the combination of customer object id and source-data ID can be used to charge a specific card owned by a customer. Building on the first iteration and following the process above, server side implementation for saving cards and paying with saved cards involves:
 

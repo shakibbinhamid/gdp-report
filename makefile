@@ -1,10 +1,10 @@
 all: compile.pdf clean
 
 compile.pdf:
-	pdflatex final.tex
+	pdflatex --shell-escape final.tex
 	bibtex final.aux
-	pdflatex final.tex
-	pdflatex final.tex
+	pdflatex --shell-escape final.tex
+	pdflatex --shell-escape final.tex
 
 clean:
 

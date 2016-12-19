@@ -112,6 +112,11 @@
    captionpos=b
 }
 
+\usepackage[chapter]{minted}
+\usemintedstyle{vs}
+
+\renewcommand{\theFancyVerbLine}{\sffamily {\small \oldstylenums{\arabic{FancyVerbLine}}}}
+
 %% bibliography setup
 \bibliographystyle{ieeetr}
 \raggedbottom
@@ -128,6 +133,7 @@
 \tableofcontents
 \listoffigures
 \listoftables
+\listoflistings
 
 %% main body
 \input{chapters/chapter-1}
