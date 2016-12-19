@@ -34,9 +34,10 @@
 \usepackage{breakurl}
 
 %% for sub figure captions
-\usepackage{caption}
+\usepackage[font={bf}]{caption}
 \usepackage{subcaption}
 
+\renewcommand{\captionlabelfont}{\fontfamily{lmss}}
 %% for caption on the side of the image
 \usepackage{sidecap}
 
@@ -56,9 +57,6 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage[figuresright]{rotating}
-
-%% javascript code listing
-\usepackage{listings}
 
 %% to make sure that floats don't go to next section
 \usepackage{placeins}
@@ -81,37 +79,6 @@
 \definecolor{darkgray}{rgb}{.4,.4,.4}
 \definecolor{purple}{rgb}{0.65, 0.12, 0.82}
 
-\lstdefinelanguage{JavaScript}{
-  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
-  keywordstyle=\color{blue}\bfseries,
-  ndkeywords={class, export, boolean, throw, implements, import, this},
-  ndkeywordstyle=\color{darkgray}\bfseries,
-  identifierstyle=\color{black},
-  sensitive=false,
-  comment=[l]{//},
-  morecomment=[s]{/*}{*/},
-  commentstyle=\color{purple}\ttfamily,
-  stringstyle=\color{red}\ttfamily,
-  morestring=[b]',
-  morestring=[b]"
-}
-
-\lstset{
-   language=JavaScript,
-   backgroundcolor=\color{lightgray},
-   extendedchars=true,
-   basicstyle=\footnotesize\ttfamily,
-   showstringspaces=false,
-   showspaces=false,
-   numbers=left,
-   numberstyle=\footnotesize,
-   numbersep=9pt,
-   tabsize=2,
-   breaklines=true,
-   showtabs=false,
-   captionpos=b
-}
-
 \usepackage[chapter]{minted}
 \usemintedstyle{vs}
 
@@ -121,7 +88,26 @@
 \bibliographystyle{ieeetr}
 \raggedbottom
 
+%% reduce float whitespace
+\setcounter{topnumber}{2}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\floatpagefraction}{0.8}
+\renewcommand{\textfraction}{0.1}
+\setlength{\floatsep}{5pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{5pt plus 2pt minus 2pt}
+\setlength{\intextsep}{5pt plus 2pt minus 2pt}
+
+%% to change fonts
+\usepackage{lmodern}
+
 \begin{document}
+
+%% change font to something with less spaces
+\fontfamily{lmss}\selectfont
 
 %% preambles
 \input{preambles/title}
