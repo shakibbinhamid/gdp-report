@@ -56,7 +56,7 @@ return stripe.charges.create({
 \end{minipage}
 \hspace{0.1\textwidth}
 
-Information required to make a charge includes a single use token, charge amount and currency. The token and charge amount are provided in the \texttt{POST} from a client as a JSON object in the request (\texttt{req}) body. It is convention that a \texttt{req} is only processed within a \texttt{policy} and \texttt{controller}. Sails uses policies for authorization and access control such that each \texttt{action route} for each \texttt{controller} can be assigned one or more policies. As Synote uses Auth0 \cite{auth0} a policy called \texttt{hasJsonWebToken} exists to add a user's profile to a \texttt{req} which , aside from authorization, has the added benefit of providing a user's ID, which can be used to determine which user is making a purchase.\\
+Information required to make a charge includes a single use token, charge amount and currency. The token and charge amount are provided in the \texttt{POST} from a client as a JSON object in the request (\texttt{req}) body. It is convention that a \texttt{req} is only processed within a \texttt{policy} and \texttt{controller}. Sails uses policies for authorization and access control such that each \texttt{action route} for each \texttt{controller} can be assigned one or more policies. As Synote uses Auth0 \cite{auth0} a policy called \texttt{hasJsonWebToken} exists to add a user's profile to a \texttt{req} which, aside from authorization, has the added benefit of providing a user's ID that can be used to determine which user is making a purchase.\\
 
 \begin{figure}[!hbt]
   	\centering
@@ -121,7 +121,7 @@ module.exports = {
 \label{lst:credit-history-model}
 \end{listing}
 
-The second iteration of the payment feature requires extended functionality: A customer must be able to save payment information for faster future purchases. Stripe provides a method of saving cards which encapsulates data sources such as payment cards in a \textit{customer} object. The ID of a customer object can be used to charge a user's default payment or source, or the combination of customer object id and source-data ID can be used to charge a specific card owned by a customer. Building on the first iteration and following the process above, server side implementation for saving cards and paying with saved cards involves:
+The second iteration of the payment feature requires extended functionality: A customer must be able to save payment information for faster future purchases. Stripe provides a method of saving payment data which encapsulates sources such as payment cards in a \textit{customer} object. The ID of a customer object can be used to charge a user's default payment source, or the combination of customer object id and source-data ID can be used to charge a specific card owned by a customer. Building on the first iteration and following the process above, server side implementation for saving cards and paying with saved cards involves:
 
 \begin{enumerate}
 	\item Adding action routes in the \texttt{CreditHistoryController.js} file to retrieve/delete cards
@@ -130,10 +130,10 @@ The second iteration of the payment feature requires extended functionality: A c
     \item Adding Stripe functions to save payment data in a Stripe customer object
     \item Updating the database schema using a migration file to store a Stripe customer object against a user
     \item Updating the relevant \texttt{model} to include the Stripe customer field
-    \item Adding Waterline functions to CRUD Stripe customer records from the DB
+    \item Adding Waterline functions to CRUD Stripe customer records in the DB
 \end{enumerate}
 
-All of the Stripe and Waterline methods can exist in \texttt{CreditHistoryController.js} file, but this constitutes poor cohesion and it is convention to keep reusable functions in a \texttt{service} file to prevent repetition. Consequently all reusable Stripe functions are placed in \texttt{StripeService.js} and all reusable Waterline functions are placed in \texttt{ChargeService.js} for maximal cohesion. The resulting solution architecture is shown in \textbf{Figure \ref{fig:synote-stripe}}.
+All of the Stripe and Waterline methods can exist in \texttt{CreditHistoryController.js} file, but this constitutes poor cohesion and it is convention to keep reusable functions in a \texttt{service} file to prevent repetition. Consequently all reusable Stripe functions are placed in \texttt{StripeService.js} and all reusable Waterline functions are placed in \texttt{ChargeService.js} for maximal cohesion. The resulting solution architecture is shown in \textbf{Figure \ref{fig:synote-stripe}}.\\
 
 \begin{figure}[!hbt]
   	\centering
@@ -144,6 +144,31 @@ All of the Stripe and Waterline methods can exist in \texttt{CreditHistoryContro
 
 \section{Server Side Testing}
 \label{sec:server-side-testing}
+
+Testing is crucial in order to provide a robust and reliable feature. The existing testing strategy in Synote's server code uses Mocha \cite{mocha} test running framework paired with Chai \cite{chai} assertion library. Unit, Integration and server side end-to-end (E2E) tests have been written for the payment feature. Through use of Istanbul \cite{istanbul} code coverage tool, we can show high coverage in policies, services and the controller as shown in \textbf{Figure \ref{fig:coverage}}. To thoroughly test our implementation we have written tests for presence, edge-cases and branch coverage. A collection of tests from \texttt{StripeService.test.js} are shown in \textbf{Listing \ref{lst:stripe-test-cases}}.\\    
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.9\textwidth]{coverage-all.png}
+  	\caption{Istanbul Coverage Report Section}
+ 	\label{fig:coverage}
+\end{figure} 
+
+As we were using some of the required technologies for the first time, we had to follow a cycle of prototype-test-refactor meaning we were unable to perform test driven development. Writing tests as part of the development process helped us to spot errors early and know when to change approaches or simply refactor. Where appropriate, tests were actually written by another team member in parallel with development and our client reviewed our code each week ensuring all code is tested and reviewed.\\ 
+
+\begin{lstlisting}[caption=Section Of StripeService.test.js, label={lst:stripe-test-cases}]
+it('Should throw error "Invalid positive integer" when a negative cost is used', function (done) {...});
+
+it('Should throw error "Amount must be at least 30 pence" when a "too low" cost is used', function (done) {...});
+
+it('Should throw error "Invalid integer: text" when "text" cost is used', function (done) {...});
+
+it('Should throw error "No such customer: badValue" when "badValue" customer is provided', function (done) {...});
+
+it('Should throw error "chargeCard: Missing properties in provided JSON" when no customer is provided', function (done) {...});
+\end{lstlisting}
+
+All test cases attempt to follow the SILO and DRY (Don't Repeat Yourself) principles to ensure each case is independent. While SILO has been completely achieved, DRY has not as the existing testing strategy for policies and controllers has forced code repetition. At present \texttt{policy} and \texttt{controller} files are being tested through endpoint calls which is not considered best practice and results in some code branches not being testable. The desired methodology for testing \texttt{policy} files is to do so in isolation using mocking for \texttt{req} objects and spies for function calls. We have included an example of this in \texttt{canListCreditHistory.text.js} in Synote's repository. Best practice for testing \texttt{controllers} and \texttt{services} is to use dependency injection to remove interaction with a real database and \texttt{http} context. This is far beyond the scope of our project but is recommended as future improvement for Synote.\\   
 
 \section{Client Side Design}
 \label{sec:client-side-design}
