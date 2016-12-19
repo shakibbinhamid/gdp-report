@@ -53,7 +53,7 @@ return stripe.charges.create({
 \end{minipage}
 \hspace{0.1\textwidth}
 
-Information required to make a charge includes a single use token, charge amount and currency. The token and charge amount are provided in the \texttt{POST} from a client as a JSON object in the request (\texttt{req}) body. It is convention that a \texttt{req} is only processed within a \texttt{policy} and \texttt{controller}. Sails uses policies for authorization and access control such that each \texttt{action route} for each \texttt{controller} can be assigned one or more policies. As Synote uses Auth0 \cite{auth0} a policy called \texttt{hasJsonWebToken} exists to add a user's profile to a \texttt{req} which , aside from authorization, has the added benefit of providing a user's ID, which can be used to determine which user is making a purchase.\\
+Information required to make a charge includes a single use token, charge amount and currency. The token and charge amount are provided in the \texttt{POST} from a client as a JSON object in the request (\texttt{req}) body. It is convention that a \texttt{req} is only processed within a \texttt{policy} and \texttt{controller}. Sails uses policies for authorization and access control such that each \texttt{action route} for each \texttt{controller} can be assigned one or more policies. As Synote uses Auth0 \cite{auth0} a policy called \texttt{hasJsonWebToken} exists to add a user's profile to a \texttt{req} which, aside from authorization, has the added benefit of providing a user's ID that can be used to determine which user is making a purchase.\\
 
 \begin{figure}[!hbt]
   	\centering
@@ -109,7 +109,7 @@ module.exports = {
 
 \end{lstlisting}
 
-The second iteration of the payment feature requires extended functionality: A customer must be able to save payment information for faster future purchases. Stripe provides a method of saving cards which encapsulates data sources such as payment cards in a \textit{customer} object. The ID of a customer object can be used to charge a user's default payment or source, or the combination of customer object id and source-data ID can be used to charge a specific card owned by a customer. Building on the first iteration and following the process above, server side implementation for saving cards and paying with saved cards involves:
+The second iteration of the payment feature requires extended functionality: A customer must be able to save payment information for faster future purchases. Stripe provides a method of saving payment data which encapsulates sources such as payment cards in a \textit{customer} object. The ID of a customer object can be used to charge a user's default payment source, or the combination of customer object id and source-data ID can be used to charge a specific card owned by a customer. Building on the first iteration and following the process above, server side implementation for saving cards and paying with saved cards involves:
 
 \begin{enumerate}
 	\item Adding action routes in the \texttt{CreditHistoryController.js} file to retrieve/delete cards
@@ -118,7 +118,7 @@ The second iteration of the payment feature requires extended functionality: A c
     \item Adding Stripe functions to save payment data in a Stripe customer object
     \item Updating the database schema using a migration file to store a Stripe customer object against a user
     \item Updating the relevant \texttt{model} to include the Stripe customer field
-    \item Adding Waterline functions to CRUD Stripe customer records from the DB
+    \item Adding Waterline functions to CRUD Stripe customer records in the DB
 \end{enumerate}
 
 All of the Stripe and Waterline methods can exist in \texttt{CreditHistoryController.js} file, but this constitutes poor cohesion and it is convention to keep reusable functions in a \texttt{service} file to prevent repetition. Consequently all reusable Stripe functions are placed in \texttt{StripeService.js} and all reusable Waterline functions are placed in \texttt{ChargeService.js} for maximal cohesion. The resulting solution architecture is shown in \textbf{Figure \ref{fig:synote-stripe}}.
