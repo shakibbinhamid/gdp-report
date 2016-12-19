@@ -8,12 +8,13 @@ compile.pdf:
 
 clean:
 
-	rm *.aux
-	rm *.log
-	rm *.bbl
-	rm *.blg
-	rm *.lot
-	rm *.lof
-	rm *.toc
-	rm *.out
-	rm chapters/*.log
+	rm -f *.aux
+	rm -f *.log
+	rm -f *.bbl
+	rm -f *.blg
+	rm -f *.lot
+	rm -f *.lof
+	rm -f *.toc
+	rm -f *.out
+	rm -f final.lol
+	rm -f chapters/*.log

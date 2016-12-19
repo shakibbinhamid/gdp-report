@@ -11,4 +11,5 @@ del *.lot
 del *.lof
 del *.toc
 del *.out
+del final.lol
 del chapters/*.log

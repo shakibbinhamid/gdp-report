@@ -145,18 +145,19 @@ All of the Stripe and Waterline methods can exist in \texttt{CreditHistoryContro
 \section{Server Side Testing}
 \label{sec:server-side-testing}
 
-Testing is crucial in order to provide a robust and reliable feature. The existing testing strategy in Synote's server code uses Mocha \cite{mocha} test running framework paired with Chai \cite{chai} assertion library. Unit, Integration and server side end-to-end (E2E) tests have been written for the payment feature. Through use of Istanbul \cite{istanbul} code coverage tool, we can show high coverage in policies, services and the controller as shown in \textbf{Figure \ref{fig:coverage}}. To thoroughly test our implementation we have written tests for presence, edge-cases and branch coverage. A collection of tests from \texttt{StripeService.test.js} are shown in \textbf{Listing \ref{lst:stripe-test-cases}}.\\    
+Testing is crucial in order to provide a robust and reliable feature. The existing testing strategy in Synote's server code uses Mocha \cite{mocha} test running framework paired with Chai \cite{chai} assertion library. Unit, Integration and server side end-to-end (E2E) tests have been written for the payment feature. Through use of Istanbul \cite{istanbul} code coverage tool, we can show high coverage in policies, services and the controller as shown in \textbf{Figure \ref{fig:coverage}}. To thoroughly test our implementation we have written tests for presence, edge-cases and branch coverage. A collection of tests from \texttt{StripeService.test.js} are shown in \textbf{Listing \ref{lst:stripe-test-cases}}.\\
 
 \begin{figure}[!hbt]
   	\centering
  	\includegraphics[width=0.9\textwidth]{coverage-all.png}
   	\caption{Istanbul Coverage Report Section}
  	\label{fig:coverage}
-\end{figure} 
+\end{figure}
 
-As we were using some of the required technologies for the first time, we had to follow a cycle of prototype-test-refactor meaning we were unable to perform test driven development. Writing tests as part of the development process helped us to spot errors early and know when to change approaches or simply refactor. Where appropriate, tests were actually written by another team member in parallel with development and our client reviewed our code each week ensuring all code is tested and reviewed.\\ 
+As we were using some of the required technologies for the first time, we had to follow a cycle of prototype-test-refactor meaning we were unable to perform test driven development. Writing tests as part of the development process helped us to spot errors early and know when to change approaches or simply refactor. Where appropriate, tests were actually written by another team member in parallel with development and our client reviewed our code each week ensuring all code is tested and reviewed.\\
 
-\begin{lstlisting}[caption=Section Of StripeService.test.js, label={lst:stripe-test-cases}]
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 it('Should throw error "Invalid positive integer" when a negative cost is used', function (done) {...});
 
 it('Should throw error "Amount must be at least 30 pence" when a "too low" cost is used', function (done) {...});
@@ -166,9 +167,13 @@ it('Should throw error "Invalid integer: text" when "text" cost is used', functi
 it('Should throw error "No such customer: badValue" when "badValue" customer is provided', function (done) {...});
 
 it('Should throw error "chargeCard: Missing properties in provided JSON" when no customer is provided', function (done) {...});
-\end{lstlisting}
 
-All test cases attempt to follow the SILO and DRY (Don't Repeat Yourself) principles to ensure each case is independent. While SILO has been completely achieved, DRY has not as the existing testing strategy for policies and controllers has forced code repetition. At present \texttt{policy} and \texttt{controller} files are being tested through endpoint calls which is not considered best practice and results in some code branches not being testable. The desired methodology for testing \texttt{policy} files is to do so in isolation using mocking for \texttt{req} objects and spies for function calls. We have included an example of this in \texttt{canListCreditHistory.text.js} in Synote's repository. Best practice for testing \texttt{controllers} and \texttt{services} is to use dependency injection to remove interaction with a real database and \texttt{http} context. This is far beyond the scope of our project but is recommended as future improvement for Synote.\\   
+\end{minted}
+\captionof{listing}{Section Of StripeService.test.js}
+\label{lst:stripe-test-cases}
+\end{listing}
+
+All test cases attempt to follow the SILO and DRY (Don't Repeat Yourself) principles to ensure each case is independent. While SILO has been completely achieved, DRY has not as the existing testing strategy for policies and controllers has forced code repetition. At present \texttt{policy} and \texttt{controller} files are being tested through endpoint calls which is not considered best practice and results in some code branches not being testable. The desired methodology for testing \texttt{policy} files is to do so in isolation using mocking for \texttt{req} objects and spies for function calls. We have included an example of this in \texttt{canListCreditHistory.text.js} in Synote's repository. Best practice for testing \texttt{controllers} and \texttt{services} is to use dependency injection to remove interaction with a real database and \texttt{http} context. This is far beyond the scope of our project but is recommended as future improvement for Synote.\\
 
 \section{Client Side Design}
 \label{sec:client-side-design}
