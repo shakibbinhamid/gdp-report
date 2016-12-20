@@ -388,5 +388,21 @@ curl -X POST -H 'Content-type: application/json' --data '{"text": "'"$LATEST_HTM
  	\label{fig:slack-report-link}
 \end{figure}
 
-\section{Usefulness of CI}
-\label{sec:usefulness-of-ci}
+\section{Usefulness of Synote CI}
+\label{sec:usefulness-of-synote-ci}
+
+We have found that Synote's CI allowed us to -
+
+\begin{itemize}
+
+  \item Write code confidently, since we can very easily run the complete deployment and be assured of regression testing.
+
+  \item Have a record of \textit{all} the previous builds and test reports. So, we could easily track when a feature was functional, or what broke a build etc. Debugging deployment issues became more streamlined.
+
+  \item Every team member could easily run a build, without logging into the remote server itself.
+
+  \item Let us have a common environment to run the E2E tests.
+
+\end{itemize}
+
+Finally, the implementation also gave us confidence in ourselves at writing bash scripts and we learnt about reverse proxy servers, process managers, using remote servers and, of course, Jenkins which is an industry favourite CI tool.
