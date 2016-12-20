@@ -50,7 +50,7 @@ sudo apt-get install jenkins
 \label{lst:install-jenkins}
 \end{listing}
 
-Then we added one admin account with complete Jenkins control, and one developer account with reduced control (e.g. cannot delete projects). Finally, we needed to run Jenkins behind a reverse proxy server (nginx) so that SSL encryption works properly and the domain reaches it (\textbf{Listing \ref{lst:make-jenkins-available}}).
+Then we added one admin account with complete Jenkins control, and one developer account with reduced control (e.g. cannot delete projects). Finally, we needed to run Jenkins behind a reverse proxy server (nginx) so that SSL encryption works properly and the domain reaches it (\textbf{Listing \ref{lst:make-jenkins-available}}). The Synote experiment CI project can be seen in \textbf{Figure \ref{fig:synote-jenkins-server}}
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -93,8 +93,22 @@ sudo service nginx restart
 \label{lst:make-jenkins-available}
 \end{listing}
 
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.78\textwidth]{jenkins.png}
+  	\caption{Slack Jenkins Server}
+ 	\label{fig:synote-jenkins-server}
+\end{figure}
+
 \subsection{Triggering Builds}
 \label{subsec:triggering-builds}
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.78\textwidth]{jenkins-build-trigger.png}
+  	\caption{Jenkins Build Trigger}
+ 	\label{fig:jenkin-build-trigger}
+\end{figure}
 
 \section{Pre-build Preparation}
 \label{sec:pre-build-preparation}
@@ -349,6 +363,8 @@ pm2 start $SYNOTE_JENKINS/depl.sh
 \label{lst:webdriver-pm2}
 \end{listing}
 
+Finally we run the tests and send the latest report link to a Slack channel (\textbf{Listing \ref{lst:run-e2e-tests}} and \textbf{Figure \ref{fig:slack-report-link}}).
+
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
 
@@ -356,10 +372,21 @@ pm2 start $SYNOTE_JENKINS/depl.sh
 cd $E2E_MAIN
 npm test
 
+LATEST_HTML_REPORT="https://reports-cicd.synote.com/"`find /home/ubuntu/gdp8-synote-e2e-testing/reports/ -type f -name \*.html -printf '%T@ %p\n' | sort -n | tail -1 | cut -d'/' -f 6-`
+
+curl -X POST -H 'Content-type: application/json' --data '{"text": "'"$LATEST_HTML_REPORT"'", "channel": "#testing", "username": "Jenkins Test Bot"}' https://hooks.slack.com/services/<webhooktoken>
+
 \end{minted}
 \captionof{listing}{Run E2E tests}
 \label{lst:run-e2e-tests}
 \end{listing}
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.78\textwidth]{slack-report-link.png}
+  	\caption{Slack report link}
+ 	\label{fig:slack-report-link}
+\end{figure}
 
 \section{Usefulness of CI}
 \label{sec:usefulness-of-ci}

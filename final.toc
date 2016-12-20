@@ -1,0 +1,86 @@
+\contentsline {chapter}{\numberline {1}Introduction}{9}{chapter.1}
+\contentsline {section}{\numberline {1.1}Location of files}{9}{section.1.1}
+\contentsline {section}{\numberline {1.2}Writing Content}{9}{section.1.2}
+\contentsline {section}{\numberline {1.3}Formatting}{9}{section.1.3}
+\contentsline {subsection}{\numberline {1.3.1}Labeling}{9}{subsection.1.3.1}
+\contentsline {subsubsection}{\numberline {1.3.1.1}Naming labels}{9}{subsubsection.1.3.1.1}
+\contentsline {subsection}{\numberline {1.3.2}Referring Components}{10}{subsection.1.3.2}
+\contentsline {subsection}{\numberline {1.3.3}Figures}{10}{subsection.1.3.3}
+\contentsline {section}{\numberline {1.4}Adding Tables}{12}{section.1.4}
+\contentsline {section}{\numberline {1.5}Code Listing}{14}{section.1.5}
+\contentsline {section}{\numberline {1.6}References}{15}{section.1.6}
+\contentsline {section}{\numberline {1.7}Directory Trees}{15}{section.1.7}
+\contentsline {chapter}{\numberline {2}Project Management}{16}{chapter.2}
+\contentsline {section}{\numberline {2.1}Risk Analysis}{16}{section.2.1}
+\contentsline {section}{\numberline {2.2}Time Management}{17}{section.2.2}
+\contentsline {section}{\numberline {2.3}Weekly Meetings}{18}{section.2.3}
+\contentsline {section}{\numberline {2.4}Team Management}{19}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Dividing Work}{19}{subsection.2.4.1}
+\contentsline {subsection}{\numberline {2.4.2}Collaboration}{20}{subsection.2.4.2}
+\contentsline {subsection}{\numberline {2.4.3}Team Skills}{20}{subsection.2.4.3}
+\contentsline {subsection}{\numberline {2.4.4}Team Inclusion and Honesty}{21}{subsection.2.4.4}
+\contentsline {section}{\numberline {2.5}Code Quality Management}{21}{section.2.5}
+\contentsline {section}{\numberline {2.6}Code Submission Process}{22}{section.2.6}
+\contentsline {chapter}{\numberline {3}Background Reading}{24}{chapter.3}
+\contentsline {section}{\numberline {3.1}Synote}{24}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Conventions}{24}{subsection.3.1.1}
+\contentsline {section}{\numberline {3.2}Payment Systems}{25}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Introduction}{25}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Considerations}{25}{subsection.3.2.2}
+\contentsline {subsubsection}{\numberline {3.2.2.1}Security}{26}{subsubsection.3.2.2.1}
+\contentsline {subsection}{\numberline {3.2.3}Gathering Payment Data}{27}{subsection.3.2.3}
+\contentsline {section}{\numberline {3.3}Frameworks}{28}{section.3.3}
+\contentsline {section}{\numberline {3.4}Testing}{28}{section.3.4}
+\contentsline {section}{\numberline {3.5}JavaScript Test Frameworks}{28}{section.3.5}
+\contentsline {section}{\numberline {3.6}QA Process}{28}{section.3.6}
+\contentsline {chapter}{\numberline {4}Payment Feature}{29}{chapter.4}
+\contentsline {section}{\numberline {4.1}Sever Side Implementation}{29}{section.4.1}
+\contentsline {section}{\numberline {4.2}Server Side Testing}{34}{section.4.2}
+\contentsline {section}{\numberline {4.3}Client Side Design}{36}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Screenshots}{36}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Business Logic}{36}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Diagrams}{36}{subsection.4.3.3}
+\contentsline {subsection}{\numberline {4.3.4}Responsive Design}{36}{subsection.4.3.4}
+\contentsline {subsection}{\numberline {4.3.5}Validation Messages}{36}{subsection.4.3.5}
+\contentsline {chapter}{\numberline {5}E2E Test Framework}{37}{chapter.5}
+\contentsline {section}{\numberline {5.1}Automated E2E Testing}{37}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Manual vs Automatic E2E Testing}{37}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Technologies Used}{37}{subsection.5.1.2}
+\contentsline {section}{\numberline {5.2}Test Framework Components}{37}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Feature Definition as Requirements}{37}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Reusable Steps Definition}{37}{subsection.5.2.2}
+\contentsline {subsection}{\numberline {5.2.3}Reusable Support Functions}{37}{subsection.5.2.3}
+\contentsline {subsection}{\numberline {5.2.4}Pre and Post Hooks}{37}{subsection.5.2.4}
+\contentsline {subsection}{\numberline {5.2.5}Page Objects}{37}{subsection.5.2.5}
+\contentsline {subsection}{\numberline {5.2.6}Reporting}{37}{subsection.5.2.6}
+\contentsline {subsection}{\numberline {5.2.7}Assessment}{37}{subsection.5.2.7}
+\contentsline {chapter}{\numberline {6}Continuous Integration}{38}{chapter.6}
+\contentsline {section}{\numberline {6.1}Synote CI}{38}{section.6.1}
+\contentsline {subsection}{\numberline {6.1.1}Setting up Jenkins}{39}{subsection.6.1.1}
+\contentsline {subsection}{\numberline {6.1.2}Triggering Builds}{41}{subsection.6.1.2}
+\contentsline {section}{\numberline {6.2}Pre-build Preparation}{42}{section.6.2}
+\contentsline {section}{\numberline {6.3}Synote Build}{43}{section.6.3}
+\contentsline {subsection}{\numberline {6.3.1}Automated Database Migration}{44}{subsection.6.3.1}
+\contentsline {subsection}{\numberline {6.3.2}Restarting the New Build}{44}{subsection.6.3.2}
+\contentsline {section}{\numberline {6.4}E2E Testing on Remote}{45}{section.6.4}
+\contentsline {section}{\numberline {6.5}Usefulness of CI}{46}{section.6.5}
+\contentsline {chapter}{\numberline {7}Further Work}{47}{chapter.7}
+\contentsline {subsection}{\numberline {7.0.1}Server Side Testing}{47}{subsection.7.0.1}
+\contentsline {subsection}{\numberline {7.0.2}Auto Generated Page Objects}{49}{subsection.7.0.2}
+\contentsline {subsection}{\numberline {7.0.3}E2E Test Reporting}{49}{subsection.7.0.3}
+\contentsline {subsection}{\numberline {7.0.4}Ghost Inspector}{49}{subsection.7.0.4}
+\contentsline {subsection}{\numberline {7.0.5}Testing Controller}{50}{subsection.7.0.5}
+\contentsline {subsection}{\numberline {7.0.6}Server Side Design}{50}{subsection.7.0.6}
+\contentsline {chapter}{\numberline {8}Conclusion}{51}{chapter.8}
+\contentsline {chapter}{Bibliography}{51}{chapter.8}
+\contentsline {chapter}{\numberline {A}Client Sign-off}{52}{appendix.A}
+\contentsline {chapter}{\numberline {B}Team Member Contribution}{53}{appendix.B}
+\contentsline {section}{\numberline {B.1}Tom Contribution}{53}{section.B.1}
+\contentsline {section}{\numberline {B.2}Vlad Contribution}{54}{section.B.2}
+\contentsline {section}{\numberline {B.3}Deepak Contribution}{55}{section.B.3}
+\contentsline {section}{\numberline {B.4}Shakib Contribution}{56}{section.B.4}
+\contentsline {chapter}{\numberline {C}Team Collaboration}{58}{appendix.C}
+\contentsline {chapter}{\numberline {D}Code commits}{62}{appendix.D}
+\contentsline {chapter}{\numberline {E}Server Test Cases}{63}{appendix.E}
+\contentsline {chapter}{\numberline {F}E2E Testing}{65}{appendix.F}
+\contentsline {chapter}{\numberline {G}Gantt Charts}{70}{appendix.G}

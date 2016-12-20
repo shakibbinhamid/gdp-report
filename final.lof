@@ -1,0 +1,46 @@
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Normal figure\relax }}{10}{figure.caption.7}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Left side image\relax }}{10}{figure.caption.8}
+\contentsline {figure}{\numberline {1.3}{\ignorespaces Right side image\relax }}{10}{figure.caption.8}
+\contentsline {figure}{\numberline {1.4}{\ignorespaces Subfigures using minipage\relax }}{10}{figure.caption.8}
+\contentsline {figure}{\numberline {1.5}{\ignorespaces Side by side figures using subfigures\relax }}{11}{figure.caption.9}
+\contentsline {figure}{\numberline {1.6}{\ignorespaces Side label with possibly a large amount of text. This is how you would write it\relax }}{11}{figure.caption.10}
+\contentsline {figure}{\numberline {1.7}{\ignorespaces Directory Tree Example\relax }}{15}{figure.1.7}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Example of collaboration diagram\relax }}{20}{figure.caption.12}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Version Control\relax }}{23}{figure.caption.13}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Types of Data on a Payment Card\cite {card-data}\relax }}{26}{figure.caption.14}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Synote Architecture\relax }}{29}{figure.caption.15}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Integrating Stripe\relax }}{30}{figure.caption.16}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Sequence Diagram Of Simple Payment\relax }}{30}{figure.caption.17}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Credit \& Credit History Database Tables\relax }}{32}{figure.caption.18}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Overview Of Synote-Stripe Architecture\relax }}{34}{figure.caption.19}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Istanbul Coverage Report Section\relax }}{35}{figure.caption.20}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Synote Continuous Integration Procedure\relax }}{38}{figure.caption.21}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Slack Jenkins Server\relax }}{41}{figure.caption.22}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Jenkins Build Trigger\relax }}{42}{figure.caption.23}
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Slack report link\relax }}{46}{figure.caption.24}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Client Sign off section\relax }}{52}{figure.caption.25}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {C.1}{\ignorespaces Shakib Bin Hamid - Workflow \& Collaboration Diagram\relax }}{58}{figure.caption.26}
+\contentsline {figure}{\numberline {C.2}{\ignorespaces Thomas Aley - Workflow \& Collaboration Diagram\relax }}{59}{figure.caption.27}
+\contentsline {figure}{\numberline {C.3}{\ignorespaces Deepak Thankachan - Workflow \& Collaboration Diagram\relax }}{60}{figure.caption.28}
+\contentsline {figure}{\numberline {C.4}{\ignorespaces Vlad Catrici - Workflow \& Collaboration Diagram\relax }}{61}{figure.caption.29}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {E.1}{\ignorespaces ChargeService.js Test Cases\relax }}{63}{figure.caption.30}
+\contentsline {figure}{\numberline {E.2}{\ignorespaces StripeService.js Test Cases\relax }}{64}{figure.caption.31}
+\contentsline {figure}{\numberline {E.3}{\ignorespaces Additional Test Cases\relax }}{64}{figure.caption.32}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {F.1}{\ignorespaces HTML Reporting Screenshot\relax }}{65}{figure.caption.33}
+\contentsline {figure}{\numberline {F.2}{\ignorespaces E2E Test Cases\relax }}{69}{figure.caption.37}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {G.1}{\ignorespaces Gantt Chart latest and initial\relax }}{71}{figure.caption.38}
