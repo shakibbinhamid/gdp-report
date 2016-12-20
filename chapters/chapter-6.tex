@@ -1,11 +1,40 @@
 \chapter{Continuous Integration}
 \label{chap:continuous-integration}
 
+The final phase of our project was to implement a continuous integration (CI) process for Synote. Only by deploying a new version of Synote and testing it can we be sure that a feature implementation is stable and functioning. However, a Synote experiment deployment has quite a few steps (\textbf{Figure \ref{fig:synote-ci-proc}}), which can take 15-30 minutes. In fact, it is completely infeasible to regularly repeat all the steps without hampering a developer's work. Since making a deployment takes  considerable time and is incredibly useful in continuous automated testing on remote deployments, we extended our project scope to implement Synote's first continuous integration process.
+
 \section{Synote CI}
 \label{sec:synote-ci}
 
+A complete Synote CI process will deploy and test on the experiment deployment, followed by staging and finally production. Each stage will follow similar steps as Step 2 or the Experiment Deployment.
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=\textwidth]{synote-ci.png}
+  	\caption{Synote Continuous Integration Procedure}
+ 	\label{fig:synote-ci-proc}
+\end{figure}
+
+We focused on CI for the experiment deployment since we had access to it. In this chapter, we will elucidate the key steps necessary to configure a complete CI environment using Jenkins.\\
+
+The key issues in this phase were -
+
+\begin{itemize}
+
+  \item Installing and configure Jenkins with SSL, restricted user access etc. (\textbf{Section \ref{subsec:setting-up-jenkins}})
+
+  \item Synote is deployed as user \texttt{ubuntu}, however, Jenkins runs the build scripts as user \texttt{jenkins}. So, permissions for the deployment folders need to be rectified (\textbf{Listing \ref{lst:deployment-folder-permissions}}).
+
+  \item \texttt{jenkins} needs to have access to the PM2 (a process manager) processes started by \texttt{ubuntu} (\textbf{Listing \ref{lst:jenkins-pm2-configuration}}).
+
+  \item Running the E2E tests on a browser using a virtual display (\textbf{Section \ref{subsec:e2e-testing-on-remote}}).
+
+\end{itemize}
+
 \subsection{Setting up Jenkins}
 \label{subsec:setting-up-jenkins}
+
+We began by installing Jenkins on the experiment server (\textbf{Listing \ref{lst:install-jenkins}}). After monitoring the processes, we asked the client to upgrade the server to have 4GB RAM.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -20,6 +49,8 @@ sudo apt-get install jenkins
 \captionof{listing}{Install Jenkins}
 \label{lst:install-jenkins}
 \end{listing}
+
+Then we added one admin account with complete Jenkins control, and one developer account with reduced control (e.g. cannot delete projects). Finally, we needed to run Jenkins behind a reverse proxy server (nginx) so that SSL encryption works properly and the domain reaches it (\textbf{Listing \ref{lst:make-jenkins-available}}).
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -40,10 +71,10 @@ server {
 
 server {
   listen 443 ssl;
-  server_name jenkins-cicd.synote.com;
+  server_name <synote_jenkins_ci_domain_name>;
 
-  ssl_certificate /etc/nginx/ssl/synote.com.crt;
-  ssl_certificate_key /etc/nginx/ssl/www.synote.com.key;
+  ssl_certificate <synote_ssl_certificate_location>;
+  ssl_certificate_key <synote_ssl_private_key_location>;
 
   location / {
     proxy_set_header        Host $host:$server_port;
@@ -59,7 +90,7 @@ sudo service nginx restart
 
 \end{minted}
 \captionof{listing}{Make Jenkins server available on nginx}
-\label{listing:make-jenkins-available}
+\label{lst:make-jenkins-available}
 \end{listing}
 
 \subsection{Triggering Builds}
@@ -67,6 +98,8 @@ sudo service nginx restart
 
 \subsection{Pre-build Preparation}
 \label{subsec:pre-build-preparation}
+
+We first needed to give the ownership of \texttt{npm} modules to \texttt{ubuntu} (\textbf{Listing \ref{lst:npm-permission}}), so that we could install \texttt{bower}, which is needed to resolve the client app dependencies.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -79,6 +112,8 @@ sudo chown -R $USER:$GROUP ~/.config
 \captionof{listing}{Global npm dependency permission}
 \label{lst:npm-permission}
 \end{listing}
+
+\textbf{Listing \ref{lst:jenkins-build-script-variables}} is the different source-code locations on the experiment deployment that concerns the CI script. These will be necessary in the later listings.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -94,6 +129,8 @@ REPORTS_WEBSITE_MAIN=$E2E_MAIN/reportsWebsite
 \captionof{listing}{Variables used during the Jenkins build script}
 \label{lst:jenkins-build-script-variables}
 \end{listing}
+
+Then we give the permissions for the E2E testing and Synote deployment repo to a group that contains both \texttt{ubuntu} and \texttt{jenkins}. Now \texttt{jenkins} can make place new deployments of Synote.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
