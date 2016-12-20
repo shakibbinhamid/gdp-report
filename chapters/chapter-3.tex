@@ -4,9 +4,22 @@
 \section{Synote}
 \label{sec:synote}
 
+\subsection{Conventions}
+\label{subsec:conventions}
+
+Every developer has their own programming style. When numerous individuals are contributing to a software product over time, it is necessary to provide a contribution document to ensure all developers adhere to the same conventions. Synote's conventions that applied to our development were:
+
+\begin{itemize}
+    \item \textbf{Promises over Callbacks} - To make the asynchronous code easier to read and understand.
+    \item \textbf{Specific error structure} - A JSON with properties for the thrown error and an appropriate error message.
+    \item \textbf{HTML element IDs} - All elements must have an \texttt{id} attribute of the form  \texttt{$<$name$>$\_$<$type$>$} where \texttt{name} is an intuitive name for the element and \texttt{type} corresponds to the type of the element. 
+    \item \textbf{Server side testing} - Trigger all branches. If a branch cannot be tested it is considered a bug.\\ 
+\end{itemize}
+
+There are several additional conventions found in \texttt{CONTRIBUTING.md} which is a continuously evolving document. New conventions have been introduced as a result of our development, such as the HTML element ID convention and conventions regarding server side testing, which are discussed in \textbf{Chapter \ref{chap:further-work}}.  
+
 \section{Payment Systems}
 \label{sec:payment-systems}
-
 
 % Should probably have nomenclature section to define: Merchant, Payment Gateway, Payment Processor, Merchant Account
 
