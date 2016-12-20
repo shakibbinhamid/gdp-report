@@ -96,8 +96,8 @@ sudo service nginx restart
 \subsection{Triggering Builds}
 \label{subsec:triggering-builds}
 
-\subsection{Pre-build Preparation}
-\label{subsec:pre-build-preparation}
+\section{Pre-build Preparation}
+\label{sec:pre-build-preparation}
 
 We first needed to give the ownership of \texttt{npm} modules to \texttt{ubuntu} (\textbf{Listing \ref{lst:npm-permission}}), so that we could install \texttt{bower}, which is needed to resolve the client app dependencies.
 
@@ -155,6 +155,8 @@ sudo chmod -R 777 $SYNOTE_MAIN
 \label{lst:deployment-folder-permissions}
 \end{listing}
 
+One issue was that \texttt{git} would regularly create some files that are owned by \texttt{ubuntu} and the files built by \texttt{jenkins} could not replace those. So, we remove the \texttt{.git} folders (\textbf{Listing \ref{lst:deleting-git-folders}}), since the more recent versions will be put in there place by \texttt{jenkins} anyway.
+
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
 
@@ -167,6 +169,8 @@ rm -rf $E2E_MAIN/.git
 \captionof{listing}{Deleting .git folders}
 \label{lst:deleting-git-folders}
 \end{listing}
+
+Finally, we need to give \texttt{jenkins} access to the deployment processes created by \texttt{ubuntu} so that it could restart them (\textbf{Listing \ref{lst:jenkins-pm2-configuration}}).
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -184,8 +188,10 @@ sudo chmod 777 /home/ubuntu/.pm2/rpc.sock
 \label{lst:jenkins-pm2-configuration}
 \end{listing}
 
-\subsection{Synote Build}
-\label{subsec:synote-build}
+\section{Synote Build}
+\label{sec:synote-build}
+
+Once a build is triggered, Jenkins pulls the latest Synote repository. Then \texttt{jenkins} builds the server (\textbf{Listing \ref{lst:building-synote-server}}), the client (\textbf{Listing \ref{lst:building-synote-client}}) and moves the static assets to \texttt{backend}. Finally, the complete build folder replaces \texttt{ubuntu}'s Synote deployment folder (\textbf{Listing \ref{lst:replace current deployment source}}).
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -259,7 +265,7 @@ pm2 restart synote_experiment
 \label{lst:restart-experiment-deployment}
 \end{listing}
 
-\subsection{E2E Testing on Remote}
+\section{E2E Testing on Remote}
 \label{subsec:e2e-testing-on-remote}
 
 \begin{listing}[H]
