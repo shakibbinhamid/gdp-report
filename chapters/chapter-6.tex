@@ -254,6 +254,8 @@ mysql -u synote '-p<mysqlpass>' synote_server_experiment < v0.9.0-v0.10.0.sql # 
 \subsection{Restarting the New Build}
 \label{subsec:restarting-the-new-build}
 
+PM2 is a process manager that keeps processes alive even when users log off. Synote experiment deployment is kept alive as a PM2 process, which is restarted by \texttt{jenkins} at this stage (\textbf{Listing \ref{lst:restart-experiment-deployment}}).
+
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
 
@@ -267,6 +269,8 @@ pm2 restart synote_experiment
 
 \section{E2E Testing on Remote}
 \label{subsec:e2e-testing-on-remote}
+
+In order to run the E2E tests, we first need the latest E2E tests (which are on a different repository) and prepare it for use (\textbf{Listing \ref{lst:configure-latest-e2e-testing-repo}}) in a similar process to Synote deployment (described in \textbf{Section \ref{sec:synote-build}}).
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -289,6 +293,8 @@ npm install
 \label{lst:configure-latest-e2e-testing-repo}
 \end{listing}
 
+Synote's E2E test HTML reports are made available through a simple website (which is deployed by nginx in a similar process to \textbf{Listing \ref{lst:make-jenkins-available}}). This website is packaged with the E2E tests. So, now we should redeploy the latest reporting website (\textbf{Listing \ref{lst:deploy-latest-reporting-website}}).
+
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
 
@@ -304,17 +310,7 @@ pm2 restart reports_website
 \label{lst:deploy-latest-reporting-website}
 \end{listing}
 
-\begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-
-# start testing
-cd $E2E_MAIN
-npm test
-
-\end{minted}
-\captionof{listing}{Run E2E tests}
-\label{lst:run-e2e-tests}
-\end{listing}
+However, browsers that are needed to run the E2E tests need a display. So, a virtual display (Xvfb) is installed, along with the helper libraries and finally the browsers themselves are installed (\textbf{Listing \ref{lst:xvfb-browser-install}}).
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -335,6 +331,8 @@ sudo apt-get install chromium-browser
 \label{lst:xvfb-browser-install}
 \end{listing}
 
+Now the installed display server and a selenium server is started as PM2 daemon processes, so that these steps need not be performed in future (\textbf{Listing \ref{lst:webdriver-pm2}}).
+
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
 
@@ -349,6 +347,18 @@ pm2 start $SYNOTE_JENKINS/depl.sh
 \end{minted}
 \captionof{listing}{Start viertual display and webdriver as PM2 apps}
 \label{lst:webdriver-pm2}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# start testing
+cd $E2E_MAIN
+npm test
+
+\end{minted}
+\captionof{listing}{Run E2E tests}
+\label{lst:run-e2e-tests}
 \end{listing}
 
 \section{Usefulness of CI}
