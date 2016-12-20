@@ -4,22 +4,39 @@
 \section{Synote CI}
 \label{sec:synote-ci}
 
+\subsection{Setting up Jenkins}
+\label{subsec:setting-up-jenkins}
+
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# install Jenkins on Ubuntu (Synote Experiment Deployment)
 wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
 sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
 sudo apt-get update
 sudo apt-get install jenkins
 
-echo 'upstream jenkins {
+\end{minted}
+\captionof{listing}{Install Jenkins}
+\label{lst:install-jenkins}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# nginx reverse proxy configuration for Jenkins
+
+echo "upstream jenkins {
   server 127.0.0.1:8080 fail_timeout=0;
 }
 
 server {
   listen 80;
-  server_name jenkins-cicd.synote.com;
+  server_name jenkins-cicd.synote.com; # dns for Synote CI
   return 301 https://$host$request_uri;
 }
+
+# ssl redirection
 
 server {
   listen 443 ssl;
@@ -36,32 +53,260 @@ server {
     proxy_redirect http:// https://;
     proxy_pass              http://jenkins;
   }
-}' > /etc/nginx/sites-available/jenkins
+}" > /etc/nginx/sites-available/jenkins
 
 sudo service nginx restart
 
 \end{minted}
-\captionof{listing}{Example from external file}
-\label{listing:3}
+\captionof{listing}{Make Jenkins server available on nginx}
+\label{listing:make-jenkins-available}
 \end{listing}
-
-\subsection{Setting up Jenkins}
-\label{subsec:setting-up-jenkins}
 
 \subsection{Triggering Builds}
 \label{subsec:triggering-builds}
 
-\subsection{Synote-Build}
+\subsection{Pre-build Preparation}
+\label{subsec:pre-build-preparation}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# give permission to install global npm dependecies
+sudo chown -R $USER:$GROUP ~/.npm
+sudo chown -R $USER:$GROUP ~/.config
+
+\end{minted}
+\captionof{listing}{Global npm dependency permission}
+\label{lst:npm-permission}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# the repos
+SYNOTE_MAIN=/home/ubuntu/synote
+SYNOTE_JENKINS=$WORKSPACE
+E2E_JENKINS=$WORKSPACE/../gdp8-synote-e2e-testing
+E2E_MAIN=/home/ubuntu/gdp8-synote-e2e-testing
+REPORTS_WEBSITE_MAIN=$E2E_MAIN/reportsWebsite
+
+\end{minted}
+\captionof{listing}{Variables used during the Jenkins build script}
+\label{lst:jenkins-build-script-variables}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# create user group synote
+sudo groupadd synote
+sudo usermod -a -G synote jenkins
+sudo usermod -a -G synote ubuntu
+
+# permissions for e2e testing
+sudo chown -R ubuntu: $E2E_MAIN
+sudo chgrp -R synote $E2E_MAIN
+sudo chmod -R 777 $E2E_MAIN
+
+# permissions for synote
+sudo chown -R ubuntu: $SYNOTE_MAIN
+sudo chgrp -R synote $SYNOTE_MAIN
+sudo chmod -R 777 $SYNOTE_MAIN
+
+\end{minted}
+\captionof{listing}{Deployment folder permissions}
+\label{lst:deployment-folder-permissions}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# delete the .git folders from both repos
+# since it creates files for ubuntu account only
+rm -rf $SYNOTE_MAIN/.git
+rm -rf $E2E_MAIN/.git
+
+\end{minted}
+\captionof{listing}{Deleting .git folders}
+\label{lst:deleting-git-folders}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# Make locally installed programs available to jenkins
+export PATH=${PATH}:/home/ubuntu/.nvm/v4.3.2/bin
+export PM2_HOME="/home/ubuntu/.pm2"
+
+# Make pm2 tasks started by 'ubuntu' available to 'jenkins'
+sudo chmod 777 /home/ubuntu/.pm2/pub.sock
+sudo chmod 777 /home/ubuntu/.pm2/rpc.sock
+
+\end{minted}
+\captionof{listing}{PM2 configuration for Jenkins}
+\label{lst:jenkins-pm2-configuration}
+\end{listing}
+
+\subsection{Synote Build}
 \label{subsec:synote-build}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# building the server
+cd $SYNOTE_JENKINS/backend
+npm install
+
+\end{minted}
+\captionof{listing}{Building Synote server}
+\label{lst:building-synote-server}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# building the client
+cd $SYNOTE_JENKINS/frontend
+npm install
+bower install
+grunt build:experiment
+
+\end{minted}
+\captionof{listing}{Building Synote client}
+\label{lst:building-synote-client}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# replace the assets in /backend with the new frontend build
+cp -RT $SYNOTE_JENKINS/frontend/dist/ $SYNOTE_JENKINS/backend/assets/
+
+# Copy the synote repo from 'jenkins' to synote in 'ubuntu'
+cp -RT $SYNOTE_JENKINS $SYNOTE_MAIN
+
+\end{minted}
+\captionof{listing}{Replace the current experiment deployment source}
+\label{lst:replace current deployment source}
+\end{listing}
 
 \subsection{Automated Database Migration}
 \label{subsec:automated-database-migration}
 
-\subsection{Restarting Services}
-\label{subsec:restarting-services}
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# Run database migration
+# Currently it's hardcoded to the latest migration but in the future,
+# this should be decided on runtime depending on the database version
+cd $SYNOTE/backend/db/migrate
+mysql -u synote '-p<mysqlpass>' synote_server_experiment < procedures.sql # update procedures
+mysql -u synote '-p<mysqlpass>' synote_server_experiment < v0.9.0-v0.10.0.sql # do migration
+
+\end{minted}
+\captionof{listing}{Automated DB Migration}
+\label{lst:automated-db-migration}
+\end{listing}
+
+\subsection{Restarting the New Build}
+\label{subsec:restarting-the-new-build}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# always use pm2 app name to restart
+pm2 restart synote_experiment
+
+\end{minted}
+\captionof{listing}{Restart experiment deployment}
+\label{lst:restart-experiment-deployment}
+\end{listing}
 
 \subsection{E2E Testing on Remote}
 \label{subsec:e2e-testing-on-remote}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# cloning e2e repo
+rm -rf $E2E_JENKINS
+
+cd $SYNOTE_JENKINS/..
+git clone git@bitbucket.org:sh3g12/gdp8-synote-e2e-testing.git
+
+# copy over the content to 'ubuntu' e2e testing from 'jenkins'
+cp -RT $E2E_JENKINS $E2E_MAIN
+
+# install e2e main dependencies
+cd $E2E_MAIN
+npm install
+
+\end{minted}
+\captionof{listing}{Configure the latest E2E testing repository}
+\label{lst:configure-latest-e2e-testing-repo}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# install reports website dependencies
+cd $REPORTS_WEBSITE_MAIN
+npm install
+
+# restart the reporting server
+pm2 restart reports_website
+
+\end{minted}
+\captionof{listing}{Deploy latest reporting website}
+\label{lst:deploy-latest-reporting-website}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# start testing
+cd $E2E_MAIN
+npm test
+
+\end{minted}
+\captionof{listing}{Run E2E tests}
+\label{lst:run-e2e-tests}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# install virtual display library
+sudo apt-get install xvfb
+
+# install Packages Required by browsers
+sudo apt-get install x11-xkb-utils xfonts-100dpi xfonts-75dpi
+sudo apt-get install xfonts-scalable xserver-xorg-core
+sudo apt-get install dbus-x11
+
+# install Browser
+sudo apt-get install chromium-browser
+
+\end{minted}
+\captionof{listing}{Install virtual display library and browsers}
+\label{lst:xvfb-browser-install}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+# start the virtual display
+echo "Xvfb :99" > $SYNOTE_JENKINS/xvfb_display.sh
+pm2 start $SYNOTE_JENKINS/xvfb_display.sh
+
+# start webdriver on the virtual display
+echo "export DISPLAY=:99 && npm run start-manager" > $SYNOTE_JENKINS/depl.sh
+pm2 start $SYNOTE_JENKINS/depl.sh
+
+\end{minted}
+\captionof{listing}{Start viertual display and webdriver as PM2 apps}
+\label{lst:webdriver-pm2}
+\end{listing}
 
 \section{Usefulness of CI}
 \label{sec:usefulness-of-ci}
