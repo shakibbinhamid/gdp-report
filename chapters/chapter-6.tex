@@ -6,7 +6,7 @@ The final phase of our project was to implement a continuous integration (CI) pr
 \section{Synote CI}
 \label{sec:synote-ci}
 
-A complete Synote CI process will deploy and test on the experiment deployment, followed by staging and finally production. Each stage will follow similar steps as Step 2 or the Experiment Deployment.
+A complete Synote CI process will deploy and test on the experiment deployment, followed by staging and finally production. Each stage will follow similar steps as shown in the Experiment Deployment (Step 2) of \textbf{Figure \ref{fig:synote-ci-proc}}.
 
 \begin{figure}[!hbt]
   	\centering
@@ -21,7 +21,7 @@ The key issues in this phase were -
 
 \begin{itemize}
 
-  \item Installing and configure Jenkins with SSL, restricted user access etc. (\textbf{Section \ref{subsec:setting-up-jenkins}})
+  \item Installing and configuring Jenkins with SSL, restricted user access etc. (\textbf{Section \ref{subsec:setting-up-jenkins}})
 
   \item Synote is deployed as user \texttt{ubuntu}, however, Jenkins runs the build scripts as user \texttt{jenkins}. So, permissions for the deployment folders need to be rectified (\textbf{Listing \ref{lst:deployment-folder-permissions}}).
 
@@ -127,7 +127,7 @@ sudo chown -R $USER:$GROUP ~/.config
 \label{lst:npm-permission}
 \end{listing}
 
-\textbf{Listing \ref{lst:jenkins-build-script-variables}} is the different source-code locations on the experiment deployment that concerns the CI script. These will be necessary in the later listings.
+\textbf{Listing \ref{lst:jenkins-build-script-variables}} shows the different source-code locations on the experiment deployment that are concerned with the CI script. These will be necessary in the subsequent listings.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -144,7 +144,7 @@ REPORTS_WEBSITE_MAIN=$E2E_MAIN/reportsWebsite
 \label{lst:jenkins-build-script-variables}
 \end{listing}
 
-Then we give the permissions for the E2E testing and Synote deployment repo to a group that contains both \texttt{ubuntu} and \texttt{jenkins}. Now \texttt{jenkins} can make place new deployments of Synote.
+Next we give the permissions for the E2E testing and Synote deployment repo to a group that contains both \texttt{ubuntu} and \texttt{jenkins} (\textbf{Listing \ref{lst:deployment-folder-permissions}}), allowing \texttt{jenkins} to make new deployments of Synote.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -169,7 +169,7 @@ sudo chmod -R 777 $SYNOTE_MAIN
 \label{lst:deployment-folder-permissions}
 \end{listing}
 
-One issue was that \texttt{git} would regularly create some files that are owned by \texttt{ubuntu} and the files built by \texttt{jenkins} could not replace those. So, we remove the \texttt{.git} folders (\textbf{Listing \ref{lst:deleting-git-folders}}), since the more recent versions will be put in there place by \texttt{jenkins} anyway.
+One issue was that \texttt{git} would regularly create some files that are owned by \texttt{ubuntu} and the files built by \texttt{jenkins} could not replace those. So, we remove the \texttt{.git} folders (\textbf{Listing \ref{lst:deleting-git-folders}}), since \texttt{jenkins} will replace them with more recent versions.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -284,7 +284,7 @@ pm2 restart synote_experiment
 \section{E2E Testing on Remote}
 \label{subsec:e2e-testing-on-remote}
 
-In order to run the E2E tests, we first need the latest E2E tests (which are on a different repository) and prepare it for use (\textbf{Listing \ref{lst:configure-latest-e2e-testing-repo}}) in a similar process to Synote deployment (described in \textbf{Section \ref{sec:synote-build}}).
+In order to run the E2E tests, we first need the latest E2E test suite (located on a different repository) and to prepare it for use (\textbf{Listing \ref{lst:configure-latest-e2e-testing-repo}}) in a similar process to Synote deployment (described in \textbf{Section \ref{sec:synote-build}}).
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -307,7 +307,7 @@ npm install
 \label{lst:configure-latest-e2e-testing-repo}
 \end{listing}
 
-Synote's E2E test HTML reports are made available through a simple website (which is deployed by nginx in a similar process to \textbf{Listing \ref{lst:make-jenkins-available}}). This website is packaged with the E2E tests. So, now we should redeploy the latest reporting website (\textbf{Listing \ref{lst:deploy-latest-reporting-website}}).
+Synote's E2E test HTML reports are made available through a simple website (which is deployed by nginx in a similar process to \textbf{Listing \ref{lst:make-jenkins-available}}). This website is packaged with the E2E tests. So, we must redeploy for the latest reporting website (\textbf{Listing \ref{lst:deploy-latest-reporting-website}}).
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -324,7 +324,7 @@ pm2 restart reports_website
 \label{lst:deploy-latest-reporting-website}
 \end{listing}
 
-However, browsers that are needed to run the E2E tests need a display. So, a virtual display (Xvfb) is installed, along with the helper libraries and finally the browsers themselves are installed (\textbf{Listing \ref{lst:xvfb-browser-install}}).
+E2E tests run in a browser which requires a display. So, a virtual display (Xvfb) is installed, along with the helper libraries and finally the browsers themselves (\textbf{Listing \ref{lst:xvfb-browser-install}}).
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -345,7 +345,7 @@ sudo apt-get install chromium-browser
 \label{lst:xvfb-browser-install}
 \end{listing}
 
-Now the installed display server and a selenium server is started as PM2 daemon processes, so that these steps need not be performed in future (\textbf{Listing \ref{lst:webdriver-pm2}}).
+Now the installed display server and a selenium server are started as PM2 daemon processes  (\textbf{Listing \ref{lst:webdriver-pm2}}), so that these steps need not be performed in future.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -359,7 +359,7 @@ echo "export DISPLAY=:99 && npm run start-manager" > $SYNOTE_JENKINS/depl.sh
 pm2 start $SYNOTE_JENKINS/depl.sh
 
 \end{minted}
-\captionof{listing}{Start viertual display and webdriver as PM2 apps}
+\captionof{listing}{Start virtual display and webdriver as PM2 processes}
 \label{lst:webdriver-pm2}
 \end{listing}
 
@@ -397,12 +397,12 @@ We have found that Synote's CI allowed us to -
 
   \item Write code confidently, since we can very easily run the complete deployment and be assured of regression testing.
 
-  \item Have a record of \textit{all} the previous builds and test reports. So, we could easily track when a feature was functional, or what broke a build etc. Debugging deployment issues became more streamlined.
+  \item Have a record of \textit{all} the previous builds and test reports. So, we could easily track when a feature was functional, or what broke a build etc. This also made debugging deployment issues more streamlined.
 
-  \item Every team member could easily run a build, without logging into the remote server itself.
+  \item Run a build without logging into the remote server itself, making deployment accessible to every team member.
 
-  \item Let us have a common environment to run the E2E tests.
+  \item Have a common environment to run the E2E tests.
 
 \end{itemize}
 
-Finally, the implementation also gave us confidence in ourselves at writing bash scripts and we learnt about reverse proxy servers, process managers, using remote servers and, of course, Jenkins which is an industry favourite CI tool.
+Finally, the implementation gave us self confidence in writing bash scripts and we learnt about reverse proxy servers, process managers, using remote servers and, of course, Jenkins which is an industry favourite CI tool.
