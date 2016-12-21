@@ -84,10 +84,12 @@ At present, the E2E testing framework is responsible for generating a folder hie
 
 Our testing methodology contains a statement: \textit{If a component cannot be tested using our framework, it is considered a bug and should be changed}. In the case of Toastr alerts we adhered to this statement and developed an alternative alerts system. However another component, \texttt{cg-busy}, could also not be tested reliably. This component's use in Synote is desirable and consequently we implemented a test using Ghost Inspector to resolve the testing issue. Including Ghost Inspector in our E2E testing framework would be a fruitful future task resolving the need to compromise on component use.\\ 
 
-\subsection{Testing Controller}
-\label{subsec:testing-controller}
+\subsection{Testing Database}
+\label{subsec:testing-database}
 
+An ongoing point of concern with our E2E testing framework is how the deployment database is affected by E2E tests. Our current approach is to use hooks to prepare and restore database records for each test case, which is necessary for SILO tests. We achieved this by implementing and making calls to a \texttt{controller} on Synote's server. We are uncomfortable with this solution because it tightly couples the testing framework to the system under test, but had to proceed with this method in order to progress.\\ 
 
+A proposal for future enhancement could be to make temporary deployments on which to run the E2E tests, thus not affecting the real deployment database. Then, if all tests pass, the deployment can be performed as a permanent deployment over the existing real version. In this circumstance, the current method of migrating the database could also be used to seed data used in tests removing the need to use a server side \texttt{controller}.\\  
 
 \subsection{Server Side Design}
 \label{subsec:server-side-design}
