@@ -1,2 +1,228 @@
 \chapter{Conclusion}
 \label{chap:conclusion}
+
+\section{Location of files}
+\label{sec:location-files}
+Chapters go in \texttt{chapters} folder. Figures in \texttt{images} folder. No content must be written elsewhere. All content must lie in chapters files'. We may need to create files for sections, if chapters get too big.
+
+\section{Writing Content}
+\label{sec:content}
+You must not write live on Overleaf! I cannot emphasize it enough! Download the project as a git repo from the options on overleaf. Then write what you need to write, compile locally, then once everything compiles nice and well, put it on overleaf.
+
+\section{Formatting}
+\label{sec:formatting}
+
+End each paragraph with a double backslash always.\\
+
+\subsection{Labeling}
+\label{subsec:labeling}
+Make sure you label 'every component' with a label like above. Chapters will have labels as \texttt{chap:name}, sections as \texttt{sec:name} and so on.
+
+\subsubsection{Naming labels}
+\label{subsubsec:naming-labels}
+Use all small alphabets in labels, separated by dash (-).\\
+
+This way we can refer any Chapter, Section, Table, Figure, sub components etc.
+
+\subsection{Referring Components}
+\label{subsec:referring-components}
+
+You should do bold-face for reference as follows -
+
+\textbf{Section \ref{subsubsec:naming-labels}} is about how to name labels and \textbf{Chapter \ref{chap:introduction}} is the introduction.
+
+\subsection{Figures}
+
+You should place the figures in the \texttt{figures} folder. They should be transparent background in most cases, named all lower cases with dashes. You must label them as \texttt{fig:name}\\
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.3\textwidth]{exm.jpg}
+  	\caption{Normal figure}
+ 	\label{fig:normal-figure}
+\end{figure}
+
+All figures must have captions as well. Sub figures may be left caption less, as long as the entire figure has caption.\\
+
+You can use minipage to insert subfigures as done in \textbf{Figure \ref{fig:subfig-minipage}}. This is the recommended way. Otherwise you can use \textbf{Figure \ref{fig:right-side-minipage}}\\
+
+\begin{figure}[!htb]
+    \centering
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.25\textheight]{exm.jpg}
+        \caption{Left side image}
+        \label{fig:left side minipage}
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.25\textheight]{exm.jpg}
+        \caption{Right side image}
+        \label{fig:right-side-minipage}
+    \end{minipage}
+    \caption{Subfigures using minipage}
+    \label{fig:subfig-minipage}
+\end{figure}
+
+The subfigure package has caused me problems before, I suggest against it. Similarly, you can use \textbf{Figure \ref{fig:sidecaption-fig}} to have side by side caption or text. You can refer to subfigures as well like \textbf{Figure \ref{fig:left-side-image}} I suggest against it. Use two minipages - one side normal figure, other side text for the figure.
+
+\begin{figure}[!hbt]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{exm.jpg}
+        \caption{Left side image}
+        \label{fig:left-side-image}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{exm.jpg}
+        \caption{Right Side Image}
+        \label{fig:right-side-image}
+    \end{subfigure}
+    \caption{Side by side figures using subfigures}
+    \label{fig:subfigure}
+\end{figure}
+
+\begin{SCfigure}
+  \centering
+  \caption{Side label with possibly a large amount of text. This is how you would write it}
+  \includegraphics[width=0.3\textwidth]{exm.jpg}% filename
+  \label{fig:sidecaption-fig}
+\end{SCfigure}
+
+\section{Adding Tables}
+\label{sec:adding-tables}
+
+Tables must be labeled with usual labeling convention. Also the use of \texttt{multicol} package allows for centering text in table fields and merging of fields as shown in the example below.
+
+Referring to a table example: As show in \textbf{Table \ref{tab:myTable}}. \\
+
+%Column widths dependent on page width/margins
+\begin{tabular}{ |p{0.5cm}|p{4cm}|p{4cm}|p{4cm}|  }
+
+ \hline
+ 	%Example of column merging
+ 	\multicolumn{4}{|c|}{Table Title Example} \\
+ \hline
+ 	%Examples of centering text
+ 	\multicolumn{1}{|c|}{id} &
+ 	\multicolumn{1}{|c|}{Column Heading} &
+ 	\multicolumn{1}{|c|}{Column Heading} &
+ 	\multicolumn{1}{|c|}{Column Heading}  \\
+ \hline
+ 	1 & Field 1,1 & Field 1,2 & Field 1,3 \\
+ \hline
+ 	2 & Field 2,1 & Field 2,2 & Field 2,3 \\
+ \hline
+ 	3 & Field 3,1 & Field 3,2 & Field 3,3 \\
+ \hline
+
+\end{tabular}
+%Use of captionof allows 'Table' instead of default 'Figure'
+\captionof{table}{My Table Example}
+\label{tab:myTable}
+\vspace{0.4cm}
+
+When a larger table is needed that would fit better on a landscape page, the \texttt{rotating} package can be used and a \texttt{sidewaystable} defined as shown in the example on the next page: \textbf{Table \ref{tab:mySidewaysTable}}.
+
+\begin{sidewaystable}
+  \begin{tabular}{ |p{0.5cm}|p{7cm}|p{7cm}|p{7cm}|  }
+    \hline
+        \multicolumn{4}{|c|}{Sideways Table Title Example} \\
+     \hline
+        \multicolumn{1}{|c|}{id} &
+        \multicolumn{1}{|c|}{Column Heading} &
+        \multicolumn{1}{|c|}{Column Heading} &
+        \multicolumn{1}{|c|}{Column Heading}  \\
+     \hline
+        1 & Field 1,1 & Field 1,2 & Field 1,3 \\
+     \hline
+        2 & Field 2,1 & Field 2,2 & Field 2,3 \\
+     \hline
+        3 & Field 3,1 & Field 3,2 & Field 3,3 \\
+     \hline
+
+  \end{tabular}
+  \captionof{table}{My Sideways Table Example}
+  \label{tab:mySidewaysTable}
+\end{sidewaystable}
+
+
+\section{Code Listing}
+\label{sec:code-listing}
+
+You can add code snippets as seen in \textbf{Listing \ref{lst:listing-main}} or \textbf{Listing \ref{lst:side-listing}} full width or mini page listing.
+
+\begin{minipage}{.5\textwidth}
+  \begin{listing}[H]
+  \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+
+  Name.prototype = {
+    methodName: function(params){
+      var doubleQuoteString = "some text";
+      var singleQuoteString = 'some more text';
+      // this is a comment
+      if(this.confirmed != null && typeof(this.confirmed) == Boolean && this.confirmed == true){
+        document.createElement('h3');
+        $('#system').append("This looks great");
+        return false;
+      } else {
+        throw new Error;
+      }
+    }
+  }
+
+  \end{minted}
+  \captionof{listing}{caption}
+  \label{lst:label-for-listing}
+  \end{listing}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[width=0.25\textheight]{exm.jpg}
+	\caption{Right side image}
+	\label{fig:right-side-minipage}
+\end{minipage}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+
+Name.prototype = {
+  methodName: function(params){
+    var doubleQuoteString = "some text";
+    var singleQuoteString = 'some more text';
+    // this is a comment
+    if(this.confirmed != null && typeof(this.confirmed) == Boolean && this.confirmed == true){
+      document.createElement('h3');
+      $('#system').append("This looks great");
+      return false;
+    } else {
+      throw new Error;
+    }
+  }
+}
+
+\end{minted}
+\captionof{listing}{caption}
+\label{lst:label-for-listing}
+\end{listing}
+
+\section{References}
+References are written in \texttt{references.bib} file. I will demo you personally about how to write references. Each reference has a key and you can refer it like this \cite{iansommerville2011}.\\
+
+
+\section{Directory Trees}
+\label{sec:dir-trees}
+
+Directory trees are nice and simple using the package \texttt{dirtree} as shown below in \textbf{Figure \ref{fig:dir-tree}}.
+
+\dirtree{%
+  .1 Directory.
+  .2 Folder 1.
+  .3 Sub Folder 1.
+  .4 File 1.
+  .2 Folder 2.
+}
+\captionof{figure}{Directory Tree Example}
+\label{fig:dir-tree}
