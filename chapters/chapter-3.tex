@@ -12,11 +12,11 @@ Every developer has their own programming style. When numerous individuals are c
 \begin{itemize}
     \item \textbf{Promises over Callbacks} - To make the asynchronous code easier to read and understand.
     \item \textbf{Specific error structure} - A JSON with properties for the thrown error and an appropriate error message.
-    \item \textbf{HTML element IDs} - All elements must have an \texttt{id} attribute of the form  \texttt{$<$name$>$\_$<$type$>$} where \texttt{name} is an intuitive name for the element and \texttt{type} corresponds to the type of the element. 
-    \item \textbf{Server side testing} - Trigger all branches. If a branch cannot be tested it is considered a bug.\\ 
+    \item \textbf{HTML element IDs} - All elements must have an \texttt{id} attribute of the form  \texttt{$<$name$>$\_$<$type$>$} where \texttt{name} is an intuitive name for the element and \texttt{type} corresponds to the type of the element.
+    \item \textbf{Server side testing} - Trigger all branches. If a branch cannot be tested it is considered a bug.\\
 \end{itemize}
 
-There are several additional conventions found in \texttt{CONTRIBUTING.md} which is a continuously evolving document. New conventions have been introduced as a result of our development, such as the HTML element ID convention and conventions regarding server side testing, which are discussed in \textbf{Chapter \ref{chap:further-work}}.  
+There are several additional conventions found in \texttt{CONTRIBUTING.md} which is a continuously evolving document. New conventions have been introduced as a result of our development, such as the HTML element ID convention and conventions regarding server side testing, which are discussed in \textbf{Chapter \ref{chap:further-work}}.
 
 \section{Payment Systems}
 \label{sec:payment-systems}
@@ -107,18 +107,18 @@ Methods 1 \& 2 fully remove the burden of PCI DSS compliance from the merchant a
 \subsection{Importance of Having Frameworks}
 \label{subsec:importance-of-having-frameworks}
 
-In a capsule, a framework can be thought of as an abstraction tool which makes it easier to write applications \cite{1stwebdesigner}. It is essentially a set of integrated software artefacts e.g. common pre-formatted classes and functions which work together to promotes reuse of code \cite{framework-report-vamderbilt}. This in turn improves the productivity of developers since they can focus on implementing desired requirements instead of dealing with the overhead of application infrastructure \cite{cimetrix}. From a business point of view, having re-usability reduces software cost and improves its quality. 
+In a capsule, a framework can be thought of as an abstraction tool which makes it easier to write applications \cite{1stwebdesigner}. It is essentially a set of integrated software artefacts e.g. common pre-formatted classes and functions which work together to promotes reuse of code \cite{framework-report-vamderbilt}. This in turn improves the productivity of developers since they can focus on implementing desired requirements instead of dealing with the overhead of application infrastructure \cite{cimetrix}. From a business point of view, having re-usability reduces software cost and improves its quality.
 
 \subsection{What Makes a Good Framework?}
 \label{subsec:what-makes-a-good-framework}
 
 \begin{itemize}
-    \item \textbf{Efficient} - this is the sole purpose of using a framework. Developers should be able to take advantage of pre-built tested functions to implement requirements which would otherwise be complex to achieve from scratch. For example, ASP.NET MVC framework provides libraries and API’s for database access, session and authorisation management which reduces repetitive and tedious tasks \cite{asp.net-team}. 
+    \item \textbf{Efficient} - this is the primary purpose of using a framework. Developers should be able to take advantage of pre-built tested functions to implement requirements which would otherwise be complex to achieve from scratch. For example, ASP.NET MVC framework provides libraries and API’s for database access, session and authorisation management which reduces repetitive and tedious tasks \cite{asp.net-team}.
     \item \textbf{Enforces consistent coding style} - forces the developers to adhere to best practices and conventions when coding to produce applications which are flexible and contain less bugs \cite{cimetrix}.
     \item \textbf{Makes discrete components useful} - frameworks should tie together complex components which are difficult to be used on its own and provide a wrapper around them which can be used to achieve desired functionality with ease e.g. LINQ queries in ASP.NET MVC which allows creation of SQL statements with no prior knowledge of SQL syntax \cite{social-msdn}.
     \item \textbf{Follows well recognised coding styles} - using a well know coding style e.g. PHP and Ruby on Rails uses MVC framework, making it efficient and simple to debug because you know exactly where to look for errors and bugs. It also allows separation of application logic from other components e.g. data access layer, views etc. making code management very easy \cite{speckyboy}.
 	\item \textbf{Secure and supportive community} - frameworks are typically written by a team of developers and it’s guaranteed to be thoroughly tested before release. Even if you discover a security threat later on, you can contact the community for patches \cite{OSTraining}. The framework’s community should maintain it by releasing regular updates which improve performance, quality and provide new functionality etc. \cite{cimetrix}
-	\item \textbf{Easily extendible} - the framework should allow developers to easily implement custom functionality by overriding pre-defined functions. Where this is not possible, it should be compatible in integrating with additional frameworks to achieve desired functionality. \\ 
+	\item \textbf{Easily extendible} - the framework should allow developers to easily implement custom functionality by overriding pre-defined functions. Where this is not possible, it should be compatible in integrating with additional frameworks to achieve desired functionality. \\
 \end{itemize}
 
 \subsection{What Makes a Bad Framework?}
@@ -127,9 +127,9 @@ In a capsule, a framework can be thought of as an abstraction tool which makes i
  	\item \textbf{Steep learning curve} - An initial learning curve is tolerable if framework brings benefits in the long run. However, it is important to ensure that this learning curve is not too steep that using a framework becomes an overhead instead of an advantage \cite{OSTraining}.
     \item \textbf{Lack of customisation } - it can be difficult to achieve a tailored functionality when framework doesn’t allow over-riding of certain functions. In this case, developer will have to write this functionality independently and integrate it with the framework \cite{Quora}. Difficulty comes in when you have to really understand how the framework works under the hood to “hack” in the functionality.
     \item \textbf{Risk of learning framework, not understanding the language} - Frameworks such as CakePHP allow you to setup a basic site in under 5 minutes. Its scaffolding feature can create controllers, views etc. on the fly with no input from developer. So being able to use a framework doesn't essentially mean that you know the language well \cite{Vizteams}.
-    \item \textbf{Risk of being outdated} - If a framework is not regularly maintained e.g. security risks not patched, no performance improvements etc., then its continued use is futile and potentially dangerous to business. Switching to another framework can be extremely expensive if your code base is very large \cite{Quora}.\\ 
+    \item \textbf{Risk of being outdated} - If a framework is not regularly maintained e.g. security risks not patched, no performance improvements etc., then its continued use is futile and potentially dangerous to business. Switching to another framework can be extremely expensive if your code base is very large \cite{Quora}.\\
 \end{itemize}
-    
+
 \section{Testing}
 \label{sec:testing}
 
@@ -143,22 +143,23 @@ Units tests are tests which isolate standalone units or functions of the applica
 
 Integration tests are carried out by testers after running Unit tests successfully. They combine independent modules and evaluate them as a group \cite{search-software-quality}. They focus on testing data transfer between independent components. Consider an example test case for checking interface link between Upload and Albums module in:  \textbf{Table \ref{tab:e2eExampleTable}}. \\
 
+\begin{center}
 %Column widths dependent on page width/margins
-\begin{tabular}{ |p{0.5cm}|p{4cm}|p{4cm}|p{4cm}|  }
+\begin{tabular}{ |p{4cm}|p{4cm}|p{4cm}|  }
 
  \hline
- 	\multicolumn{1}{|c|}{id} &
  	\multicolumn{1}{|c|}{Objective} &
  	\multicolumn{1}{|c|}{Description} &
  	\multicolumn{1}{|c|}{Expected}  \\
  \hline
- 	1 & Check interface link between Upload and Albums module & Click the upload button on Upload page, choose an image and click the OK button & User should be redirected to Albums section where uploaded image should be displayed \\
+ 	Check interface link between Upload and Albums module & Click the upload button on Upload page, choose an image and click the OK button & User should be redirected to Albums section where uploaded image should be displayed. \\
  \hline
 
 \end{tabular}
 \captionof{table}{E2E Test Case}
 \label{tab:e2eExampleTable}
 \vspace{0.4cm}
+\end{center}
 
 \subsection{E2E Testing}
 \label{subsec:e2e-testing}
@@ -171,7 +172,7 @@ End-to-End tests are carried out after a complete deployment. They focus on test
     \item Then I should be on the “Home” page
 \end{enumerate}
 
-We were asked to carry out E2E tests on the front end and perform Unit and Integration tests on the backend by Synote’s Client.\\
+We were asked to carry out E2E tests on the front end and perform Unit and Integration tests on the backend by Synote’s Client.
 
 \section{JavaScript Test Frameworks}
 \label{sec:frameworks}
