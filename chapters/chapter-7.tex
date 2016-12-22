@@ -93,3 +93,15 @@ A proposal for future enhancement could be to make temporary deployments on whic
 
 \subsection{Server Side Design}
 \label{subsec:server-side-design}
+
+Given what we have learned of Sails and Stripe, we also have some thoughts on how to improve our implementation of the payment system. One suggestion is to improve the DB design by not storing \textit{stringified} JSONs, but instead creating tables similar to those shown in \textbf{Figure \ref{fig:proposed-schema}}. The \texttt{source} table has the additional benefit of decoupling customer objects from the \texttt{user} table and \texttt{transaction} table replaces \texttt{creditHistory} table, which facilitates providing more detailed transaction information to the \textit{Credits History} view.\\
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=\textwidth]{proposed-schema.png}
+  	\caption{Proposed Design}
+ 	\label{fig:proposed-schema}
+\end{figure}
+
+Additionally, our implementation has not included a function to perform refunds which this DB design would be able to record in the \texttt{transaction} table. Lastly, our payment system could be also be improved to handle error cases involving declined cards and fraud, which again have been catered for with respect to logging through the \texttt{transaction} table design.  
+
