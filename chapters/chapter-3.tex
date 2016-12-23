@@ -4,6 +4,46 @@
 \section{Synote}
 \label{sec:synote}
 
+\subsection{Quick Overview}
+\label{subsec:quick-overview}
+Synote is a web-based application developed within the University of Southampton. Its primary functionality is the automatic transcription of lecture videos using speech recognition. Alongside this, it also provides a collaborative editor for students to make any needed corrections to transcripts. \\
+
+Synote has been successfully deployed at several universities and it plans to expand and offer its services to any client that may require them. \\
+
+The application can be accessed at \url{http://www.synote.com}. \\
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.3\textwidth]{synote-screenshot.png}
+  	\caption{Synote Screenshot}
+ 	\label{fig:synote-screenshot}
+\end{figure}
+
+\subsection{Experiment Deployment}
+\label{subsec:experiment-deployment}
+
+Synote wishes to be flexible with the various sites where it operates. This allows for variation of the functionality according to the needs of each client. This also entails having several different deployments and managing them. In order to better prepare for the production environment, the app is first deployed on other environments and tested. \\
+
+One such environment is \url{http://www.experiment.synote.com}. It can be found on an AWS linux machine running Nginx as its web server container. As the name suggests, it is primarily used for experimenting with new features, without disrupting the production environment. The experiment deployment is the first step in making sure the application is ready to be released to users after any new changes are made. \\
+
+Trying to be efficient with the resources that we were given, we set up Continuous Integration (Jenkins) as well on the same machine in order to automate making deployments and running E2E tests. The Jenkins server would trigger a build whenever a change is detected to the repository, deploy the build on the machine, run the tests and then give you a report with the results. \\
+
+\subsection{Client Needs}
+\label{subsec:client-needs}
+
+Over the duration of our project the definition and the scope of what was required from us changed as we kept on finishing tasks and taking on new ones. \\
+
+Chronologically speaking, initially we thought our main goal was to create an automated testing framework for Synote but after the first meeting with our client, we were informed that the implementation of a payment feature was also required of us. After finishing with these two milestones, we moved on to set up Continuous Integration with Jenkins although this was categorised as something nice to have if time would permit it. We also managed to get 100\% test coverage on the backend tests of Synote although that was not initially scoped either but we felt it would make our overall solution be more robust. All this testing methodology and all of its accompanying approaches and notions (such as guidelines on how to code new testing functionality or how to write new tests, etc) also needed to be formalised and centralised within a living document. \\
+
+In terms of deliverables, we have provided our client with all of the items below. Written confirmation from the client can be seen in \textbf{Appendix \ref{appendix:client-sign-off}}.
+
+\begin{itemize}
+    \item \textbf{Payment Feature} - PCI Compliant functionality written using Stripe
+    \item \textbf{Automated E2E Testing Framework} - BDD testing framework using Cucumber \& Protractor
+    \item \textbf{Continous Integration} - Globally accessible Jenkins server that automatically builds the application on the experiment site, runs the E2E tests and reports the results
+    \item \textbf{QA Methodology Document} - Living document that contains information about the entire QA process\\
+\end{itemize}
+
 \subsection{Conventions}
 \label{subsec:conventions}
 
