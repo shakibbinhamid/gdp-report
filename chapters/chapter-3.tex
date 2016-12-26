@@ -138,7 +138,6 @@ Methods 1 \& 2 fully remove the burden of PCI DSS compliance from the merchant a
 \end{tabular}
 \captionof{table}{Payment Gateway Providers}
 \label{tab:gateway-providers}
-\vspace{0.4cm}
 \end{center}
 
 \section{Frameworks}
@@ -158,7 +157,7 @@ In a capsule, a framework can be thought of as an abstraction tool which makes i
     \item \textbf{Makes discrete components useful} - frameworks should tie together complex components which are difficult to be used on its own and provide a wrapper around them which can be used to achieve desired functionality with ease e.g. LINQ queries in ASP.NET MVC which allows creation of SQL statements with no prior knowledge of SQL syntax \cite{social-msdn}.
     \item \textbf{Follows well recognised coding styles} - using a well know coding style e.g. PHP and Ruby on Rails uses MVC framework, making it efficient and simple to debug because you know exactly where to look for errors and bugs. It also allows separation of application logic from other components e.g. data access layer, views etc. making code management very easy \cite{speckyboy}.
 	\item \textbf{Secure and supportive community} - frameworks are typically written by a team of developers and it’s guaranteed to be thoroughly tested before release. Even if you discover a security threat later on, you can contact the community for patches \cite{OSTraining}. The framework’s community should maintain it by releasing regular updates which improve performance, quality and provide new functionality etc. \cite{cimetrix}
-	\item \textbf{Easily extendible} - the framework should allow developers to easily implement custom functionality by overriding pre-defined functions. Where this is not possible, it should be compatible in integrating with additional frameworks to achieve desired functionality. \\
+	\item \textbf{Easily extendible} - the framework should allow developers to easily implement custom functionality by overriding pre-defined functions. Where this is not possible, it should be compatible in integrating with additional frameworks to achieve desired functionality.
 \end{itemize}
 
 \subsection{What Makes a Bad Framework?}
@@ -167,7 +166,7 @@ In a capsule, a framework can be thought of as an abstraction tool which makes i
  	\item \textbf{Steep learning curve} - An initial learning curve is tolerable if framework brings benefits in the long run. However, it is important to ensure that this learning curve is not too steep that using a framework becomes an overhead instead of an advantage \cite{OSTraining}.
     \item \textbf{Lack of customisation } - it can be difficult to achieve a tailored functionality when framework doesn’t allow over-riding of certain functions. In this case, developer will have to write this functionality independently and integrate it with the framework \cite{Quora}. Difficulty comes in when you have to really understand how the framework works under the hood to “hack” in the functionality.
     \item \textbf{Risk of learning framework, not understanding the language} - Frameworks such as CakePHP allow you to setup a basic site in under 5 minutes. Its scaffolding feature can create controllers, views etc. on the fly with no input from developer. So being able to use a framework doesn't essentially mean that you know the language well \cite{Vizteams}.
-    \item \textbf{Risk of being outdated} - If a framework is not regularly maintained e.g. security risks not patched, no performance improvements etc., then its continued use is futile and potentially dangerous to business. Switching to another framework can be extremely expensive if your code base is very large \cite{Quora}.\\
+    \item \textbf{Risk of being outdated} - If a framework is not regularly maintained e.g. security risks not patched, no performance improvements etc., then its continued use is futile and potentially dangerous to business. Switching to another framework can be extremely expensive if your code base is very large \cite{Quora}.
 \end{itemize}
 
 \section{Testing}
@@ -176,12 +175,12 @@ In a capsule, a framework can be thought of as an abstraction tool which makes i
 \subsection{Unit Testing}
 \label{subsec:unit-testing}
 
-Units tests are tests which isolate standalone units or functions of the application to verify their correctness. Easier to be written by developers since understanding of code is required. Correctness is achieved via assertions i.e. statements of conditions and their expected results. To test a function which which identifies season, provided the date and location, a unit test could be; “I expect the answer ‘summer’ for 16th September in Wales. \\
+Units tests are tests which isolate standalone units or functions of the application to verify their correctness. They are easier to be written by developers since understanding of code is required. Correctness is achieved via assertions i.e. statements of conditions and their expected results. To test a function which which identifies season, provided the date and location, a unit test could be - “I expect the answer ‘summer’ for 16th September in Wales".
 
 \subsection{Integration Testing}
 \label{subsec:unit-testing}
 
-Integration tests are carried out by testers after running Unit tests successfully. They combine independent modules and evaluate them as a group \cite{search-software-quality}. They focus on testing data transfer between independent components. Consider an example test case for checking interface link between Upload and Albums module in:  \textbf{Table \ref{tab:e2eExampleTable}}. \\
+Integration tests are carried out by testers after running Unit tests successfully. They combine independent modules and evaluate them as a group \cite{search-software-quality}. They focus on testing data transfer between independent components. Consider an example test case for checking interface link between Upload and Albums module in:  \textbf{Table \ref{tab:e2eExampleTable}}.
 
 \begin{center}
 %Column widths dependent on page width/margins
@@ -198,13 +197,12 @@ Integration tests are carried out by testers after running Unit tests successful
 \end{tabular}
 \captionof{table}{E2E Test Case}
 \label{tab:e2eExampleTable}
-\vspace{0.4cm}
 \end{center}
 
 \subsection{E2E Testing}
 \label{subsec:e2e-testing}
 
-End-to-End tests are carried out after a complete deployment. They focus on testing the application as a whole instead of focusing on specific front end or back end functions by performing tests as to how a real world user might use the application with no understanding of the code base. E2E test cases should focus on testing critical areas such as communication with other systems, database, interfaces etc. \cite{tutorialspoint}. An example E2E test case to verify successful login may include these steps:\\
+End-to-End tests are carried out after a complete deployment. They focus on testing the application as a whole (instead of focusing on specific front end or back end functions) by performing tests as to how a real world user might use the application with no understanding of the code base. E2E test cases should focus on testing critical areas such as communication with other systems, database, interfaces etc. \cite{tutorialspoint}. An example E2E test case to verify successful login may include these steps:
 
 \begin{enumerate}
 	\item Given I go to the “Login” page
