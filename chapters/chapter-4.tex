@@ -315,7 +315,7 @@ If the response from Stripe was successful, \texttt{buyCreditController} will th
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
  chargeCard: function (parameters) {
-  return \$http({
+  return $http({
    url: ENV.apiEndpoint + '/CreditHistory/topup',
    method: 'POST',
    data: parameters
@@ -334,9 +334,9 @@ The logic behind is similar to using a new card apart from the fact that we no l
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
- cards: ['$http', 'authenticationService', function (\$http, authenticationService) {
+ cards: ['$http', 'authenticationService', function ($http, authenticationService) {
   var usrId = authenticationService.getUserInfo().user_id;
-  return \$http({
+  return $http({
    url: ENV.apiEndpoint + '/creditHistory/cards',
    method: "GET"
  });
@@ -353,12 +353,12 @@ When charging against saved card, we invoke the same method from \texttt{payment
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
  var parameters = {
- 	useSavedCard: \$scope.useSavedCard,
-	cardId: \$scope.cardChoosen.card ? \$scope.cardChoosen.card.id : null,
-	tokenResponse: \$scope.useSavedCard ? null : token,
-	save: \$scope.saveCard,
-	amount: \$scope.currentPriceTotalIncludingVAT,
-	credits: \$scope.currentCreditsTotal
+ 	useSavedCard: $scope.useSavedCard,
+	cardId: $scope.cardChoosen.card ? $scope.cardChoosen.card.id : null,
+	tokenResponse: $scope.useSavedCard ? null : token,
+	save: $scope.saveCard,
+	amount: $scope.currentPriceTotalIncludingVAT,
+	credits: $scope.currentCreditsTotal
  };
 //code omitted
 \end{minted}
@@ -376,9 +376,9 @@ When user is routed to the \texttt{creditsHistory} URI, we send an HTTP Get requ
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
- creditHistory: ['\$http', 'authenticationService', function (\$http, authenticationService) {
+ creditHistory: ['$http', 'authenticationService', function ($http, authenticationService) {
   var usrId = authenticationService.getUserInfo().user_id;
-  return \$http({
+  return $http({
   url: ENV.apiEndpoint + '/creditHistory/history',
   method: "GET"
   });
