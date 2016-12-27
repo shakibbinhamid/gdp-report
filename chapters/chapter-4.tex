@@ -385,8 +385,8 @@ When user is routed to the “creditsHistory” URI, we send an HTTP Get request
   return \$http({
   url: ENV.apiEndpoint + '/creditHistory/history',
   method: "GET"
-  });
-  }]
+ });
+ }]
 //code omitted   
 \end{minted}
 \captionof{listing}{Section of app.js file}
@@ -395,6 +395,57 @@ When user is routed to the “creditsHistory” URI, we send an HTTP Get request
 
 The loaded credit history data then displayed as a table with most recent purchases first.\\ 
 
+\subsection{Clientside Payment Details Validation}
+\label{subsec:clientside-payment-details-validation}
 
+Client side validation is handled via methods provided by Stipe’s API and an angular payment validation module (see top connection fig) called “angular-payments” [3]. Stripe’s validation methods are called via “buycredit.html” page &>& “buycredit” controller &>& “paymentservice” service.\\
+
+Consider validation for card number field as an example:\\
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+//code omitted    
+<input class="form-control" name="number" payments-format="card" ng-model="cardNumber" required
+	ng-paste="\$event.preventDefault()" ng-change="checkCardNumber()">
+//code omitted   
+\end{minted}
+\captionof{listing}{Section of buycredit.html file}
+\label{lst:buycredit-html-cardnumber-input}
+\end{listing}
+
+In \textbf{Listing \ref{lst:buycredit-html-cardnumber-input}}, we  use Angluar’s ng-change directive to execute “checkCardNumber” method whenever it detects an input change e.g. keypress. “payments-format=”card”” is provided by “angular-payments” and ensures input is maximum of 16 digits.\\
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+//code omitted    
+ \$scope.checkCardNumber = function () {
+      if (\$scope.cardNumber) {
+          \$scope.theForm.number.\$setValidity("minLength", paymentService.isCardNumberTypeValid(
+          \$scope.cardNumber));
+       }
+   };
+//code omitted   
+\end{minted}
+\captionof{listing}{Section of \texttt{buycredit.js} file}
+\label{lst:buycredit-controller-checkcardnumber-method}
+\end{listing}
+
+In code snippet \textbf{Listing \ref{lst:buycredit-controller-checkcardnumber-method}}, we set validity of form based on the input card number via \texttt{paymentService}.\\
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+//code omitted    
+  isCardNumberTypeValid: function (cardNumber) {
+    var cardType = Stripe.card.cardType(cardNumber);
+    var validCardNumBool = Stripe.card.validateCardNumber(cardNumber);
+    return validCardNumBool && !(cardType === 'undefined');
+ },
+//code omitted   
+\end{minted}
+\captionof{listing}{Section of \texttt{paymentservice.js} file}
+\label{lst:payment-service-checkcardnumber-method}
+\end{listing}
+
+In \textbf{Listing \ref{lst:payment-service-checkcardnumber-method}}, we use Stripe provided methods to validate provided card number.
 
 
