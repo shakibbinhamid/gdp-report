@@ -351,12 +351,49 @@ The logic behind is similar to using a new card apart from the fact that we no l
 \label{lst:get-cards-req}
 \end{listing} 
 
+When charging against saved card, we invoke the same method from “paymentservice” used for charging against a new card but with different parameters. Consider \textbf{Listing \ref{lst:params-charge-card}}:\\
 
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+//code omitted    
+ var parameters = {
+ 	useSavedCard: \$scope.useSavedCard,
+	cardId: \$scope.cardChoosen.card ? \$scope.cardChoosen.card.id : null,
+	tokenResponse: \$scope.useSavedCard ? null : token,
+	save: \$scope.saveCard,
+	amount: \$scope.currentPriceTotalIncludingVAT,
+	credits: \$scope.currentCreditsTotal
+ };
+//code omitted   
+\end{minted}
+\captionof{listing}{Section of buycredit.js file}
+\label{lst:params-charge-card}
+\end{listing} 
 
+Instead of passing in the Stripe token, we now pass the “cardId” of selected card.\\ 
 
+\subsubsection{Credits History Feature}
+\label{subsubsec:credits-history-feature}
 
+When user is routed to the “creditsHistory” URI, we send an HTTP Get request to Synote’s server to retrieve credits history for logged in user. Consider \textbf{Listing \ref{lst:credits-history-req}}:\\
 
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+//code omitted    
+ creditHistory: ['\$http', 'authenticationService', function (\$http, authenticationService) {
+  var usrId = authenticationService.getUserInfo().user_id;
+  return \$http({
+  url: ENV.apiEndpoint + '/creditHistory/history',
+  method: "GET"
+  });
+  }]
+//code omitted   
+\end{minted}
+\captionof{listing}{Section of app.js file}
+\label{lst:credits-history-req}
+\end{listing} 
 
+The loaded credit history data then displayed as a table with most recent purchases first.\\ 
 
 
 
