@@ -400,11 +400,11 @@ Client side validation is handled via methods provided by Stipe’s API and an a
 Consider validation for card number field as an example:\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
+<!-- code omitted -->
 <input class="form-control" name="number" payments-format="card" ng-model="cardNumber" required
     ng-paste="\$event.preventDefault()" ng-change="checkCardNumber()">
-//code omitted   
+<!-- code omitted -->
 \end{minted}
 \captionof{listing}{Section of buycredit.html file}
 \label{lst:buycredit-html-cardnumber-input}
@@ -413,15 +413,15 @@ Consider validation for card number field as an example:\\
 In \textbf{Listing \ref{lst:buycredit-html-cardnumber-input}}, we  use Angluar’s ng-change directive to execute \texttt{checkCardNumber} method whenever it detects an input change e.g. keypress. \texttt{payments-format=”card”} is provided by \texttt{angular-payments} and ensures input is maximum of 16 digits.\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
- \$scope.checkCardNumber = function () {
-      if (\$scope.cardNumber) {
-          \$scope.theForm.number.\$setValidity("minLength", paymentService.isCardNumberTypeValid(
-          \$scope.cardNumber));
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+ $scope.checkCardNumber = function () {
+      if ($scope.cardNumber) {
+          $scope.theForm.number.\$setValidity("minLength", paymentService.isCardNumberTypeValid(
+          $scope.cardNumber));
        }
    };
-//code omitted   
+//code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{buycredit.js} file}
 \label{lst:buycredit-controller-checkcardnumber-method}
@@ -430,14 +430,14 @@ In \textbf{Listing \ref{lst:buycredit-html-cardnumber-input}}, we  use Angluar�
 In code snippet \textbf{Listing \ref{lst:buycredit-controller-checkcardnumber-method}}, we set validity of form based on the input card number via \texttt{paymentService}.\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
   isCardNumberTypeValid: function (cardNumber) {
     var cardType = Stripe.card.cardType(cardNumber);
     var validCardNumBool = Stripe.card.validateCardNumber(cardNumber);
     return validCardNumBool && !(cardType === 'undefined');
  },
-//code omitted   
+//code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{paymentservice.js} file}
 \label{lst:payment-service-checkcardnumber-method}
@@ -451,13 +451,3 @@ In \textbf{Listing \ref{lst:payment-service-checkcardnumber-method}}, we use Str
   	\caption{Live Validation In Action}
  	\label{fig:live-validation-screenshot}
 \end{figure}
-
-
-
-
-
-
-
-
-
-
