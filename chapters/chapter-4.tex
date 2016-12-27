@@ -6,7 +6,7 @@
 \section{Sever Side Implementation}
 \label{sec:server-side-implementation}
 
-The greatest concern in implementing a payment feature for Synote is remaining PCI DSS compliant. To remove most of the burden and with the approval of our client Yunjia Li, Stripe was chosen as the payment gateway. Stripe also allows custom merchant forms which our client favours over redirection and generated forms.\\
+The greatest concern in implementing a payment feature for Synote is remaining PCI DSS (Payment Card Industry Data Security Standard) compliant. To remove most of the burden and with the approval of our client Yunjia Li, Stripe was chosen as the payment gateway. Stripe also allows custom merchant forms which our client favours over redirection and generated forms.\\
 
 \begin{figure}[!hbt]
   	\centering
@@ -175,7 +175,7 @@ it('Should throw error "chargeCard: Missing properties in provided JSON" when no
 \label{lst:stripe-test-cases}
 \end{listing}
 
-All test cases attempt to follow the SILO and DRY (Don't Repeat Yourself) principles to ensure each case is independent. While SILO has been completely achieved, DRY has not as the existing testing strategy for policies and controllers has forced code repetition. At present \texttt{policy} and \texttt{controller} files are being tested through endpoint calls which is not considered best practice and results in some code branches not being testable. The desired methodology for testing \texttt{policy} files is to do so in isolation using mocking for \texttt{req} objects and spies for function calls. We have included an example of this in \texttt{canListCreditHistory.text.js} in Synote's repository. Best practice for testing \texttt{controllers} and \texttt{services} is to use dependency injection to remove interaction with a real database and \texttt{http} context. This is far beyond the scope of our project but is recommended as future improvement for Synote.\\
+All test cases attempt to follow the SILO and DRY (Don't Repeat Yourself) principles to ensure each case is independent. While SILO has been completely achieved, DRY has not as the existing testing strategy for policies and controllers has forced code repetition. At present \texttt{policy} and \texttt{controller} files are being tested through endpoint calls which is not considered best practice and results in some code branches not being testable. The desired methodology for testing \texttt{policy} files is to do so in isolation using mocking for \texttt{req} objects and spies for function calls. We have included an example of this in \texttt{canListCreditHistory.text.js} in Synote's repository. Best practice for testing \texttt{controllers} and \texttt{services} is to use dependency injection to remove interaction with a real database and \texttt{http} context. This is far beyond the scope of our project but is recommended as future improvement for Synote.
 
 \section{Client Side Implementation}
 \label{sec:client-side-implementation}
@@ -187,30 +187,30 @@ First step in design was to mock up some wireframes and get them approved by our
 
 \begin{figure}[!hbt]
   	\centering
- 	\includegraphics[width=0.9\textwidth]{profile-page-payment-feature.png}
+ 	\includegraphics[width=0.7\textwidth]{profile-page-payment-feature.png}
   	\caption{Profile Page Payment and Credits Section Wireframe}
  	\label{fig:profile-wireframe}
 \end{figure}
 
 \begin{figure}[!hbt]
   	\centering
- 	\includegraphics[width=0.9\textwidth]{credits-history-wireframe.png}
+ 	\includegraphics[width=0.8\textwidth]{saved-card-wireframe.png}
+  	\caption{Saved Card Payment Form Wireframe}
+ 	\label{fig:saved-card-wireframe}
+\end{figure}
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.6\textwidth]{credits-history-wireframe.png}
   	\caption{Credits History Wireframe}
  	\label{fig:credits-history-wireframe}
 \end{figure}
 
 \begin{figure}[!hbt]
   	\centering
- 	\includegraphics[width=0.9\textwidth]{payment-form-wireframe.png}
+ 	\includegraphics[width=0.8\textwidth]{payment-form-wireframe.png}
   	\caption{Payment Form Wireframe}
  	\label{fig:payment-form-wireframe}
-\end{figure}
-
-\begin{figure}[!hbt]
-  	\centering
- 	\includegraphics[width=0.9\textwidth]{saved-card-wireframe.png}
-  	\caption{Saved Card Payment Form Wireframe}
- 	\label{fig:saved-card-wireframe}
 \end{figure}
 
 \subsection{Payment System Infrastructure (Frontend)}
@@ -233,33 +233,32 @@ Client side should handle these properties of the payment feature:
 \item Validation messages
 \end{itemize}
 
-“Credits History” and “Buy Credits” are very different components of the payment feature, so we created 2 separate controllers i.e. “buycredit” controller and “creditshistory” controller to handle their logic independently.\\  
+“Credits History” and “Buy Credits” are very different components of the payment feature, so we created 2 separate controllers i.e. “buycredit” controller and “creditshistory” controller to handle their logic independently.
 
 \subsubsection{Buy Credits Feature}
 \label{subsubsec:buy-credits-feature}
 
-As mentioned in \textbf{Figure \ref{fig:simple-sequence}} in \textbf{Section \ref{sub:server-side-implementation}}, it’s the clientside’s responsibility to tokenise payment data and handle the response from Stripe. The “buycredit” controller handles all the payment related business logic with the help of “paymentcervice” service class (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). This class provides the “buycredit” controller with:
+As mentioned in \textbf{Figure \ref{fig:simple-sequence}}, it is the clientside’s responsibility to tokenise payment data and handle the response from Stripe. The \texttt{buyCreditController} handles all the payment related business logic with the help of \texttt{paymentService} service class (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). This class provides the \texttt{buyCreditController} with:
 
 \begin{itemize}
 \item Stripe tokenisation and response handler methods
 \item Payment form input validation methods
-\item Charge card method (server request) 
+\item Charge card method (server request)
 \item Delete card method (server request)
 \end{itemize}
 
-Initially, all of this logic was handled by the “buycredits” controller itself and this lead to lot of code repetition. Doing simple things like changing the POST request URL for charging a card a hassle since we had to make these changes at multiple locations. We refactored all the reusable functions into “paymentservice” making amendments a hassle free job. \\
+Initially, all of this logic was handled by the \texttt{buyCreditController} itself and this lead to lot of code repetition. Doing simple things like changing the POST request URL for charging a card a hassle since we had to make these changes at multiple locations. We refactored all the reusable functions into \texttt{paymentService} making amendments a hassle free job. \\
 
-\textbf{Making a Payment}\\
-To use Stripe.js on client side, we first had to include its library as a script in the head of “index.html” page. Consider \textbf{Listing \ref{lst:index-head-html}}:\\
+To use \texttt{Stripe.js} on client side, we first had to include its library as a script in the head of \texttt{index.html} page. Consider \textbf{Listing \ref{lst:index-head-html}}:\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
 <head>
  <meta charset="utf-8">
  <title>Synote</title>
- //code omitted
+ <!-- code omitted -->
  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
- //code omitted
+ <!-- code omitted -->
 </head>
 \end{minted}
 \captionof{listing}{Section of index.html file}
@@ -269,31 +268,29 @@ To use Stripe.js on client side, we first had to include its library as a script
 We also had to include our actual publishable API key as a script which will be used to identify Synote to Stripe when sending requests. Consider \textbf{Listing \ref{lst:buycredit-html-stripe-key}}:\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
+//code omitted
 <form name="theForm" class="form-group" id="payment-form" novalidate>
  <script type="text/javascript">
  Stripe.setPublishableKey('pk_test_4FAeir9iMLjc76qM8Tn4Cn1p');
  </script>
-//code omitted   
+<!-- code omitted -->
 \end{minted}
 \captionof{listing}{Section of buycredit.html file}
 \label{lst:buycredit-html-stripe-key}
 \end{listing}
- 
+
 Payment can be of 2 forms; via a saved card or via a new card.\\
- 
-\textbf{Via New Card}\\
+
 When we were implementing the payment form, the main thing we had to ensure from client side was secure transmission of card details i.e. they shouldn't be intercepted and manipulated by an outsider. To achieve this level of security, we tokenise the critical payment fields via Stipe’s API and post this to Synote’s server along with other details such as amount of credits and price to pay. This way, we can assure that original values won't be sent to the server.\\
 
-\textbf{Tokenisation of Payment Details}\\ 
-“paymentservice” is responsible for converting the user input payment details into a single use representative token.  Consider \textbf{Listing \ref{lst:create-token-payment-service-method}}:\\
- 
+\texttt{paymentService} is responsible for converting the user input payment details into a single use representative token.  Consider \textbf{Listing \ref{lst:create-token-payment-service-method}}:\\
+
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
 createStripeToken: function (tokenHelperObject) {
- var deferred = \$q.defer(); //serve as the object which will create and manage the promise
+ var deferred = $q.defer(); //serve as the object which will create and manage the promise
  Stripe.card.createToken(tokenHelperObject, function (status, response) {
  if (response.error) {
   //if createToken method fails, reject the promise
@@ -304,87 +301,87 @@ createStripeToken: function (tokenHelperObject) {
  }});
   return deferred.promise;//return the promise
  },
-//code omitted   
+//code omitted
 \end{minted}
 \captionof{listing}{Section of paymentservice.js file}
 \label{lst:create-token-payment-service-method}
 \end{listing}
- 
-The method provided by Stripe’s API is “Stripe.Card.createToken” (line 4). This is in callback style and Synote’s conventions (see \textbf{Section \ref{subsec:conventions}}) favours promises over callbacks. Hence, we created “createStripeToken” method which uses Angular’s “\$q” constructor service to to turn callbacks into promises [1] \& [2]. The token helper object consists of input payment details i.e. billing name, number, cvc, expiry month and year.\\ 
- 
-If the response from Stripe was successful, “buyCredit” controller will then move onto processing the payment via “paymentService.” Consider \textbf{Listing \ref{lst:charge-card-service-method}}:\\
+
+The method provided by Stripe’s API is \texttt{Stripe.Card.createToken} (line 4). This is in callback style and Synote’s conventions (see \textbf{Section \ref{subsec:conventions}}) favours promises over callbacks. Hence, we created “createStripeToken” method which uses Angular’s \texttt{\$q} constructor service to to turn callbacks into promises [1] \& [2]. The token helper object consists of input payment details i.e. billing name, number, cvc, expiry month and year.\\
+
+If the response from Stripe was successful, \texttt{buyCreditController} will then move onto processing the payment via \texttt{paymentService}. Consider \textbf{Listing \ref{lst:charge-card-service-method}}:\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
  chargeCard: function (parameters) {
-  return \$http({
+  return $http({
    url: ENV.apiEndpoint + '/CreditHistory/topup',
    method: 'POST',
    data: parameters
   });
  },
-//code omitted   
+//code omitted
 \end{minted}
 \captionof{listing}{Section of paymentservice.js file}
 \label{lst:charge-card-service-method}
-\end{listing} 
- 
-Here we simply make a post request to Synote’s server at “topup” endpoint along with the single use representative token, credits, charge amount, save boolean as parameters. Save boolean flag is set true if user checks the save card option. It tells the server to save the card currently used for payment.\\ 
+\end{listing}
 
-\textbf{Via Saved Card}\\
-The logic behind is similar to using a new card apart from the fact that we no longer need to tokenize the payment details. When user is routed to the “buycredit” URI, we send an HTTP Get request to Synote’s server to retrieve saved cards for logged in user (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). Consider \textbf{Listing \ref{lst:get-cards-req}}:\\
+Here we simply make a post request to Synote’s server at \texttt{topup} endpoint along with the single use representative token, credits, charge amount, save boolean as parameters. Save boolean flag is set true if user checks the save card option. It tells the server to save the card currently used for payment.\\
+
+The logic behind is similar to using a new card apart from the fact that we no longer need to tokenize the payment details. When user is routed to the \texttt{buycredit} URI, we send an HTTP GET request to Synote’s server to retrieve saved cards for logged in user (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). Consider \textbf{Listing \ref{lst:get-cards-req}}:\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
- cards: ['\$http', 'authenticationService', function (\$http, authenticationService) {
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+ cards: ['$http', 'authenticationService', function ($http, authenticationService) {
   var usrId = authenticationService.getUserInfo().user_id;
-  return \$http({
+  return $http({
    url: ENV.apiEndpoint + '/creditHistory/cards',
    method: "GET"
  });
  }]
-//code omitted   
+//code omitted
 \end{minted}
 \captionof{listing}{Section of app.js file}
 \label{lst:get-cards-req}
-\end{listing} 
+\end{listing}
 
-When charging against saved card, we invoke the same method from “paymentservice” used for charging against a new card but with different parameters. Consider \textbf{Listing \ref{lst:params-charge-card}}:\\
+When charging against saved card, we invoke the same method from \texttt{paymentService} used for charging against a new card but with different parameters. Consider \textbf{Listing \ref{lst:params-charge-card}}:\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
  var parameters = {
- 	useSavedCard: \$scope.useSavedCard,
-	cardId: \$scope.cardChoosen.card ? \$scope.cardChoosen.card.id : null,
-	tokenResponse: \$scope.useSavedCard ? null : token,
-	save: \$scope.saveCard,
-	amount: \$scope.currentPriceTotalIncludingVAT,
-	credits: \$scope.currentCreditsTotal
+ 	useSavedCard: $scope.useSavedCard,
+	cardId: $scope.cardChoosen.card ? $scope.cardChoosen.card.id : null,
+	tokenResponse: $scope.useSavedCard ? null : token,
+	save: $scope.saveCard,
+	amount: $scope.currentPriceTotalIncludingVAT,
+	credits: $scope.currentCreditsTotal
  };
-//code omitted   
+//code omitted
 \end{minted}
 \captionof{listing}{Section of buycredit.js file}
 \label{lst:params-charge-card}
-\end{listing} 
+\end{listing}
 
-Instead of passing in the Stripe token, we now pass the “cardId” of selected card.\\ 
+Instead of passing in the Stripe token, we now pass the \texttt{cardId} of selected card.\\
 
 \subsubsection{Credits History Feature}
 \label{subsubsec:credits-history-feature}
 
-When user is routed to the “creditsHistory” URI, we send an HTTP Get request to Synote’s server to retrieve credits history for logged in user. Consider \textbf{Listing \ref{lst:credits-history-req}}:\\
+When user is routed to the \texttt{creditsHistory} URI, we send an HTTP Get request to Synote’s server to retrieve credits history for logged in user. Consider \textbf{Listing \ref{lst:credits-history-req}}:\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
- creditHistory: ['\$http', 'authenticationService', function (\$http, authenticationService) {
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+ creditHistory: ['$http', 'authenticationService', function ($http, authenticationService) {
   var usrId = authenticationService.getUserInfo().user_id;
-  return \$http({
+  return $http({
   url: ENV.apiEndpoint + '/creditHistory/history',
   method: "GET"
+<<<<<<< HEAD
  });
  }]
 //code omitted   
@@ -448,4 +445,14 @@ In code snippet \textbf{Listing \ref{lst:buycredit-controller-checkcardnumber-me
 
 In \textbf{Listing \ref{lst:payment-service-checkcardnumber-method}}, we use Stripe provided methods to validate provided card number.
 
+=======
+  });
+  }]
+//code omitted
+\end{minted}
+\captionof{listing}{Section of app.js file}
+\label{lst:credits-history-req}
+\end{listing}
+>>>>>>> b0598095d64918329cdf1668158220ce2a435b00
 
+The loaded credit history data then displayed as a table with most recent purchases first.\\

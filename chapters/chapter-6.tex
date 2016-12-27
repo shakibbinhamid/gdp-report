@@ -1,12 +1,12 @@
 \chapter{Continuous Integration}
 \label{chap:continuous-integration}
 
-The final phase of our project was to implement a continuous integration (CI) process for Synote. Only by deploying a new version of Synote and testing it can we be sure that a feature implementation is stable and functioning. However, a Synote experiment deployment has quite a few steps (\textbf{Figure \ref{fig:synote-ci-proc}}), which can take 15-30 minutes. In fact, it is completely infeasible to regularly repeat all the steps without hampering a developer's work. Since making a deployment takes  considerable time and is incredibly useful in continuous automated testing on remote deployments, we extended our project scope to implement Synote's first continuous integration process.
+The final phase of our project was to implement a continuous integration (CI) process for Synote. Only by deploying a new version of Synote and testing it can we be sure that a feature implementation is stable and functioning. However, a Synote experiment deployment has quite a few steps (\textbf{Figure \ref{fig:synote-ci-proc}}), which can take 15-20 minutes. In fact, it is completely infeasible to regularly repeat all the steps without hampering a developer's work. Since making a deployment takes  considerable time, yet is incredibly useful in continuous automated testing on remote deployments, we extended our project scope to implement Synote's first continuous integration process.
 
 \section{Synote CI}
 \label{sec:synote-ci}
 
-A complete Synote CI process will deploy and test on the experiment deployment, followed by staging and finally production. Each stage will follow similar steps as shown in the Experiment Deployment (Step 2) of \textbf{Figure \ref{fig:synote-ci-proc}}.
+A complete Synote CI process will deploy and test on the experiment deployment, followed by staging and finally production. Each stage will follow similar steps as shown in the Experiment Deployment (Step 2) of \textbf{Figure \ref{fig:synote-ci-proc}}.\\
 
 \begin{figure}[!hbt]
   	\centering
@@ -34,7 +34,7 @@ The key issues in this phase were -
 \subsection{Setting up Jenkins}
 \label{subsec:setting-up-jenkins}
 
-We began by installing Jenkins on the experiment server (\textbf{Listing \ref{lst:install-jenkins}}). After monitoring the processes, we asked the client to upgrade the server to have 4GB RAM.
+We began by installing Jenkins on the experiment server (\textbf{Listing \ref{lst:install-jenkins}}). After monitoring the processes, we asked the client to upgrade the server to have 4GB RAM.\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -50,7 +50,7 @@ sudo apt-get install jenkins
 \label{lst:install-jenkins}
 \end{listing}
 
-Then we added one admin account with complete Jenkins control, and one developer account with reduced control (e.g. cannot delete projects). Finally, we needed to run Jenkins behind a reverse proxy server (nginx) so that SSL encryption works properly and the domain reaches it (\textbf{Listing \ref{lst:make-jenkins-available}}). The Synote experiment CI project can be seen in \textbf{Figure \ref{fig:synote-jenkins-server}}
+Then we added one admin account with complete Jenkins control, and one developer account with reduced control (e.g. cannot delete projects). Finally, we needed to run Jenkins behind a reverse proxy server (nginx) so that SSL encryption works properly and the domain reaches it (\textbf{Listing \ref{lst:make-jenkins-available}}). The Synote experiment CI project can be seen in \textbf{Figure \ref{fig:synote-jenkins-server}}\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -113,7 +113,7 @@ sudo service nginx restart
 \section{Pre-build Preparation}
 \label{sec:pre-build-preparation}
 
-We first needed to give the ownership of \texttt{npm} modules to \texttt{ubuntu} (\textbf{Listing \ref{lst:npm-permission}}), so that we could install \texttt{bower}, which is needed to resolve the client app dependencies.
+We first needed to give the ownership of \texttt{npm} modules to \texttt{ubuntu} (\textbf{Listing \ref{lst:npm-permission}}), so that we could install \texttt{bower}, which is needed to resolve the client app dependencies.\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -127,7 +127,7 @@ sudo chown -R $USER:$GROUP ~/.config
 \label{lst:npm-permission}
 \end{listing}
 
-\textbf{Listing \ref{lst:jenkins-build-script-variables}} shows the different source-code locations on the experiment deployment that are concerned with the CI script. These will be necessary in the subsequent listings.
+\textbf{Listing \ref{lst:jenkins-build-script-variables}} shows the different source-code locations on the experiment deployment that are concerned with the CI script. These will be necessary in the subsequent listings.\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -144,7 +144,7 @@ REPORTS_WEBSITE_MAIN=$E2E_MAIN/reportsWebsite
 \label{lst:jenkins-build-script-variables}
 \end{listing}
 
-Next we give the permissions for the E2E testing and Synote deployment repo to a group that contains both \texttt{ubuntu} and \texttt{jenkins} (\textbf{Listing \ref{lst:deployment-folder-permissions}}), allowing \texttt{jenkins} to make new deployments of Synote.
+Next we give the permissions for the E2E testing and Synote deployment repo to a group that contains both \texttt{ubuntu} and \texttt{jenkins} (\textbf{Listing \ref{lst:deployment-folder-permissions}}), allowing \texttt{jenkins} to make new deployments of Synote.\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -169,7 +169,7 @@ sudo chmod -R 777 $SYNOTE_MAIN
 \label{lst:deployment-folder-permissions}
 \end{listing}
 
-One issue was that \texttt{git} would regularly create some files that are owned by \texttt{ubuntu} and the files built by \texttt{jenkins} could not replace those. So, we remove the \texttt{.git} folders (\textbf{Listing \ref{lst:deleting-git-folders}}), since \texttt{jenkins} will replace them with more recent versions.
+One issue was that \texttt{git} would regularly create some files that are owned by \texttt{ubuntu} and the files built by \texttt{jenkins} could not replace those. So, we remove the \texttt{.git} folders (\textbf{Listing \ref{lst:deleting-git-folders}}), since \texttt{jenkins} will replace them with more recent versions.\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -184,7 +184,7 @@ rm -rf $E2E_MAIN/.git
 \label{lst:deleting-git-folders}
 \end{listing}
 
-Finally, we need to give \texttt{jenkins} access to the deployment processes created by \texttt{ubuntu} so that it could restart them (\textbf{Listing \ref{lst:jenkins-pm2-configuration}}).
+Finally, we need to give \texttt{jenkins} access to the deployment processes created by \texttt{ubuntu} so that it could restart them (\textbf{Listing \ref{lst:jenkins-pm2-configuration}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -205,7 +205,7 @@ sudo chmod 777 /home/ubuntu/.pm2/rpc.sock
 \section{Synote Build}
 \label{sec:synote-build}
 
-Once a build is triggered, Jenkins pulls the latest Synote repository. Then \texttt{jenkins} builds the server (\textbf{Listing \ref{lst:building-synote-server}}), the client (\textbf{Listing \ref{lst:building-synote-client}}) and moves the static assets to \texttt{backend}. Finally, the complete build folder replaces \texttt{ubuntu}'s Synote deployment folder (\textbf{Listing \ref{lst:replace current deployment source}}).
+Once a build is triggered, Jenkins pulls the latest Synote repository. Then \texttt{jenkins} builds the server (\textbf{Listing \ref{lst:building-synote-server}}), the client (\textbf{Listing \ref{lst:building-synote-client}}) and moves the static assets to \texttt{backend}. Finally, the complete build folder replaces \texttt{ubuntu}'s Synote deployment folder (\textbf{Listing \ref{lst:replace current deployment source}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -268,7 +268,7 @@ mysql -u synote '-p<mysqlpass>' synote_server_experiment < v0.9.0-v0.10.0.sql # 
 \subsection{Restarting the New Build}
 \label{subsec:restarting-the-new-build}
 
-PM2 is a process manager that keeps processes alive even when users log off. Synote experiment deployment is kept alive as a PM2 process, which is restarted by \texttt{jenkins} at this stage (\textbf{Listing \ref{lst:restart-experiment-deployment}}).
+PM2 is a process manager that keeps processes alive even when users log off. Synote experiment deployment is kept alive as a PM2 process, which is restarted by \texttt{jenkins} at this stage (\textbf{Listing \ref{lst:restart-experiment-deployment}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -284,7 +284,7 @@ pm2 restart synote_experiment
 \section{E2E Testing on Remote}
 \label{subsec:e2e-testing-on-remote}
 
-In order to run the E2E tests, we first need the latest E2E test suite (located on a different repository) and to prepare it for use (\textbf{Listing \ref{lst:configure-latest-e2e-testing-repo}}) in a similar process to Synote deployment (described in \textbf{Section \ref{sec:synote-build}}).
+In order to run the E2E tests, we first need the latest E2E test suite (located on a different repository) and to prepare it for use (\textbf{Listing \ref{lst:configure-latest-e2e-testing-repo}}) in a similar process to Synote deployment (described in \textbf{Section \ref{sec:synote-build}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -307,7 +307,7 @@ npm install
 \label{lst:configure-latest-e2e-testing-repo}
 \end{listing}
 
-Synote's E2E test HTML reports are made available through a simple website (which is deployed by nginx in a similar process to \textbf{Listing \ref{lst:make-jenkins-available}}). This website is packaged with the E2E tests. So, we must redeploy for the latest reporting website (\textbf{Listing \ref{lst:deploy-latest-reporting-website}}).
+Synote's E2E test HTML reports are made available through a simple website (which is deployed by nginx in a similar process to \textbf{Listing \ref{lst:make-jenkins-available}}). This website is packaged with the E2E tests. So, we must redeploy for the latest reporting website (\textbf{Listing \ref{lst:deploy-latest-reporting-website}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -324,7 +324,7 @@ pm2 restart reports_website
 \label{lst:deploy-latest-reporting-website}
 \end{listing}
 
-E2E tests run in a browser which requires a display. So, a virtual display (Xvfb) is installed, along with the helper libraries and finally the browsers themselves (\textbf{Listing \ref{lst:xvfb-browser-install}}).
+E2E tests run in a browser which requires a display. So, a virtual display (Xvfb) is installed, along with the helper libraries and finally the browsers themselves (\textbf{Listing \ref{lst:xvfb-browser-install}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -345,7 +345,7 @@ sudo apt-get install chromium-browser
 \label{lst:xvfb-browser-install}
 \end{listing}
 
-Now the installed display server and a selenium server are started as PM2 daemon processes  (\textbf{Listing \ref{lst:webdriver-pm2}}), so that these steps need not be performed in future.
+Now the installed display server and a selenium server are started as PM2 daemon processes  (\textbf{Listing \ref{lst:webdriver-pm2}}), so that these steps need not be performed in future.\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -363,7 +363,7 @@ pm2 start $SYNOTE_JENKINS/depl.sh
 \label{lst:webdriver-pm2}
 \end{listing}
 
-Finally we run the tests and send the latest report link to a Slack channel (\textbf{Listing \ref{lst:run-e2e-tests}} and \textbf{Figure \ref{fig:slack-report-link}}).
+Finally we run the tests and send the latest report link to a Slack channel (\textbf{Listing \ref{lst:run-e2e-tests}} and \textbf{Figure \ref{fig:slack-report-link}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
