@@ -187,17 +187,9 @@ First step in design was to mock up some wireframes and get them approved by our
 
 \begin{figure}[!hbt]
   	\centering
- 	\includegraphics[width=0.6\textwidth]{profile-page-payment-feature.png}
+ 	\includegraphics[width=0.7\textwidth]{profile-page-payment-feature.png}
   	\caption{Profile Page Payment and Credits Section Wireframe}
  	\label{fig:profile-wireframe}
-\end{figure}
-
-\begin{figure}[!hbt]
-  	\centering
- 	\includegraphics[width=0.6\textwidth]{credits-history-wireframe.png}
-  	\caption{Credits History Wireframe}
- 	\label{fig:credits-history-wireframe}
-  % \vspace{-0.4cm}
 \end{figure}
 
 \begin{figure}[!hbt]
@@ -205,6 +197,13 @@ First step in design was to mock up some wireframes and get them approved by our
  	\includegraphics[width=0.8\textwidth]{saved-card-wireframe.png}
   	\caption{Saved Card Payment Form Wireframe}
  	\label{fig:saved-card-wireframe}
+\end{figure}
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.6\textwidth]{credits-history-wireframe.png}
+  	\caption{Credits History Wireframe}
+ 	\label{fig:credits-history-wireframe}
 \end{figure}
 
 \begin{figure}[!hbt]
@@ -262,7 +261,7 @@ To use \texttt{Stripe.js} on client side, we first had to include its library as
  <!-- code omitted -->
 </head>
 \end{minted}
-\captionof{listing}{Section of index.html file}
+\captionof{listing}{Section of \texttt{index.html} file}
 \label{lst:index-head-html}
 \end{listing}
 
@@ -277,7 +276,7 @@ We also had to include our actual publishable API key as a script which will be 
  </script>
 <!-- code omitted -->
 \end{minted}
-\captionof{listing}{Section of buycredit.html file}
+\captionof{listing}{Section of \texttt{buycredit.html} file}
 \label{lst:buycredit-html-stripe-key}
 \end{listing}
 
@@ -304,7 +303,7 @@ createStripeToken: function (tokenHelperObject) {
  },
 //code omitted
 \end{minted}
-\captionof{listing}{Section of paymentservice.js file}
+\captionof{listing}{Section of \texttt{paymentservice.js} file}
 \label{lst:create-token-payment-service-method}
 \end{listing}
 
@@ -324,7 +323,7 @@ If the response from Stripe was successful, \texttt{buyCreditController} will th
  },
 //code omitted
 \end{minted}
-\captionof{listing}{Section of paymentservice.js file}
+\captionof{listing}{Section of \texttt{paymentservice.js} file}
 \label{lst:charge-card-service-method}
 \end{listing}
 
@@ -344,7 +343,7 @@ The logic behind is similar to using a new card apart from the fact that we no l
  }]
 //code omitted
 \end{minted}
-\captionof{listing}{Section of app.js file}
+\captionof{listing}{Section of \texttt{app.js} file}
 \label{lst:get-cards-req}
 \end{listing}
 
@@ -363,7 +362,7 @@ When charging against saved card, we invoke the same method from \texttt{payment
  };
 //code omitted
 \end{minted}
-\captionof{listing}{Section of buycredit.js file}
+\captionof{listing}{Section of \texttt{buycredit.js} file}
 \label{lst:params-charge-card}
 \end{listing}
 
@@ -386,7 +385,7 @@ When user is routed to the \texttt{creditsHistory} URI, we send an HTTP Get requ
   }]
 //code omitted
 \end{minted}
-\captionof{listing}{Section of app.js file}
+\captionof{listing}{Section of \texttt{app.js file}}
 \label{lst:credits-history-req}
 \end{listing}
 
@@ -395,33 +394,33 @@ The loaded credit history data then displayed as a table with most recent purcha
 \subsection{Clientside Payment Details Validation}
 \label{subsec:clientside-payment-details-validation}
 
-Client side validation is handled via methods provided by Stipe’s API and an angular payment validation module (see top connection fig) called \texttt{angular-payments} [3]. Stripe’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service.\\
+Client side validation is handled via methods provided by Stipe’s API and an angular payment validation module  (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}) called \texttt{angular-payments} [3]. Stripe’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service.\\
 
 Consider validation for card number field as an example:\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
-<!-- code omitted -->
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+//code omitted    
 <input class="form-control" name="number" payments-format="card" ng-model="cardNumber" required
     ng-paste="\$event.preventDefault()" ng-change="checkCardNumber()">
-<!-- code omitted -->
+//code omitted   
 \end{minted}
-\captionof{listing}{Section of buycredit.html file}
+\captionof{listing}{Section of \texttt{buycredit.html file}}
 \label{lst:buycredit-html-cardnumber-input}
 \end{listing}
 
 In \textbf{Listing \ref{lst:buycredit-html-cardnumber-input}}, we  use Angluar’s ng-change directive to execute \texttt{checkCardNumber} method whenever it detects an input change e.g. keypress. \texttt{payments-format=”card”} is provided by \texttt{angular-payments} and ensures input is maximum of 16 digits.\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
-//code omitted
- $scope.checkCardNumber = function () {
-      if ($scope.cardNumber) {
-          $scope.theForm.number.\$setValidity("minLength", paymentService.isCardNumberTypeValid(
-          $scope.cardNumber));
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+//code omitted    
+ \$scope.checkCardNumber = function () {
+      if (\$scope.cardNumber) {
+          \$scope.theForm.number.\$setValidity("minLength", paymentService.isCardNumberTypeValid(
+          \$scope.cardNumber));
        }
    };
-//code omitted
+//code omitted   
 \end{minted}
 \captionof{listing}{Section of \texttt{buycredit.js} file}
 \label{lst:buycredit-controller-checkcardnumber-method}
@@ -430,14 +429,14 @@ In \textbf{Listing \ref{lst:buycredit-html-cardnumber-input}}, we  use Angluar�
 In code snippet \textbf{Listing \ref{lst:buycredit-controller-checkcardnumber-method}}, we set validity of form based on the input card number via \texttt{paymentService}.\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
-//code omitted
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+//code omitted    
   isCardNumberTypeValid: function (cardNumber) {
     var cardType = Stripe.card.cardType(cardNumber);
     var validCardNumBool = Stripe.card.validateCardNumber(cardNumber);
     return validCardNumBool && !(cardType === 'undefined');
  },
-//code omitted
+//code omitted   
 \end{minted}
 \captionof{listing}{Section of \texttt{paymentservice.js} file}
 \label{lst:payment-service-checkcardnumber-method}
@@ -450,4 +449,47 @@ In \textbf{Listing \ref{lst:payment-service-checkcardnumber-method}}, we use Str
  	\includegraphics[width=0.7\textwidth]{live-validation-screenshot.png}
   	\caption{Live Validation In Action}
  	\label{fig:live-validation-screenshot}
+\end{figure}
+
+\subsection{Alert Messages}
+\label{subsec:alert-messages}
+
+Synote uses \texttt{Toastr} alert messages throughout its implementation. We hit a problem when writing automated E2E tests where the \texttt{Toastr} alerts would prevent WebDriver from accessing the logout button. Consider \textbf{Figure \ref{fig:toastr-alert-problem-screenshot}}:\\
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=\textwidth]{toastr-alert-problem-screenshot.png}
+  	\caption{Example of Error Caused by \texttt{Toastr} Alerts}
+ 	\label{fig:toastr-alert-problem-screenshot}
+\end{figure}
+
+To overcome this issue, we switched to Bootstrap alerts which are added on the fly and set to disappear after 5 seconds. Consider \textbf{Listing \ref{lst:buycredit-html-alert-code}}:\\
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+//code omitted    
+<uib-alert dismiss-on-timeout="5000" ng-repeat="alert in alerts|limitTo:4" type="{{alert.type}}"
+       close="closeAlert($index)"><strong>{{ alert.title }}</strong> {{ alert.msg }}
+</uib-alert>
+//code omitted   
+\end{minted}
+\captionof{listing}{Section of \texttt{buycredit.html} file}
+\label{lst:buycredit-html-alert-code}
+\end{listing}
+
+\subsubsection{Screenshots of Alerts in Action}
+\label{subsubsec:screenshots-alerts}
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.8\textwidth]{alert-fail.png}
+  	\caption{Alert Shown When Payment Couldn't Be Processed}
+ 	\label{fig:alert-success}
+\end{figure}
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.8\textwidth]{alert-success.png}
+  	\caption{Alert Shown When payment Was Successful}
+ 	\label{fig:alert-fail}
 \end{figure}
