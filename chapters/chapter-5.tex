@@ -16,6 +16,64 @@
 \subsection{Feature Definition as Requirements}
 \label{subsec:feautre-definition-as-requirements}
 
+Feature files can be seen as an entry point to cucumber test cases \cite{featurefile1}. Each of the feature file should be written to test a single feature of the application or a particular area of feature \cite{featurefile2}. Since we were writing E2E tests for the payment feature, we created \texttt{buycredits.feature} file for testing this aspect. Consider the listing \textbf{Listing \ref{lst:buycredits-feature-file}}:\\
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+@dev @experiment
+Feature: Buying Credit feature
+  As a user of Synote
+  I should be able to successfully buy credits when logged in
+
+  Scenario: Access buy credits page when logged in
+    Given I click the "Profile" button on "SideMenu" page
+    Given I click the "BuyCredit" button on "Profile" page
+    Then I should be on "BuyCredits" page
+
+  Scenario: Buy credit with empty card number
+    Given I click the "Profile" button on "SideMenu" page
+    Given I click the "BuyCredit" button on "Profile" page
+    Given I Correctly type in my details but "" for "number"
+    Then Submit button should be disabled
+//code omitted
+\end{minted}
+\captionof{listing}{Section of \texttt{buycredits.feature} file}
+\label{lst:buycredits-feature-file}
+\end{listing}
+
+The section in \textbf{Listing \ref{lst:buycredits-feature-file}} is written in a language called \texttt{Gherkin}. \texttt{Gherkin} makes use of Business readable domain specific language (BRDSL) which allows us to write the test cases at a business level without getting into implementation details. Hence, they serve as both documentation and actual automation test scripts \cite{featurefile1}. 
+
+Each of the feature file should be defined with \texttt{Feature} keyword which consists of a name  (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  2) and brief description  (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  3-4). Each of the test cases are defined with \texttt{Scenario} keyword followed by brief description of that test (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  6 and 11). Each scenario should \cite{featurefile3}\\
+\begin{itemize}
+\item Describe event taking place
+\item Describe expected result
+\end{itemize}
+
+We use \texttt{Steps} to achieved this.\\
+
+Consider the \texttt{Access buy credits page when logged in scenario} in \textbf{Listing \ref{lst:buycredits-feature-file}}. We use keywords such as \texttt{Given} (line 7 and 8), \texttt{Then} (line 9) for writing readable test cases. Consider \textbf{Table \ref{tab:steps-keywords}} which define \texttt{Step} keywords \cite{featurefile1}
+
+\begin{center}
+%Column widths dependent on page width/margins
+\begin{tabular}{ |p{2cm}|p{7cm}| }
+
+ \hline
+ 	Keyword &
+ 	Description\\
+ \hline
+ 	Given & Describes test pre-condition\\
+ \hline
+ 	And & Defines additional test conditions\\
+ \hline
+ 	Then & Defines expectations of test \\
+ \hline
+
+\end{tabular}
+\captionof{table}{\texttt{Step keywords}}
+\label{tab:steps-keywords}
+\end{center}
+
+
 \subsection{Reusable Steps Definition}
 \label{subsec:reusable-steps-definition}
 
@@ -27,6 +85,9 @@
 
 \subsection{Page Objects}
 \label{subsec:page-objects}
+
+\subsection{Deployment Definition}
+\label{subsec:deployment-definition}
 
 \subsection{Reporting}
 \label{subsec:reporting}
