@@ -218,7 +218,7 @@ First step in design was to mock up some wireframes and get them approved by our
 
 \begin{figure}[!hbt]
   	\centering
- 	\includegraphics[width=0.6\textwidth]{frontend-infrastructure.png}
+ 	\includegraphics[width=0.7\textwidth]{frontend-infrastructure.png}
   	\caption{Frontend Infrastructure}
  	\label{fig:frontend-infrastructure-diagram}
 \end{figure}
@@ -233,12 +233,12 @@ Client side should handle these properties of the payment feature:
 \item Validation messages
 \end{itemize}
 
-“Credits History” and “Buy Credits” are very different components of the payment feature, so we created 2 separate controllers i.e. \texttt{buyCreditController} and \texttt{creditsHistoryController} to handle their logic independently.
+“Credits History” and “Buy Credits” are very different components of the payment feature, so we created 2 separate controllers i.e. “buycredit” controller and “creditshistory” controller to handle their logic independently.
 
 \subsubsection{Buy Credits Feature}
 \label{subsubsec:buy-credits-feature}
 
-As mentioned in \textbf{Figure \ref{fig:simple-sequence}}, it is the client application's responsibility to tokenise payment data and handle the response from Stripe. The \texttt{buyCreditController} handles all the payment related business logic with the help of \texttt{paymentService} service class (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). This class provides the \texttt{buyCreditController} with:
+As mentioned in \textbf{Figure \ref{fig:simple-sequence}}, it is the clientside’s responsibility to tokenise payment data and handle the response from Stripe. The \texttt{buyCreditController} handles all the payment related business logic with the help of \texttt{paymentService} service class (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). This class provides the \texttt{buyCreditController} with:
 
 \begin{itemize}
 \item Stripe tokenisation and response handler methods
@@ -247,9 +247,9 @@ As mentioned in \textbf{Figure \ref{fig:simple-sequence}}, it is the client appl
 \item Delete card method (server request)
 \end{itemize}
 
-Initially, all of this logic was handled by the \texttt{buyCreditController} itself and this lead to lot of code repetition. Doing simple things like changing the POST request URL for charging a card proved to be a hassle since we had to make these changes at multiple locations. We refactored all the reusable functions into \texttt{paymentService} making simplifying service updates. \\
+Initially, all of this logic was handled by the \texttt{buyCreditController} itself and this lead to lot of code repetition. Doing simple things like changing the POST request URL for charging a card a hassle since we had to make these changes at multiple locations. We refactored all the reusable functions into \texttt{paymentService} making amendments a hassle free job. \\
 
-To use \texttt{Stripe.js} on client side, we first had to include its library as a script in the \texttt{index.html} page. Consider \textbf{Listing \ref{lst:index-head-html}}:\\
+To use \texttt{Stripe.js} on client side, we first had to include its library as a script in the head of \texttt{index.html} page. Consider \textbf{Listing \ref{lst:index-head-html}}:\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
@@ -270,18 +270,19 @@ We also had to include our actual publishable API key as a script which will be 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
 //code omitted
-<script type="text/javascript">
-  Stripe.setPublishableKey('<pk_test_key_here>');
-</script>
+<form name="theForm" class="form-group" id="payment-form" novalidate>
+ <script type="text/javascript">
+ Stripe.setPublishableKey('pk_test_4FAeir9iMLjc76qM8Tn4Cn1p');
+ </script>
 <!-- code omitted -->
 \end{minted}
 \captionof{listing}{Section of \texttt{buycredit.html} file}
 \label{lst:buycredit-html-stripe-key}
 \end{listing}
 
-Payment can be of 2 forms - via a saved card or via a new card.\\
+Payment can be of 2 forms; via a saved card or via a new card.\\
 
-We had to ensure side secure transmission of card details from client i.e. they should not be intercepted and manipulated by an outsider. To achieve this level of security, we tokenise the critical payment fields via Stipe’s API and post this to Synote’s server along with other details such as amount of credits and price to pay. This way, we can assure that original customer details will not be sent to the server.\\
+When we were implementing the payment form, the main thing we had to ensure from client side was secure transmission of card details i.e. they shouldn't be intercepted and manipulated by an outsider. To achieve this level of security, we tokenise the critical payment fields via Stipe’s API and post this to Synote’s server along with other details such as amount of credits and price to pay. This way, we can assure that original values won't be sent to the server.\\
 
 \texttt{paymentService} is responsible for converting the user input payment details into a single use representative token.  Consider \textbf{Listing \ref{lst:create-token-payment-service-method}}:\\
 
@@ -289,22 +290,17 @@ We had to ensure side secure transmission of card details from client i.e. they 
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
 createStripeToken: function (tokenHelperObject) {
-  //the object which will create and manage the promise
-  var deferred = $q.defer();
-
-  Stripe.card.createToken(tokenHelperObject,
-    function (status, response) {
-
-      if (response.error) {
-        //if createToken method fails, reject the promise
-        deferred.reject(response.error);
-      } else {
-        //if the createToken method succeeds, resolve the promise
-        deferred.resolve(response);
-    }});
-
-    return deferred.promise;//return the promise
-},
+ var deferred = $q.defer(); //serve as the object which will create and manage the promise
+ Stripe.card.createToken(tokenHelperObject, function (status, response) {
+ if (response.error) {
+  //if createToken method fails, reject the promise
+  deferred.reject(response.error);
+ } else {
+  //if the createToken method succeeds, resolve the promise
+  deferred.resolve(response);
+ }});
+  return deferred.promise;//return the promise
+ },
 //code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{paymentservice.js} file}
@@ -370,7 +366,7 @@ When charging against saved card, we invoke the same method from \texttt{payment
 \label{lst:params-charge-card}
 \end{listing}
 
-Instead of passing in the Stripe token, we now pass the \texttt{cardId} of selected card.
+Instead of passing in the Stripe token, we now pass the \texttt{cardId} of selected card.\\
 
 \subsubsection{Credits History Feature}
 \label{subsubsec:credits-history-feature}
@@ -393,7 +389,7 @@ When user is routed to the \texttt{creditsHistory} URI, we send an HTTP Get requ
 \label{lst:credits-history-req}
 \end{listing}
 
-The loaded credit history data then displayed as a table with most recent purchases first.
+The loaded credit history data then displayed as a table with most recent purchases firs\\
 
 \subsection{Clientside Payment Details Validation}
 \label{subsec:clientside-payment-details-validation}
@@ -497,3 +493,51 @@ To overcome this issue, we switched to Bootstrap alerts which are added on the f
   	\caption{Alert Shown When payment Was Successful}
  	\label{fig:alert-fail}
 \end{figure}
+
+\subsection{Responsive Design}
+\label{subsec:responsive-design}
+
+To fit in with the responsive style of Synote, Bootstrap framework was used and the responsiveness of view files we added were tested using Firefox’s responsive design mode [5] which let us emulate screen sizes of different devices. 
+
+Consider the screenshots of tests in action:\\
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.5\textwidth]{responsive-profile-page.png}
+  	\caption{Profile Page Responsive View}
+ 	\label{fig:responsive-profile}
+\end{figure}
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.6\textwidth]{responsive-credits-history.png}
+  	\caption{Credits History Responsive View}
+ 	\label{fig:responsive-credits-history}
+\end{figure}
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.5\textwidth]{responsive-payment-form.png}
+  	\caption{Payment Form Responsive View}
+ 	\label{fig:responsive-payment-form}
+\end{figure}
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.6\textwidth]{responsive-saved-form.png}
+  	\caption{Saved Card Payment Form Responsive View}
+ 	\label{fig:responsive-saved-cards-form}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
