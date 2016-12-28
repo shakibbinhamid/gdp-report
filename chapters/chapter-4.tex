@@ -312,7 +312,7 @@ createStripeToken: function (tokenHelperObject) {
 \label{lst:create-token-payment-service-method}
 \end{listing}
 
-The method provided by Stripe’s API is \texttt{Stripe.Card.createToken} (line 4). This is in callback style and Synote’s conventions (see \textbf{Section \ref{subsec:conventions}}) favours promises over callbacks. Hence, we created “createStripeToken” method which uses Angular’s \texttt{\$q} constructor service to to turn callbacks into promises [1] \& [2]. The token helper object consists of input payment details i.e. billing name, number, cvc, expiry month and year.\\
+The method provided by Stripe’s API is \texttt{Stripe.Card.createToken} (line 4). This is in callback style and Synote’s conventions (see \textbf{Section \ref{subsec:conventions}}) favours promises over callbacks. Our \texttt{createStripeToken} method uses Angular’s \texttt{\$q} constructor service to to turn callbacks into promises [1] \& [2]. The token helper object consists of input payment details i.e. billing name, number, cvc, expiry month and year.\\
 
 If the response from Stripe was successful, \texttt{buyCreditController} will then move onto processing the payment via \texttt{paymentService}. Consider \textbf{Listing \ref{lst:charge-card-service-method}}:\\
 
@@ -332,9 +332,9 @@ chargeCard: function (parameters) {
 \label{lst:charge-card-service-method}
 \end{listing}
 
-Here we simply make a post request to Synote’s server at \texttt{topup} endpoint along with the single use representative token, credits, charge amount, save boolean as parameters. Save boolean flag is set true if user checks the save card option. It tells the server to save the card currently used for payment.\\
+Here we simply make a post request to Synote’s server at \texttt{topup} endpoint along with the single use representative token, credits, charge amount, save boolean as parameters. 'Save boolean flag' is set true if user checks the save card option. It tells the server to save the card currently used for payment.\\
 
-The logic behind is similar to using a new card apart from the fact that we no longer need to tokenize the payment details. When user is routed to the \texttt{buycredit} URI, we send an HTTP GET request to Synote’s server to retrieve saved cards for logged in user (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). Consider \textbf{Listing \ref{lst:get-cards-req}}:\\
+The logic behind is similar to using a new card apart from the fact that we no longer need to tokenise the payment details. When user is routed to the \texttt{buycredit} URI, we send a HTTP GET request to Synote’s server to retrieve saved cards for logged-in users (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). Consider \textbf{Listing \ref{lst:get-cards-req}}:\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -377,7 +377,7 @@ Instead of passing in the Stripe token, we now pass the \texttt{cardId} of selec
 \subsubsection{Credits History Feature}
 \label{subsubsec:credits-history-feature}
 
-When user is routed to the \texttt{creditsHistory} URI, we send an HTTP Get request to Synote’s server to retrieve credits history for logged in user. Consider \textbf{Listing \ref{lst:credits-history-req}}:\\
+When users are routed to the \texttt{creditsHistory} URI, we send a HTTP GET request to Synote’s server to retrieve credit history for logged in user. Consider \textbf{Listing \ref{lst:credits-history-req}}:\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -396,12 +396,12 @@ creditHistory: ['$http', 'authenticationService',
 \label{lst:credits-history-req}
 \end{listing}
 
-The loaded credit history data then displayed as a table with most recent purchases first.
+The loaded credit history data is then displayed as a reverse chronological table.
 
 \subsection{Clientside Payment Details Validation}
 \label{subsec:clientside-payment-details-validation}
 
-Client side validation is handled via methods provided by Stipe’s API and an angular payment validation module  (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}) called \texttt{angular-payments} [3]. Stripe’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service. Consider validation for card number field as an example:
+Client side validation is handled via methods provided by Stipe’s API and an Angular payment validation module  (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}) called \texttt{angular-payments} [3]. Stripe’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service. Consider validation for card number field as an example:
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
@@ -413,7 +413,7 @@ Client side validation is handled via methods provided by Stipe’s API and an a
 \label{lst:buycredit-html-cardnumber-input}
 \end{listing}
 
-In \textbf{Listing \ref{lst:buycredit-html-cardnumber-input}}, we  use Angluar’s ng-change directive to execute \texttt{checkCardNumber} method whenever it detects an input change e.g. keypress. \texttt{payments-format=”card”} is provided by \texttt{angular-payments} and ensures input is maximum of 16 digits.\\
+In \textbf{Listing \ref{lst:buycredit-html-cardnumber-input}}, we  use Angular’s \texttt{ng-change} directive to execute \texttt{checkCardNumber} method whenever it detects an input change e.g. keypress. \texttt{payments-format=”card”} is provided by \texttt{angular-payments} and ensures input to be 16 digits maximum.\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -430,7 +430,7 @@ $scope.checkCardNumber = function () {
 \label{lst:buycredit-controller-checkcardnumber-method}
 \end{listing}
 
-In code snippet \textbf{Listing \ref{lst:buycredit-controller-checkcardnumber-method}}, we set validity of form based on the input card number via \texttt{paymentService}.\\
+In \textbf{Listing \ref{lst:buycredit-controller-checkcardnumber-method}}, we check validity of the payment form based on the input card number via \texttt{paymentService}.\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -458,7 +458,7 @@ In \textbf{Listing \ref{lst:payment-service-checkcardnumber-method}}, we use Str
 \subsection{Alert Messages}
 \label{subsec:alert-messages}
 
-Synote uses \texttt{Toastr} alert messages throughout its implementation. We hit a problem when writing automated E2E tests where the \texttt{Toastr} alerts would prevent WebDriver from accessing the logout button. Consider \textbf{Figure \ref{fig:toastr-alert-problem-screenshot}}:\\
+Synote uses \texttt{Toastr} alert messages throughout its implementation. An issue arose whilst writing automated E2E tests where the \texttt{Toastr} alerts would prevent WebDriver from accessing the logout button. Consider \textbf{Figure \ref{fig:toastr-alert-problem-screenshot}}:\\
 
 \begin{figure}[!hbt]
   	\centering
