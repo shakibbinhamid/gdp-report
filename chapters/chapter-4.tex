@@ -290,6 +290,7 @@ We had to ensure side secure transmission of card details from client i.e. they 
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
 createStripeToken: function (tokenHelperObject) {
+
   //the object which will create and manage the promise
   var deferred = $q.defer();
 
@@ -319,13 +320,13 @@ If the response from Stripe was successful, \texttt{buyCreditController} will th
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
- chargeCard: function (parameters) {
+chargeCard: function (parameters) {
   return $http({
-   url: ENV.apiEndpoint + '/CreditHistory/topup',
-   method: 'POST',
-   data: parameters
+    url: ENV.apiEndpoint + '/CreditHistory/topup',
+    method: 'POST',
+    data: parameters
   });
- },
+},
 //code omitted
 \end{minted}
 \captionof{listing}{Section of paymentservice.js file}
@@ -339,13 +340,14 @@ The logic behind is similar to using a new card apart from the fact that we no l
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
- cards: ['$http', 'authenticationService', function ($http, authenticationService) {
-  var usrId = authenticationService.getUserInfo().user_id;
-  return $http({
-   url: ENV.apiEndpoint + '/creditHistory/cards',
-   method: "GET"
- });
- }]
+cards: ['$http', 'authenticationService',
+  function ($http, authenticationService) {
+    var usrId = authenticationService.getUserInfo().user_id;
+    return $http({
+      url: ENV.apiEndpoint + '/creditHistory/cards',
+      method: "GET"
+    });
+}]
 //code omitted
 \end{minted}
 \captionof{listing}{Section of app.js file}
@@ -357,14 +359,14 @@ When charging against saved card, we invoke the same method from \texttt{payment
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
- var parameters = {
- 	useSavedCard: $scope.useSavedCard,
-	cardId: $scope.cardChoosen.card ? $scope.cardChoosen.card.id : null,
-	tokenResponse: $scope.useSavedCard ? null : token,
-	save: $scope.saveCard,
-	amount: $scope.currentPriceTotalIncludingVAT,
-	credits: $scope.currentCreditsTotal
- };
+var parameters = {
+  useSavedCard: $scope.useSavedCard,
+  cardId: $scope.cardChoosen.card ? $scope.cardChoosen.card.id : null,
+  tokenResponse: $scope.useSavedCard ? null : token,
+  save: $scope.saveCard,
+  amount: $scope.currentPriceTotalIncludingVAT,
+  credits: $scope.currentCreditsTotal
+};
 //code omitted
 \end{minted}
 \captionof{listing}{Section of buycredit.js file}
