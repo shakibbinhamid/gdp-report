@@ -41,7 +41,9 @@ Feature: Buying Credit feature
 \label{lst:buycredits-feature-file}
 \end{listing}
 
-The section in \textbf{Listing \ref{lst:buycredits-feature-file}} is written in a language called \texttt{Gherkin}. \texttt{Gherkin} makes use of Business Readable Domain Specific Language (BRDSL) which allows us to write the test cases at a business level without getting into implementation details. Hence, they serve as both documentation and actual automation test scripts \cite{featurefile1}.\\
+The section in \textbf{Listing \ref{lst:buycredits-feature-file}} is written in a language called \texttt{Gherkin}. \texttt{Gherkin} makes use of Business Readable Domain Specific Language (BRDSL) which allows us to write the test cases at a business level without getting into implementation details. 
+
+Our client required us to document the requirements/specification for the new payment feature. Most of Synote's team are developers and since the feature file used \texttt{Gherkin}, it was readable on a business level and could act as automation test script \cite{featurefile1}. Hence, we recommended using the feature files themselves as the requirements documentation.\\
 
 Each of the feature file should be defined with \texttt{Feature} keyword which consists of a name  (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  2) and brief description  (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  3-4). Each of the test cases are defined with \texttt{Scenario} keyword followed by a brief description of that test (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  6 and 11). Each scenario should \cite{featurefile3}:
 \begin{itemize}
@@ -49,7 +51,7 @@ Each of the feature file should be defined with \texttt{Feature} keyword which c
 \item Describe expected result
 \end{itemize}
 
-We use \texttt{Steps} to achieved this. Consider the \texttt{Access buy credits page when logged in scenario} in \textbf{Listing \ref{lst:buycredits-feature-file}}. We use keywords such as \texttt{Given} (line 7 and 8), \texttt{Then} (line 9) for writing readable test cases. Consider \textbf{Table \ref{tab:steps-keywords}} which define \texttt{Step} keywords \cite{featurefile1}
+We use \texttt{Steps} to achieved this. Consider the \texttt{Access buy credits page when logged in} scenario in \textbf{Listing \ref{lst:buycredits-feature-file}}. We use keywords such as \texttt{Given} (line 7 and 8), \texttt{Then} (line 9) for writing readable test cases. Consider \textbf{Table \ref{tab:steps-keywords}} which define \texttt{Step} keywords \cite{featurefile1}
 
 \begin{center}
 %Column widths dependent on page width/margins
@@ -71,9 +73,31 @@ We use \texttt{Steps} to achieved this. Consider the \texttt{Access buy credits 
 \label{tab:steps-keywords}
 \end{center}
 
-
 \subsection{Reusable Steps Definition}
 \label{subsec:reusable-steps-definition}
+
+Cucumber is not able to execute the scenarios as they are. Instead we have to write \texttt{step} definitions. Step definitions use regular expression to map the \texttt{Gherkin steps} to actions which drive system interactions \cite{stepfile1}. Each of the \texttt{steps} written for scenarios in the \texttt{feature} file should have a \texttt{step} definition declared in its corresponding \texttt{steps} file.\\ A \texttt{step} file should only contain definitions for \texttt{steps} used in corresponding \texttt{feature} file.\\
+
+Consider \textbf{Listing \ref{lst:buycredits-step-file}}:\\
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{cucumber}
+@dev @experiment
+//code omitted
+	this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/, function (buttonName, pageName) {
+        return this.Support.clickButton(buttonName, pageName);
+    });
+
+    this.Given(/^I should be on "([^"]*)" page$/, function (pageName) {
+        return this.Support.waitUntil(this.Support.urlChanged(this.Support.getPageUrl(pageName)), 2000)();
+    });
+//code omitted
+\end{minted}
+\captionof{listing}{Section of \texttt{buycredits.steps.js} file}
+\label{lst:buycredits-step-file}
+\end{listing}
+
+In our case, all the \texttt{steps} written in \texttt{buycredits.feature} file are defined in the \texttt{buycredits.steps.js} file. Each step should have a unique definition else an \texttt{ambiguous match} exception will be thrown. \textbf{Listing \ref{lst:buycredits-step-file}} contains the step definitions for \texttt{Access buy credits page when logged in} scenario in \textbf{Listing \ref{lst:buycredits-feature-file}}. Inside the step definitions, we write javascript code to handle the interaction logic e.g. 1st definition in \textbf{Listing \ref{lst:buycredits-step-file}} (line 3) handles clicking of button provided  \texttt{buttonName and pageName} parameters and 2nd definition (line 7) handles checking we are on a page with certain URL provided  \texttt{pageName} parameter. Nearly all of out step definitions take parameters instead of card-coding them. This way, we can satisfy the \texttt{DRY} principle by reusing generic step definitions, making both  \texttt{feature} and  \texttt{step} files easily maintainable in the long run. 
 
 \subsection{Reusable Support Functions}
 \label{subsec:reusable-support-functions}
