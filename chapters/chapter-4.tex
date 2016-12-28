@@ -119,7 +119,7 @@ module.exports = {
 };
 
 \end{minted}
-\captionof{listing}{CreditHistory.js model file}
+\captionof{listing}{\texttt{CreditHistory.js} model file}
 \label{lst:credit-history-model}
 \end{listing}
 
@@ -171,7 +171,7 @@ it('Should throw error "No such customer: badValue" when "badValue" customer is 
 it('Should throw error "chargeCard: Missing properties in provided JSON" when no customer is provided', function (done) {...});
 
 \end{minted}
-\captionof{listing}{Section Of StripeService.test.js}
+\captionof{listing}{Section Of \texttt{StripeService.test.js}}
 \label{lst:stripe-test-cases}
 \end{listing}
 
@@ -218,7 +218,7 @@ First step in design was to mock up some wireframes and get them approved by our
 
 \begin{figure}[!hbt]
   	\centering
- 	\includegraphics[width=0.7\textwidth]{frontend-infrastructure.png}
+ 	\includegraphics[width=0.6\textwidth]{frontend-infrastructure.png}
   	\caption{Frontend Infrastructure}
  	\label{fig:frontend-infrastructure-diagram}
 \end{figure}
@@ -233,12 +233,12 @@ Client side should handle these properties of the payment feature:
 \item Validation messages
 \end{itemize}
 
-“Credits History” and “Buy Credits” are very different components of the payment feature, so we created 2 separate controllers i.e. “buycredit” controller and “creditshistory” controller to handle their logic independently.
+“Credits History” and “Buy Credits” are very different components of the payment feature, so we created 2 separate controllers i.e. \texttt{buyCreditController} and \texttt{creditsHistoryController} to handle their logic independently.
 
 \subsubsection{Buy Credits Feature}
 \label{subsubsec:buy-credits-feature}
 
-As mentioned in \textbf{Figure \ref{fig:simple-sequence}}, it is the clientside’s responsibility to tokenise payment data and handle the response from Stripe. The \texttt{buyCreditController} handles all the payment related business logic with the help of \texttt{paymentService} service class (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). This class provides the \texttt{buyCreditController} with:
+As mentioned in \textbf{Figure \ref{fig:simple-sequence}}, it is the client application's responsibility to tokenise payment data and handle the response from Stripe. The \texttt{buyCreditController} handles all the payment related business logic with the help of \texttt{paymentService} service class (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). This class provides the \texttt{buyCreditController} with:
 
 \begin{itemize}
 \item Stripe tokenisation and response handler methods
@@ -247,9 +247,9 @@ As mentioned in \textbf{Figure \ref{fig:simple-sequence}}, it is the clientside�
 \item Delete card method (server request)
 \end{itemize}
 
-Initially, all of this logic was handled by the \texttt{buyCreditController} itself and this lead to lot of code repetition. Doing simple things like changing the POST request URL for charging a card a hassle since we had to make these changes at multiple locations. We refactored all the reusable functions into \texttt{paymentService} making amendments a hassle free job. \\
+Initially, all of this logic was handled by the \texttt{buyCreditController} itself and this lead to lot of code repetition. Doing simple things like changing the POST request URL for charging a card proved to be a hassle since we had to make these changes at multiple locations. We refactored all the reusable functions into \texttt{paymentService} making simplifying service updates. \\
 
-To use \texttt{Stripe.js} on client side, we first had to include its library as a script in the head of \texttt{index.html} page. Consider \textbf{Listing \ref{lst:index-head-html}}:\\
+To use \texttt{Stripe.js} on client side, we first had to include its library as a script in the \texttt{index.html} page. Consider \textbf{Listing \ref{lst:index-head-html}}:\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
@@ -270,19 +270,18 @@ We also had to include our actual publishable API key as a script which will be 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
 //code omitted
-<form name="theForm" class="form-group" id="payment-form" novalidate>
- <script type="text/javascript">
- Stripe.setPublishableKey('pk_test_4FAeir9iMLjc76qM8Tn4Cn1p');
- </script>
+<script type="text/javascript">
+  Stripe.setPublishableKey('<pk_test_key_here>');
+</script>
 <!-- code omitted -->
 \end{minted}
 \captionof{listing}{Section of \texttt{buycredit.html} file}
 \label{lst:buycredit-html-stripe-key}
 \end{listing}
 
-Payment can be of 2 forms; via a saved card or via a new card.\\
+Payment can be of 2 forms - via a saved card or via a new card.\\
 
-When we were implementing the payment form, the main thing we had to ensure from client side was secure transmission of card details i.e. they shouldn't be intercepted and manipulated by an outsider. To achieve this level of security, we tokenise the critical payment fields via Stipe’s API and post this to Synote’s server along with other details such as amount of credits and price to pay. This way, we can assure that original values won't be sent to the server.\\
+We had to ensure side secure transmission of card details from client i.e. they should not be intercepted and manipulated by an outsider. To achieve this level of security, we tokenise the critical payment fields via Stipe’s API and post this to Synote’s server along with other details such as amount of credits and price to pay. This way, we can assure that original customer details will not be sent to the server.\\
 
 \texttt{paymentService} is responsible for converting the user input payment details into a single use representative token.  Consider \textbf{Listing \ref{lst:create-token-payment-service-method}}:\\
 
@@ -290,17 +289,23 @@ When we were implementing the payment form, the main thing we had to ensure from
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
 createStripeToken: function (tokenHelperObject) {
- var deferred = $q.defer(); //serve as the object which will create and manage the promise
- Stripe.card.createToken(tokenHelperObject, function (status, response) {
- if (response.error) {
-  //if createToken method fails, reject the promise
-  deferred.reject(response.error);
- } else {
-  //if the createToken method succeeds, resolve the promise
-  deferred.resolve(response);
- }});
-  return deferred.promise;//return the promise
- },
+
+  //the object which will create and manage the promise
+  var deferred = $q.defer();
+
+  Stripe.card.createToken(tokenHelperObject,
+    function (status, response) {
+
+      if (response.error) {
+        //if createToken method fails, reject the promise
+        deferred.reject(response.error);
+      } else {
+        //if the createToken method succeeds, resolve the promise
+        deferred.resolve(response);
+    }});
+
+    return deferred.promise;//return the promise
+},
 //code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{paymentservice.js} file}
@@ -314,13 +319,13 @@ If the response from Stripe was successful, \texttt{buyCreditController} will th
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
- chargeCard: function (parameters) {
+chargeCard: function (parameters) {
   return $http({
-   url: ENV.apiEndpoint + '/CreditHistory/topup',
-   method: 'POST',
-   data: parameters
+    url: ENV.apiEndpoint + '/CreditHistory/topup',
+    method: 'POST',
+    data: parameters
   });
- },
+},
 //code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{paymentservice.js} file}
@@ -334,13 +339,14 @@ The logic behind is similar to using a new card apart from the fact that we no l
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
- cards: ['$http', 'authenticationService', function ($http, authenticationService) {
-  var usrId = authenticationService.getUserInfo().user_id;
-  return $http({
-   url: ENV.apiEndpoint + '/creditHistory/cards',
-   method: "GET"
- });
- }]
+cards: ['$http', 'authenticationService',
+  function ($http, authenticationService) {
+    var usrId = authenticationService.getUserInfo().user_id;
+    return $http({
+      url: ENV.apiEndpoint + '/creditHistory/cards',
+      method: "GET"
+    });
+}]
 //code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{app.js} file}
@@ -352,21 +358,21 @@ When charging against saved card, we invoke the same method from \texttt{payment
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
- var parameters = {
- 	useSavedCard: $scope.useSavedCard,
-	cardId: $scope.cardChoosen.card ? $scope.cardChoosen.card.id : null,
-	tokenResponse: $scope.useSavedCard ? null : token,
-	save: $scope.saveCard,
-	amount: $scope.currentPriceTotalIncludingVAT,
-	credits: $scope.currentCreditsTotal
- };
+var parameters = {
+  useSavedCard: $scope.useSavedCard,
+  cardId: $scope.cardChoosen.card ? $scope.cardChoosen.card.id : null,
+  tokenResponse: $scope.useSavedCard ? null : token,
+  save: $scope.saveCard,
+  amount: $scope.currentPriceTotalIncludingVAT,
+  credits: $scope.currentCreditsTotal
+};
 //code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{buycredit.js} file}
 \label{lst:params-charge-card}
 \end{listing}
 
-Instead of passing in the Stripe token, we now pass the \texttt{cardId} of selected card.\\
+Instead of passing in the Stripe token, we now pass the \texttt{cardId} of selected card.
 
 \subsubsection{Credits History Feature}
 \label{subsubsec:credits-history-feature}
@@ -376,34 +382,32 @@ When user is routed to the \texttt{creditsHistory} URI, we send an HTTP Get requ
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
- creditHistory: ['$http', 'authenticationService', function ($http, authenticationService) {
-  var usrId = authenticationService.getUserInfo().user_id;
-  return $http({
-  url: ENV.apiEndpoint + '/creditHistory/history',
-  method: "GET"
-  });
-  }]
+creditHistory: ['$http', 'authenticationService',
+  function ($http, authenticationService) {
+    var usrId = authenticationService.getUserInfo().user_id;
+    return $http({
+      url: ENV.apiEndpoint + '/creditHistory/history',
+      method: "GET"
+    });
+}]
 //code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{app.js file}}
 \label{lst:credits-history-req}
 \end{listing}
 
-The loaded credit history data then displayed as a table with most recent purchases firs\\
+The loaded credit history data then displayed as a table with most recent purchases first.
 
 \subsection{Clientside Payment Details Validation}
 \label{subsec:clientside-payment-details-validation}
 
-Client side validation is handled via methods provided by Stipe’s API and an angular payment validation module  (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}) called \texttt{angular-payments} [3]. Stripe’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service.\\
-
-Consider validation for card number field as an example:\\
+Client side validation is handled via methods provided by Stipe’s API and an angular payment validation module  (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}) called \texttt{angular-payments} [3]. Stripe’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service. Consider validation for card number field as an example:
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
-<input class="form-control" name="number" payments-format="card" ng-model="cardNumber" required
-    ng-paste="\$event.preventDefault()" ng-change="checkCardNumber()">
-//code omitted   
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
+<!-- code omitted -->
+<input class="form-control" name="number" payments-format="card" ng-model="cardNumber" ng-paste="$event.preventDefault()" ng-change="checkCardNumber()" required>
+<!-- code omitted -->
 \end{minted}
 \captionof{listing}{Section of \texttt{buycredit.html file}}
 \label{lst:buycredit-html-cardnumber-input}
@@ -412,15 +416,15 @@ Consider validation for card number field as an example:\\
 In \textbf{Listing \ref{lst:buycredit-html-cardnumber-input}}, we  use Angluar’s ng-change directive to execute \texttt{checkCardNumber} method whenever it detects an input change e.g. keypress. \texttt{payments-format=”card”} is provided by \texttt{angular-payments} and ensures input is maximum of 16 digits.\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
- \$scope.checkCardNumber = function () {
-      if (\$scope.cardNumber) {
-          \$scope.theForm.number.\$setValidity("minLength", paymentService.isCardNumberTypeValid(
-          \$scope.cardNumber));
-       }
-   };
-//code omitted   
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+$scope.checkCardNumber = function () {
+  if ($scope.cardNumber) {
+    $scope.theForm.number.setValidity("minLength",
+      paymentService.isCardNumberTypeValid($scope.cardNumber));
+  }
+};
+//code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{buycredit.js} file}
 \label{lst:buycredit-controller-checkcardnumber-method}
@@ -429,14 +433,14 @@ In \textbf{Listing \ref{lst:buycredit-html-cardnumber-input}}, we  use Angluar�
 In code snippet \textbf{Listing \ref{lst:buycredit-controller-checkcardnumber-method}}, we set validity of form based on the input card number via \texttt{paymentService}.\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
-  isCardNumberTypeValid: function (cardNumber) {
-    var cardType = Stripe.card.cardType(cardNumber);
-    var validCardNumBool = Stripe.card.validateCardNumber(cardNumber);
-    return validCardNumBool && !(cardType === 'undefined');
- },
-//code omitted   
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+isCardNumberTypeValid: function (cardNumber) {
+  var cardType = Stripe.card.cardType(cardNumber);
+  var validCardNumBool = Stripe.card.validateCardNumber(cardNumber);
+  return validCardNumBool && !(cardType === 'undefined');
+},
+//code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{paymentservice.js} file}
 \label{lst:payment-service-checkcardnumber-method}
@@ -446,7 +450,7 @@ In \textbf{Listing \ref{lst:payment-service-checkcardnumber-method}}, we use Str
 
 \begin{figure}[!hbt]
   	\centering
- 	\includegraphics[width=0.7\textwidth]{live-validation-screenshot.png}
+ 	\includegraphics[width=0.6\textwidth]{live-validation-screenshot.png}
   	\caption{Live Validation In Action}
  	\label{fig:live-validation-screenshot}
 \end{figure}
@@ -466,19 +470,16 @@ Synote uses \texttt{Toastr} alert messages throughout its implementation. We hit
 To overcome this issue, we switched to Bootstrap alerts which are added on the fly and set to disappear after 5 seconds. Consider \textbf{Listing \ref{lst:buycredit-html-alert-code}}:\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
-<uib-alert dismiss-on-timeout="5000" ng-repeat="alert in alerts|limitTo:4" type="{{alert.type}}"
-       close="closeAlert($index)"><strong>{{ alert.title }}</strong> {{ alert.msg }}
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
+<!-- code omitted -->
+<uib-alert dismiss-on-timeout="5000" ng-repeat="alert in alerts|limitTo:4" type="{{alert.type}}" close="closeAlert($index)">
+  <strong>{{ alert.title }}</strong> {{ alert.msg }}
 </uib-alert>
-//code omitted   
+<!-- code omitted -->
 \end{minted}
 \captionof{listing}{Section of \texttt{buycredit.html} file}
 \label{lst:buycredit-html-alert-code}
 \end{listing}
-
-\subsubsection{Screenshots of Alerts in Action}
-\label{subsubsec:screenshots-alerts}
 
 \begin{figure}[!hbt]
   	\centering
@@ -502,42 +503,31 @@ To fit in with the responsive style of Synote, Bootstrap framework was used and 
 Consider the screenshots of tests in action:\\
 
 \begin{figure}[!hbt]
-  	\centering
- 	\includegraphics[width=0.5\textwidth]{responsive-profile-page.png}
-  	\caption{Profile Page Responsive View}
- 	\label{fig:responsive-profile}
+    \centering
+  \includegraphics[width=0.5\textwidth]{responsive-profile-page.png}
+    \caption{Profile Page Responsive View}
+  \label{fig:responsive-profile}
 \end{figure}
 
 \begin{figure}[!hbt]
-  	\centering
- 	\includegraphics[width=0.6\textwidth]{responsive-credits-history.png}
-  	\caption{Credits History Responsive View}
- 	\label{fig:responsive-credits-history}
+    \centering
+  \includegraphics[width=0.6\textwidth]{responsive-credits-history.png}
+    \caption{Credits History Responsive View}
+  \label{fig:responsive-credits-history}
 \end{figure}
 
 \begin{figure}[!hbt]
-  	\centering
- 	\includegraphics[width=0.5\textwidth]{responsive-payment-form.png}
-  	\caption{Payment Form Responsive View}
- 	\label{fig:responsive-payment-form}
+    \centering
+  \includegraphics[width=0.5\textwidth]{responsive-payment-form.png}
+    \caption{Payment Form Responsive View}
+  \label{fig:responsive-payment-form}
 \end{figure}
 
 \begin{figure}[!hbt]
-  	\centering
- 	\includegraphics[width=0.6\textwidth]{responsive-saved-form.png}
-  	\caption{Saved Card Payment Form Responsive View}
- 	\label{fig:responsive-saved-cards-form}
+    \centering
+  \includegraphics[width=0.6\textwidth]{responsive-saved-form.png}
+    \caption{Saved Card Payment Form Responsive View}
+  \label{fig:responsive-saved-cards-form}
 \end{figure}
-
-
-
-
-
-
-
-
-
-
-
 
 
