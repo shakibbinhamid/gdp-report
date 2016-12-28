@@ -312,7 +312,7 @@ createStripeToken: function (tokenHelperObject) {
 \label{lst:create-token-payment-service-method}
 \end{listing}
 
-The method provided by Stripe’s API is \texttt{Stripe.Card.createToken} (line 4). This is in callback style and Synote’s conventions (see \textbf{Section \ref{subsec:conventions}}) favours promises over callbacks. Our \texttt{createStripeToken} method uses Angular’s \texttt{\$q} constructor service to to turn callbacks into promises [1] \& [2]. The token helper object consists of input payment details i.e. billing name, number, cvc, expiry month and year.\\
+The method provided by Stripe’s API is \texttt{Stripe.Card.createToken} (line 4). This is in callback style and Synote’s conventions (see \textbf{Section \ref{subsec:conventions}}) favours promises over callbacks. Our \texttt{createStripeToken} method uses Angular’s \texttt{\$q} constructor service to to turn callbacks into promises \cite{jdotjdot} \& \cite{angularjsq}. The token helper object consists of input payment details i.e. billing name, number, cvc, expiry month and year.\\
 
 If the response from Stripe was successful, \texttt{buyCreditController} will then move onto processing the payment via \texttt{paymentService}. Consider \textbf{Listing \ref{lst:charge-card-service-method}}:\\
 
@@ -401,7 +401,7 @@ The loaded credit history data is then displayed as a reverse chronological tabl
 \subsection{Clientside Payment Details Validation}
 \label{subsec:clientside-payment-details-validation}
 
-Client side validation is handled via methods provided by Stipe’s API and an Angular payment validation module  (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}) called \texttt{angular-payments} [3]. Stripe’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service. Consider validation for card number field as an example:
+Client side validation is handled via methods provided by Stipe’s API and an Angular payment validation module  (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}) called \texttt{angular-payments} \cite{angularpayments}. Stripe’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service. Consider validation for card number field as an example:
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
@@ -498,7 +498,7 @@ To overcome this issue, we switched to Bootstrap alerts which are added on the f
 \subsection{Responsive Design}
 \label{subsec:responsive-design}
 
-To fit in with the responsive style of Synote, Bootstrap framework was used and the responsiveness of view files we added were tested using Firefox’s responsive design mode [5] which let us emulate screen sizes of different devices. Consider the screenshots of tests in action:\\
+To fit in with the responsive style of Synote, Bootstrap framework was used and the responsiveness of view files we added were tested using Firefox’s responsive design mode \cite{firefoxresponsive} which let us emulate screen sizes of different devices. Consider the screenshots of tests in action:\\
 
 \begin{figure}[!htb]
     \centering
