@@ -119,7 +119,7 @@ module.exports = {
 };
 
 \end{minted}
-\captionof{listing}{CreditHistory.js model file}
+\captionof{listing}{\texttt{CreditHistory.js} model file}
 \label{lst:credit-history-model}
 \end{listing}
 
@@ -171,7 +171,7 @@ it('Should throw error "No such customer: badValue" when "badValue" customer is 
 it('Should throw error "chargeCard: Missing properties in provided JSON" when no customer is provided', function (done) {...});
 
 \end{minted}
-\captionof{listing}{Section Of StripeService.test.js}
+\captionof{listing}{Section Of \texttt{StripeService.test.js}}
 \label{lst:stripe-test-cases}
 \end{listing}
 
@@ -382,13 +382,14 @@ When user is routed to the \texttt{creditsHistory} URI, we send an HTTP Get requ
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
- creditHistory: ['$http', 'authenticationService', function ($http, authenticationService) {
-  var usrId = authenticationService.getUserInfo().user_id;
-  return $http({
-  url: ENV.apiEndpoint + '/creditHistory/history',
-  method: "GET"
-  });
-  }]
+creditHistory: ['$http', 'authenticationService',
+  function ($http, authenticationService) {
+    var usrId = authenticationService.getUserInfo().user_id;
+    return $http({
+      url: ENV.apiEndpoint + '/creditHistory/history',
+      method: "GET"
+    });
+}]
 //code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{app.js file}}
@@ -400,16 +401,13 @@ The loaded credit history data then displayed as a table with most recent purcha
 \subsection{Clientside Payment Details Validation}
 \label{subsec:clientside-payment-details-validation}
 
-Client side validation is handled via methods provided by Stipe’s API and an angular payment validation module  (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}) called \texttt{angular-payments} [3]. Stripe’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service.\\
-
-Consider validation for card number field as an example:\\
+Client side validation is handled via methods provided by Stipe’s API and an angular payment validation module  (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}) called \texttt{angular-payments} [3]. Stripe’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service. Consider validation for card number field as an example:
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
-<input class="form-control" name="number" payments-format="card" ng-model="cardNumber" required
-    ng-paste="\$event.preventDefault()" ng-change="checkCardNumber()">
-//code omitted   
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
+<!-- code omitted -->
+<input class="form-control" name="number" payments-format="card" ng-model="cardNumber" ng-paste="$event.preventDefault()" ng-change="checkCardNumber()" required>
+<!-- code omitted -->
 \end{minted}
 \captionof{listing}{Section of \texttt{buycredit.html file}}
 \label{lst:buycredit-html-cardnumber-input}
@@ -418,15 +416,15 @@ Consider validation for card number field as an example:\\
 In \textbf{Listing \ref{lst:buycredit-html-cardnumber-input}}, we  use Angluar’s ng-change directive to execute \texttt{checkCardNumber} method whenever it detects an input change e.g. keypress. \texttt{payments-format=”card”} is provided by \texttt{angular-payments} and ensures input is maximum of 16 digits.\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
- \$scope.checkCardNumber = function () {
-      if (\$scope.cardNumber) {
-          \$scope.theForm.number.\$setValidity("minLength", paymentService.isCardNumberTypeValid(
-          \$scope.cardNumber));
-       }
-   };
-//code omitted   
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+$scope.checkCardNumber = function () {
+  if ($scope.cardNumber) {
+    $scope.theForm.number.setValidity("minLength",
+      paymentService.isCardNumberTypeValid($scope.cardNumber));
+  }
+};
+//code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{buycredit.js} file}
 \label{lst:buycredit-controller-checkcardnumber-method}
@@ -435,14 +433,14 @@ In \textbf{Listing \ref{lst:buycredit-html-cardnumber-input}}, we  use Angluar�
 In code snippet \textbf{Listing \ref{lst:buycredit-controller-checkcardnumber-method}}, we set validity of form based on the input card number via \texttt{paymentService}.\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
-  isCardNumberTypeValid: function (cardNumber) {
-    var cardType = Stripe.card.cardType(cardNumber);
-    var validCardNumBool = Stripe.card.validateCardNumber(cardNumber);
-    return validCardNumBool && !(cardType === 'undefined');
- },
-//code omitted   
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+isCardNumberTypeValid: function (cardNumber) {
+  var cardType = Stripe.card.cardType(cardNumber);
+  var validCardNumBool = Stripe.card.validateCardNumber(cardNumber);
+  return validCardNumBool && !(cardType === 'undefined');
+},
+//code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{paymentservice.js} file}
 \label{lst:payment-service-checkcardnumber-method}
@@ -452,7 +450,7 @@ In \textbf{Listing \ref{lst:payment-service-checkcardnumber-method}}, we use Str
 
 \begin{figure}[!hbt]
   	\centering
- 	\includegraphics[width=0.7\textwidth]{live-validation-screenshot.png}
+ 	\includegraphics[width=0.6\textwidth]{live-validation-screenshot.png}
   	\caption{Live Validation In Action}
  	\label{fig:live-validation-screenshot}
 \end{figure}
@@ -472,19 +470,16 @@ Synote uses \texttt{Toastr} alert messages throughout its implementation. We hit
 To overcome this issue, we switched to Bootstrap alerts which are added on the fly and set to disappear after 5 seconds. Consider \textbf{Listing \ref{lst:buycredit-html-alert-code}}:\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
-//code omitted    
-<uib-alert dismiss-on-timeout="5000" ng-repeat="alert in alerts|limitTo:4" type="{{alert.type}}"
-       close="closeAlert($index)"><strong>{{ alert.title }}</strong> {{ alert.msg }}
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
+<!-- code omitted -->
+<uib-alert dismiss-on-timeout="5000" ng-repeat="alert in alerts|limitTo:4" type="{{alert.type}}" close="closeAlert($index)">
+  <strong>{{ alert.title }}</strong> {{ alert.msg }}
 </uib-alert>
-//code omitted   
+<!-- code omitted -->
 \end{minted}
 \captionof{listing}{Section of \texttt{buycredit.html} file}
 \label{lst:buycredit-html-alert-code}
 \end{listing}
-
-\subsubsection{Screenshots of Alerts in Action}
-\label{subsubsec:screenshots-alerts}
 
 \begin{figure}[!hbt]
   	\centering
