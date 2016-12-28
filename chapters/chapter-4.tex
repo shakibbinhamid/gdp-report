@@ -498,29 +498,27 @@ To overcome this issue, we switched to Bootstrap alerts which are added on the f
 \subsection{Responsive Design}
 \label{subsec:responsive-design}
 
-To fit in with the responsive style of Synote, Bootstrap framework was used and the responsiveness of view files we added were tested using Firefox’s responsive design mode [5] which let us emulate screen sizes of different devices. 
+To fit in with the responsive style of Synote, Bootstrap framework was used and the responsiveness of view files we added were tested using Firefox’s responsive design mode [5] which let us emulate screen sizes of different devices. Consider the screenshots of tests in action:\\
 
-Consider the screenshots of tests in action:\\
-
-\begin{figure}[!hbt]
+\begin{figure}[!htb]
     \centering
-  \includegraphics[width=0.5\textwidth]{responsive-profile-page.png}
-    \caption{Profile Page Responsive View}
-  \label{fig:responsive-profile}
-\end{figure}
-
-\begin{figure}[!hbt]
-    \centering
-  \includegraphics[width=0.6\textwidth]{responsive-credits-history.png}
-    \caption{Credits History Responsive View}
-  \label{fig:responsive-credits-history}
-\end{figure}
-
-\begin{figure}[!hbt]
-    \centering
-  \includegraphics[width=0.5\textwidth]{responsive-payment-form.png}
-    \caption{Payment Form Responsive View}
-  \label{fig:responsive-payment-form}
+    \begin{minipage}{.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{responsive-profile-page.png}
+          \caption{Profile Page Responsive View}
+        \label{fig:responsive-profile}
+        \includegraphics[width=\textwidth]{responsive-credits-history.png}
+          \caption{Credits History Responsive View}
+        \label{fig:responsive-credits-history}
+    \end{minipage}%
+    \hspace{0.1cm}
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \centering
+      \includegraphics[width=\textwidth]{responsive-payment-form.png}
+        \caption{Payment Form Responsive View}
+      \label{fig:responsive-payment-form}
+    \end{minipage}
 \end{figure}
 
 \begin{figure}[!hbt]
@@ -529,5 +527,3 @@ Consider the screenshots of tests in action:\\
     \caption{Saved Card Payment Form Responsive View}
   \label{fig:responsive-saved-cards-form}
 \end{figure}
-
-
