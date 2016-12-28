@@ -16,7 +16,7 @@
 \subsection{Feature Definition as Requirements}
 \label{subsec:feautre-definition-as-requirements}
 
-Feature files can be seen as an entry point to cucumber test cases \cite{featurefile1}. Each of the feature file should be written to test a single feature of the application or a particular area of feature \cite{featurefile2}. Since we were writing E2E tests for the payment feature, we created \texttt{buycredits.feature} file for testing this aspect. Consider the listing \textbf{Listing \ref{lst:buycredits-feature-file}}:\\
+Feature files can be seen as an entry point to cucumber test cases \cite{featurefile1}. Each of the feature file should be written to test a single feature of the application or a particular area of feature \cite{featurefile2}. Since we were writing E2E tests for the payment feature, we created \texttt{buycredits.feature} file for testing this aspect. Consider \textbf{Listing \ref{lst:buycredits-feature-file}}:\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -43,7 +43,7 @@ Feature: Buying Credit feature
 
 The section in \textbf{Listing \ref{lst:buycredits-feature-file}} is written in a language called \texttt{Gherkin}. \texttt{Gherkin} makes use of Business readable domain specific language (BRDSL) which allows us to write the test cases at a business level without getting into implementation details. Hence, they serve as both documentation and actual automation test scripts \cite{featurefile1}. 
 
-Each of the feature file should be defined with \texttt{Feature} keyword which consists of a name  (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  2) and brief description  (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  3-4). Each of the test cases are defined with \texttt{Scenario} keyword followed by brief description of that test (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  6 and 11). Each scenario should \cite{featurefile3}\\
+Each of the feature file should be defined with \texttt{Feature} keyword which consists of a name  (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  2) and brief description  (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  3-4). Each of the test cases are defined with \texttt{Scenario} keyword followed by a brief description of that test (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  6 and 11). Each scenario should \cite{featurefile3}:\\
 \begin{itemize}
 \item Describe event taking place
 \item Describe expected result
