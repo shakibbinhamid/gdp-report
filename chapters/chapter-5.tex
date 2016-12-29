@@ -41,7 +41,7 @@ Feature: Buying Credit feature
 \label{lst:buycredits-feature-file}
 \end{listing}
 
-The section in \textbf{Listing \ref{lst:buycredits-feature-file}} is written in a language called \texttt{Gherkin}. \texttt{Gherkin} makes use of Business Readable Domain Specific Language (BRDSL) which allows us to write the test cases at a business level without getting into implementation details.\\
+The section in \textbf{Listing \ref{lst:buycredits-feature-file}} is written in a language called \texttt{Gherkin}. \texttt{Gherkin} makes use of Business Readable Domain Specific Language (BRDSL) which allows us to write the test cases at a business level without getting into implementation details. 
 
 Our client required us to document the requirements/specification for the new payment feature. Most of Synote's team are developers and since the feature file used \texttt{Gherkin}, it was readable on a business level and could act as automation test script \cite{featurefile1}. Hence, we recommended using the feature files themselves as the requirements documentation.\\
 
@@ -76,34 +76,33 @@ We use \texttt{Steps} to achieved this. Consider the \texttt{Access buy credits 
 \subsection{Reusable Steps Definition}
 \label{subsec:reusable-steps-definition}
 
-Cucumber is not able to execute the scenarios as they are. Instead, we have to write \texttt{step} definitions. Step definitions use regular expression to map the \texttt{Gherkin steps} to actions which will drive system interactions \cite{stepfile1}. Each of the \texttt{steps} written for scenarios in the \texttt{feature} file should have a \texttt{step} definition declared in its corresponding \texttt{step} file.\\ A \texttt{step} file should only contain definitions for \texttt{steps} used in corresponding \texttt{feature} file. Consider \textbf{Listing \ref{lst:buycredits-step-file}}:\\
+Cucumber is not able to execute the scenarios as they are. Instead, we have to write \texttt{step} definitions. Step definitions use regular expression to map the \texttt{Gherkin steps} to actions which will drive system interactions \cite{stepfile1}. Each of the \texttt{steps} written for scenarios in the \texttt{feature} file should have a \texttt{step} definition declared in its corresponding \texttt{step} file.\\ A \texttt{step} file should only contain definitions for \texttt{steps} used in corresponding \texttt{feature} file.\\
+
+Consider \textbf{Listing \ref{lst:buycredits-step-file}}:\\
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{cucumber}
 @dev @experiment
 //code omitted
-this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/,
-    function (buttonName, pageName) {
+	this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/, function (buttonName, pageName) {
         return this.Support.clickButton(buttonName, pageName);
-});
+    });
 
-this.Given(/^I should be on "([^"]*)" page$/, function (pageName) {
-    return this.Support.waitUntil
-        (this.Support.urlChanged(this.Support.getPageUrl(pageName))
-        , 2000)();
-});
+    this.Given(/^I should be on "([^"]*)" page$/, function (pageName) {
+        return this.Support.waitUntil(this.Support.urlChanged(this.Support.getPageUrl(pageName)), 2000)();
+    });
 //code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{buycredits.steps.js} file}
 \label{lst:buycredits-step-file}
 \end{listing}
 
-In our case, all the \texttt{steps} written in \texttt{buycredits.feature} file are defined in the \texttt{buycredits.steps.js} file. Each step should have a unique definition else an \texttt{ambiguous match} exception will be thrown. \textbf{Listing \ref{lst:buycredits-step-file}} contains the step definitions for \texttt{Access buy credits page when logged in} scenario in \textbf{Listing \ref{lst:buycredits-feature-file}}. Inside the step definitions, we write javascript code to handle the interaction logic e.g. 1st definition in \textbf{Listing \ref{lst:buycredits-step-file}} (line 3) handles clicking of button provided  \texttt{buttonName and pageName} parameters and 2nd definition (line 7) handles checking we are on a page with certain URL provided  \texttt{pageName} parameter. Nearly all of out step definitions take parameters instead of hard-coding them. This way, we can satisfy the \texttt{DRY} principle by reusing generic step definitions, making both  \texttt{feature} and  \texttt{step} files easily maintainable and readable in the long run.
+In our case, all the \texttt{steps} written in \texttt{buycredits.feature} file are defined in the \texttt{buycredits.steps.js} file. Each step should have a unique definition else an \texttt{ambiguous match} exception will be thrown. \textbf{Listing \ref{lst:buycredits-step-file}} contains the step definitions for \texttt{Access buy credits page when logged in} scenario in \textbf{Listing \ref{lst:buycredits-feature-file}}. Inside the step definitions, we write javascript code to handle the interaction logic e.g. 1st definition in \textbf{Listing \ref{lst:buycredits-step-file}} (line 3) handles clicking of button provided  \texttt{buttonName and pageName} parameters and 2nd definition (line 7) handles checking we are on a page with certain URL provided  \texttt{pageName} parameter. Nearly all of out step definitions take parameters instead of hard-coding them. This way, we can satisfy the \texttt{DRY} principle by reusing generic step definitions, making both  \texttt{feature} and  \texttt{step} files easily maintainable and readable in the long run.\\ 
 
 \subsection{Reusable Support Functions}
 \label{subsec:reusable-support-functions}
 
-In order to have generic \texttt{step} definitions (e.g. see \textbf{Listing \ref{lst:buycredits-step-file}} line 3 and 7), we needed to write common generic methods which will drive interactions with the system. We place such functions in the \texttt{support.js} file. As a rule of thumb, we identified generic methods to go in the \texttt{support.js} file by checking if were were repeating any code/logic in the \texttt{bycredits.steps.js} file. Currently, our frame work uses the \texttt{support.js} file for:
+In order to have generic \texttt{step} definitions (e.g. see \textbf{Listing \ref{lst:buycredits-step-file}} line 3 and 7), we needed to write common generic methods which will drive interactions with the system. We place such functions in the \texttt{support.js} file. As a rule of thumb, we identified generic methods to go in the \texttt{support.js} file by checking if were were repeating any code/logic in the \texttt{bycredits.steps.js} file. Currently, our frame work uses the \texttt{support.js} file for:\\
 
 \begin{itemize}
 \item Clicking
@@ -113,37 +112,63 @@ In order to have generic \texttt{step} definitions (e.g. see \textbf{Listing \re
 \end{itemize}
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{cucumber}
 @dev @experiment
 //code omitted
-function loadPageOnSupport(pageName) {
-    if (!support[pageName]) {
-        support[pageName] = require
-            ('../pages/' + pageName.toLowerCase() + '.page.js');
-    }
-}
+	function loadPageOnSupport(pageName) {
+    	if (!support[pageName]) {
+        	support[pageName] = require('../pages/' + pageName.toLowerCase() + '.page.js');
+    	}
+	}
 //code omitted
-fillInputOnPage: function (pageName, textBox, text) {
-    loadPageOnSupport(pageName);
-    if (this[pageName] && this[pageName][textBox + 'Input']) {
-        var _textBox = this[pageName][textBox + 'Input'];
-        return _textBox.sendKeys(text);
-    }
-}
+	fillInputOnPage: function (pageName, textBox, text) {
+        loadPageOnSupport(pageName);
+        if (this[pageName] && this[pageName][textBox + 'Input']) {
+            var _textBox = this[pageName][textBox + 'Input'];
+            return _textBox.sendKeys(text);
+        }
+    },
 //code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{support.js} file}
 \label{lst:support-file-methods}
 \end{listing}
 
-Consider \textbf{Listing \ref{lst:support-file-methods}}. The \texttt{fillInputOnPage} is a common generic method i.e. it can be used to fill any input field on any page, hence its placement in the \texttt{support.js} file. The \texttt{loadPageOnSupport} method helps \texttt{support.js} file to be generic in applying its methods in different contexts by dynamically requiring desired pages objects. Main advantage of \texttt{support.js} is that testers will never have to rewrite any code they have already written, satisfying the \texttt{DRY} principle.
-
+Consider \textbf{Listing \ref{lst:support-file-methods}}. The \texttt{fillInputOnPage} is a common generic method i.e. it can be used to fill any input field on any page, hence its placement in the \texttt{support.js} file. The \texttt{loadPageOnSupport} method helps \texttt{support.js} file to be generic in applying its methods in different contexts by dynamically requiring desired pages objects. Main advantage of \texttt{support.js} is that testers will never have to rewrite any code they have already written, satisfying the \texttt{DRY} principle.\\
 \subsection{Pre and Post Hooks}
 \label{subsec:pre-and-post-hooks}
 
 \subsection{Page Objects}
 \label{subsec:page-objects}
+There are few key interactions which are very common throughout the application e.g. clicking buttons, filling in inputs, navigating to pages etc. It seemed tedious and time consuming to actually write separate methods for these interactions on different pages. We came to the conclusion that the interactions themselves should be generic enough so they can be applied to any page. The pages of application differed in the elements and components they had. Hence, we have definitions of \texttt{Page Object Models} which is composed of elements a page has. 
 
+\begin{minipage}{.5\textwidth}
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+Title : "BuyCredits",
+//code omitted
+    Url : browser.deployment.hostUrl + 'buycredit',
+    billing_nameInput : element(by.model('billingName')),
+    numberInput : element(by.model('cardNumber')),
+    cvcInput : element(by.model('cardCVC')),
+    exp_monthInput : element(by.model('expMonth')),
+    exp_yearInput : element(by.model('expYear')),
+    PaySavedRadioButton : element(by.id('pay-saved-radio')),
+//code omitted
+  \end{minted}
+  \captionof{listing}{Section of \texttt{buycredits.page.js} file}
+  \label{lst:buycredits-page-code}
+  \end{listing}
+\end{minipage}%
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.6\textwidth]{screenshot-payment-form.png}
+  	\caption{Payment Form}
+ 	\label{fig:paymentform-screenshot}
+\end{figure}
+
+Here you have the \texttt{buycredits.html} page (\textbf{Figure \ref{fig:paymentform-screenshot}}) and it has a corresponding \texttt{buycreditspage.js} \texttt{page object file} (\textbf{Listing \ref{lst:buycredits-page-code}}) which is basically a one to one mapping from the html page components. Page object files also house methods to interact with elements (defined in the same \texttt{page object model}) which are only applicable to the particular page in question e.g. \texttt{buycreditspage.js} has a method called \texttt{fillDefaultCardDetails} which fills in the payment form fields and is only applicable to \texttt{buycredits.html} page. The main advantages of implementing \texttt{page object models} was reduced code duplication and easy maintainability i.e.  if any of the UI element of the application was changed, we only have to modify them in the \texttt{page object} file instead of fixing them  in each \texttt{step} which used that UI element \cite{semaphore}. Another advantage is that it structures the framework, improving readability.\\ 
 \subsection{Deployment Definition}
 \label{subsec:deployment-definition}
 
