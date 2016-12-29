@@ -217,3 +217,88 @@ We were asked to carry out E2E tests on the front end and perform Unit and Integ
 
 \section{QA Process}
 \label{sec:qa-process}
+
+\subsection{What is it?}
+\label{subsec:qa-process-what-is-it}
+Software Quality Assurance is a set of activities that defines and assesses the adequacy of software processes to provide evidence for a justified statement of confidence that the software processes will produce software products that conform to their established requirements \cite{qa-standard}.
+\\
+
+SQA encompasses the entire software development process, which includes processes such as requirements definition, software design, coding, source code control, code reviews, software configuration management, testing, release management, and product integration. SQA is organised into goals, commitments, abilities, activities, measurements, and verifications \cite{project-quality-management}.
+
+\subsection{Why do we need it?}
+\label{subsec:qa-process-why-do-we-need-it}
+The primary goal of the QA process is to maintain the quality of the software product to an acceptable state by testing it in a variety of ways. It should ideally be integrated within the development cycle so any faults that arrise can be fixed quickly and future builds are prepared to be deployed. 
+\\
+
+The importance of the QA process can be highlighted by thinking of the development cycle without such a process. Usually in these cases, testing is limited to the type of tests developers write as they go along. Usually these will not stress the entire application and they might have blind spots. A QA process is a good investment because generally it is cheaper to invest time and effort in finding bugs early and methodically than recovering from a problem in the production environment.
+
+\subsection{Quantifying QA Process Success}
+\label{subsec:quantifying-qa-process-success}
+
+\subsection{Test Case Coverage}
+\label{subsec:test-case-coverage}
+
+Speaking in a more pragmatic way, the main goal is to cover all test scenarios. Generally this is quite difficult because we can conceptualise test scenarios respective to each type of tests (unit, integration, E2E) but we also need to realise they are strongly interdependent.
+\\
+
+Keeping this in mind, the most representative test coverage for the QA process is comprised of the E2E tests because they focus on the app as a whole thus giving us a more natural overview of the quality state of the product.
+\\
+  
+Since in a software product there are multiple abstraction levels stacked on top of each other from the actual feature to the underlying low level implementation, it is quite hard to materialise the QA process and quantify test coverage.
+
+\subsubsection{Behaviour Driven Development}
+\label{subsubsec:bdd}
+
+This is where Behaviour Driven Development comes in handy. In software engineering, it is a process derived from Test Driven Development (TDD) which promotes writing the tests for the application before writing any code. 
+\\
+
+BDD borrows that concept and adds another on top. Its main objective is to make possible for the tests to be managed both on the business, high-level functional level and the technical level. Thus we are able to define the business requirements of the product without having our perception distorted by irrelevant technical issues. Before starting the implementation of any new functionality, an outline of the new feature's high level requirements is made and then development can start with a clearer mindset. The effectiveness of this practice to achieve a very high coverage is correlated with the thoroughness of the outlining process and the clarity of vision concerning the newly introduced feature.
+\\
+
+More concrete details about how we achieved this can be found in \textbf{Chapter \ref{chap:e2e-test-framework}}. In terms of test coverage, this is represented by the number of feature-related tests that pass. We are proud to state that we have achieved 100\% test coverage for all test types. This can be seen in \textbf{Appendix \ref{appendix:server-test-cases}} for backend tests and \textbf{Appendix \ref{appendix:e2e-testing}} for E2E tests.
+
+\subsection{Code Coverage}
+\label{subsec:code-coverage}
+
+Code coverage is a measure that describes how much of the source code in a program is executed whenever a test suite is ran. It is an important metric because a high code coverage means there is less unexecuted code that may contain hidden bugs. 
+\\
+
+We used this to our advantage in the server side testing as can be seen in \textbf{Section \ref{sec:server-side-testing}}.
+
+\section{Continuous Integration}
+\label{sec:continuous-integration}
+
+An important part of the QA process is CI (Continuous Integration). Its primary focus is to provide a seamless way of maintaining the stability of an application whilst integrating changes from an evolving code base. CI automates many steps in releasing new application builds and assessing their quality. 
+\\
+
+A CI strategy can have any number of automated steps depending on the application at hand and related constraints but conceptually these are steps that are needed in order to gain value from it:
+
+\begin{itemize}
+    \item Trigger process by detecting a change in the repository
+    \item Build the application
+    \item Assess the quality of the build by running automated tests
+    \item Generate reports that show you the test results
+\end{itemize}
+
+There are various CI tools that can manage and centralise these steps. Many of them are open source such as the one we chose for our project (Jenkins). Jenkins offers a lot of useful functionality as it can be accessed and maintained remotely via a web interface. This makes it very easy to keep track of progress and any issues that may appear.
+\\
+
+For more details on how me managed CI, please look at \textbf{Chapter \ref{chap:continuous-integration}}.
+\\
+
+\section{QA Methodology}
+\label{sec:qa-methodology}
+
+Having all these elements at play can be a difficult thing to manage across one or more teams of people. A consistent methodology is key for a successful QA process even though many of its parts are automated. A document with the related procedures and practices should be followed and updated by the development and testing teams.
+\\
+
+For this purpose we created \texttt{CONTRIBUTING.md} which contains all the information necessary about how one would contribute to the Synote code base. It contains information on the whole QA process including CI, code coverage, submitting issues, backend test case structures and clear steps for ensuring a smooth transition from a new feature idea to its implementation in the production environment.
+\\
+
+Code convention is another important element to consider. In real world situations people in teams come with a variety of coding styles. This diversity can be helpful for the developers as they can learn from each other but in this context we thought it was better to maintain a clear convention. 
+\\
+
+For the automated testing framework, a clear practice is required because in this way we are able to write less code by making use of generic methods (see \textbf{Subsection \ref{subsec:reusable-steps-definition}}) and we also require consistency in the framework because we also use it as a means to document our test cases. This information can be found in the \texttt{readme.md} file on the repository. 
+\\
+
+
