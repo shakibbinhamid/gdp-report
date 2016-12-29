@@ -192,56 +192,35 @@ One of the requirements of our client was that our framework should be capable o
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
- dev : {
-        hostUrl : 'http://localhost:9000/\#/',
-        apiEndpoint : 'http://localhost:1337/',
-        defaultUser: {
-            password : 'hellowaterlock',
-            role: 'normal'
-        },
-        defaultCard: {
-            //code omitted
-        },
-        reporting: {
-            webhookUrl: 'https://hooks.slack.com/services/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',
-            hostUrl: 'http://localhost:9090/',
-            title: 'Synote: Dev report'
-        }
-    },
-experiment : {
-        hostUrl : 'https://experiment.synote.com/\#/',
-        apiEndpoint : 'https://experiment.synote.com/',
-        defaultUser: {
-            password : 'hellowaterlock',
-            role : 'normal'
-        },
-        defaultCard: {
-            //code omitted
-        },
-        reporting: {
-            webhookUrl: 'https://hooks.slack.com/services/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',
-            hostUrl: 'https://reports-cicd.synote.com/',
-            title: 'Synote: Experiment report'
-        }
-    }    
+deployment_name : { // e.g. experiment
+  hostUrl : 'deployment_url', // e.g. https://experiment.synote.com
+  apiEndpoint : 'backend_rest_api_url',
+  defaultUser: {
+    password : 'password',
+    role: 'test_user_role'
+  },
+  defaultCard: {
+    // test card for dev, real card for staging etc.
+  }
+}
 //code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{deployment.js} file}
 \label{lst:deployment-file}
 \end{listing}
 
-Consider \textbf{Listing \ref{lst:deployment-file}}. Here you can see that each deployment of Synote is defined by different parameters. \texttt{dev} object represents the development environment and \texttt{experiment} represents the experiment environment. This way, you only have to define deployment specific data once for running the tests. 
+Consider \textbf{Listing \ref{lst:deployment-file}}. Here you can see that each deployment of Synote is defined by different parameters. This way, you only have to define deployment specific data once for running the tests.
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
-	conf.js --params.env dev --cucumberOpts.tgs=@dev
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+	conf.js --params.env dev --cucumberOpts.tgs=@deployment_name
 \end{minted}
 \captionof{listing}{Running the E2E Tests}
 \label{lst:specifying-deployment-test-run}
 \end{listing}
 
 When running the E2E tests, we simply need to pass the name of object which represents the deployment we want to test against. For example: consider \textbf{Listing \ref{lst:specifying-deployment-test-run}}, here we pass in \texttt{dev} as a parameter so the framework will execute tests on \texttt{development} deployment with data defined in \texttt{dev} object.  To overcome the issues with some tests only being suitable for certain deployments, we used \texttt{cucumber tags} which can be placed on \texttt{feature} keyword of \texttt{feature} files or on desired \texttt{scenarios}. For example, in \textbf{Listing \ref{lst:buycredits-feature-file}} we place \texttt{dev} and \texttt{experiment} keywords on the \texttt{feature} keyword so all the test \texttt{scenarios} will run for both of these deployments. The desired test suite to be executed has to be specified as a parameter when executing the tests (see \textbf{Listing \ref{lst:specifying-deployment-test-run}}).
- 
+
 \subsection{Reporting}
 \label{subsec:reporting}
 
