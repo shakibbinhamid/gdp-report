@@ -245,6 +245,60 @@ When running the E2E tests, we simply need to pass the name of object which repr
  \subsection{Example Test Case}
 \label{subsec:example-test-case}
 
+When testing a feature of the application, we initially start with a requirement which will form the description of the \texttt{feature file}. For example, say we want to test the \texttt{payment feature} and our requirement is \texttt{As a user of SynoteI should be able to successfully buy credits when logged in}, we would create a feature life like in \textbf{Listing \ref{lst:example-feature-file}}.
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+Feature: Buying Credit feature
+  As a user of Synote
+ I should be able to successfully buy credits when logged in
+\end{minted}
+\captionof{listing}{Example feature for payment feature}
+\label{lst:example-feature-file}
+\end{listing}
+
+In \textbf{Listing \ref{lst:example-feature-file}}, we use the \texttt{feature} keyword to title the feature under test i.e. \texttt{payment feature} and write the requirement under it. The requirement is then broken down into sub-requirements which will together satisfy the main requirement. The sub-requirements are written as \texttt{scenarios}. For example, say our sub-requirement was \texttt{Buy credit with valid card details}, then its corresponding \texttt{scenario} will look like:
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+ 	Scenario: Buy credit with valid card details
+    	Given I click the "Profile" button on "SideMenu" page
+    	Given I click the "BuyCredit" button on "Profile" page
+    	Given I Correctly type in my details
+    	And I click the "SubmitPayment" button on "BuyCredits" page
+    	Then I should be on "CreditsHistory" page
+\end{minted}
+\captionof{listing}{Example feature for payment feature}
+\label{lst:example-feature-file-scenario}
+\end{listing}
+
+In \textbf{Listing \ref{lst:example-feature-file-scenario}}, you can see that we've labelled the \texttt{scenario} with the sub-requirement itself and written \texttt{steps} in \texttt{Gherkin} to test it. If any of the \texttt{steps} take in a parameter, we specify them using quotes.\\
+
+Next thing we need to do is create a \texttt{steps} file where we will write step definitions for the 5 steps in \textbf{Listing \ref{lst:example-feature-file-scenario}}. Consider \textbf{Listing \ref{lst:example-steps-file}}.
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+module.exports = function () {
+    this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/, function (buttonName, pageName) {
+        return this.Support.clickButton(buttonName, pageName);
+    });
+    this.Given(/^I Correctly type in my details$/, {timeout: 60*1000}, function () {
+        return this.BuyCreditsPage.fillDefaultCardDetails();
+    });
+    this.Given(/^I should be on "([^"]*)" page$/, function (pageName) {
+        return this.Support.waitUntil(this.Support.urlChanged(this.Support.getPageUrl(pageName)), 2000)();
+    });
+}
+\end{minted}
+\captionof{listing}{Example feature for payment feature}
+\label{lst:example-feature-file-scenario}
+\end{listing}
+
+
+go like we start with a requirement -> adding a feature file -> writing a full test in Gherkin and let it fail -> then developers start developing -> at the same time tests write steps -> add pages -> ...
+
+
 \subsection{Reporting}
 \label{subsec:reporting}
 
