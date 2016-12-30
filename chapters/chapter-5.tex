@@ -192,66 +192,45 @@ One of the requirements of our client was that our framework should be capable o
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
- dev : {
-        hostUrl : 'http://localhost:9000/\#/',
-        apiEndpoint : 'http://localhost:1337/',
-        defaultUser: {
-            password : 'hellowaterlock',
-            role: 'normal'
-        },
-        defaultCard: {
-            //code omitted
-        },
-        reporting: {
-            webhookUrl: 'https://hooks.slack.com/services/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',
-            hostUrl: 'http://localhost:9090/',
-            title: 'Synote: Dev report'
-        }
-    },
-experiment : {
-        hostUrl : 'https://experiment.synote.com/\#/',
-        apiEndpoint : 'https://experiment.synote.com/',
-        defaultUser: {
-            password : 'hellowaterlock',
-            role : 'normal'
-        },
-        defaultCard: {
-            //code omitted
-        },
-        reporting: {
-            webhookUrl: 'https://hooks.slack.com/services/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',
-            hostUrl: 'https://reports-cicd.synote.com/',
-            title: 'Synote: Experiment report'
-        }
-    }    
+deployment_name : { // e.g. experiment
+  hostUrl : 'deployment_url', // e.g. https://experiment.synote.com
+  apiEndpoint : 'backend_rest_api_url',
+  defaultUser: {
+    password : 'password',
+    role: 'test_user_role'
+  },
+  defaultCard: {
+    // test card for dev, real card for staging etc.
+  }
+}
 //code omitted
 \end{minted}
 \captionof{listing}{Section of \texttt{deployment.js} file}
 \label{lst:deployment-file}
 \end{listing}
 
-Consider \textbf{Listing \ref{lst:deployment-file}}. Here you can see that each deployment of Synote is defined by different parameters. \texttt{dev} object represents the development environment and \texttt{experiment} represents the experiment environment. This way, you only have to define deployment specific data once for running the tests. 
+Consider \textbf{Listing \ref{lst:deployment-file}}. Here you can see that each deployment of Synote is defined by different parameters. This way, you only have to define deployment specific data once for running the tests.
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
-	conf.js --params.env dev --cucumberOpts.tgs=@dev
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+	conf.js --params.env dev --cucumberOpts.tgs=@deployment_name
 \end{minted}
 \captionof{listing}{Running the E2E Tests}
 \label{lst:specifying-deployment-test-run}
 \end{listing}
 
 When running the E2E tests, we simply need to pass the name of object which represents the deployment we want to test against. For example: consider \textbf{Listing \ref{lst:specifying-deployment-test-run}}, here we pass in \texttt{dev} as a parameter so the framework will execute tests on \texttt{development} deployment with data defined in \texttt{dev} object.  To overcome the issues with some tests only being suitable for certain deployments, we used \texttt{cucumber tags} which can be placed on \texttt{feature} keyword of \texttt{feature} files or on desired \texttt{scenarios}. For example, in \textbf{Listing \ref{lst:buycredits-feature-file}} we place \texttt{dev} and \texttt{experiment} keywords on the \texttt{feature} keyword so all the test \texttt{scenarios} will run for both of these deployments. The desired test suite to be executed has to be specified as a parameter when executing the tests (see \textbf{Listing \ref{lst:specifying-deployment-test-run}}).
- 
+
  \subsection{Example Test Case}
 \label{subsec:example-test-case}
 
 When testing a feature of the application, we initially start with a requirement which will form the description of the \texttt{feature file}. For example, say we want to test the \texttt{payment feature} and our requirement is \texttt{As a user of SynoteI should be able to successfully buy credits when logged in}, we would create a feature life like in \textbf{Listing \ref{lst:example-feature-file}}.
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{cucumber}
 Feature: Buying Credit feature
   As a user of Synote
- I should be able to successfully buy credits when logged in
+  I should be able to successfully buy credits when logged in
 \end{minted}
 \captionof{listing}{Example feature for payment feature}
 \label{lst:example-feature-file}
@@ -260,14 +239,14 @@ Feature: Buying Credit feature
 In \textbf{Listing \ref{lst:example-feature-file}}, we use the \texttt{feature} keyword to title the feature under test i.e. \texttt{payment feature} and write the requirement under it. The requirement is then broken down into sub-requirements which will together satisfy the main requirement. The sub-requirements are written as \texttt{scenarios}. For example, say our sub-requirement was \texttt{Buy credit with valid card details}, then its corresponding \texttt{scenario} will look like:
 
 \begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
-//code omitted
- 	Scenario: Buy credit with valid card details
-    	Given I click the "Profile" button on "SideMenu" page
-    	Given I click the "BuyCredit" button on "Profile" page
-    	Given I Correctly type in my details
-    	And I click the "SubmitPayment" button on "BuyCredits" page
-    	Then I should be on "CreditsHistory" page
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{cucumber}
+# code omitted
+Scenario: Buy credit with valid card details
+  Given I click the "Profile" button on "SideMenu" page
+  Given I click the "BuyCredit" button on "Profile" page
+  Given I Correctly type in my details
+  And I click the "SubmitPayment" button on "BuyCredits" page
+  Then I should be on "CreditsHistory" page
 \end{minted}
 \captionof{listing}{Example \texttt{Feature} File}
 \label{lst:example-feature-file-scenario}
@@ -280,15 +259,20 @@ Next thing we need to do is create a \texttt{steps} file where we will write ste
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 module.exports = function () {
-    this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/, function (buttonName, pageName) {
-		//return this.Support.clickButton(buttonName, pageName);    
-    });
-    this.Given(/^I Correctly type in my details$/, {timeout: 60*1000}, function () {
-    	//return this.BuyCreditsPage.fillDefaultCardDetails();
-    });
-    this.Given(/^I should be on "([^"]*)" page$/, function (pageName) {
-    	//return this.Support.waitUntil(this.Support.urlChanged(this.Support.getPageUrl(pageName)), 2000)();
-    });
+  this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/,
+    function (buttonName, pageName) {
+      //return this.Support.clickButton(buttonName, pageName);
+  });
+  this.Given(/^I Correctly type in my details$/, {timeout: 60*1000},
+    function () {
+      //return this.BuyCreditsPage.fillDefaultCardDetails();
+  });
+  this.Given(/^I should be on "([^"]*)" page$/,
+    function (pageName) {
+      //return this.Support.waitUntil
+      //  (this.Support.urlChanged(this.Support.getPageUrl(pageName))
+      // , 2000)();
+  });
 }
 \end{minted}
 \captionof{listing}{Example \texttt{Steps File}}
@@ -300,35 +284,19 @@ Consider \textbf{Listing \ref{lst:example-feature-file}}. Here we define the \te
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 var buyCreditsPage = {
-    Title : "BuyCredits",
-    Url : browser.deployment.hostUrl + 'buycredit',
-    billing_nameInput : element(by.model('billingName')),
-    numberInput : element(by.model('cardNumber')),
-    cvcInput : element(by.model('cardCVC')),
+  Title : "BuyCredits",
+  Url : browser.deployment.hostUrl + 'buycredit',
+  billing_nameInput : element(by.model('billingName')),
+  numberInput : element(by.model('cardNumber')),
+  cvcInput : element(by.model('cardCVC'))
 //code omitted
+}
 \end{minted}
 \captionof{listing}{Example \texttt{Steps File}}
-\label{lst:example-steps-file}
+\label{lst:example-page-file}
 \end{listing}
 
-In \textbf{Listing \ref{lst:example-page-file}}, you can see that we create a map of ll the elements of the payment form. Now we can write code to carry out intercations on the page. The first step definition of clicking some button on some page is pretty generic and following the conventions of our framework metioned in \ref{subsec:reusable-support-functions}, we should implement a generic method to handle this interaction in the support.js file.
-
-
-\begin{listing}[H]
-\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
-//code omitted
-
-//code omitted
-\end{minted}
-\captionof{listing}{Example \texttt{Steps File}}
-\label{lst:example-steps-file}
-\end{listing}
-
-
-
-
-go like we start with a requirement -> adding a feature file -> writing a full test in Gherkin and let it fail -> then developers start developing -> at the same time tests write steps -> add pages -> ...
-
+In \textbf{Listing \ref{lst:example-page-file}}, you can see that we create a map of ll the elements of the payment form. Now we can write code to carry out intercations on the page. The first step definition of clicking some button on some page is pretty generic and following the conventions of our framework metioned in \textbf{Section \ref{subsec:reusable-support-functions}}, we should implement a generic method to handle this interaction in the support.js file.
 
 \subsection{Reporting}
 \label{subsec:reporting}
