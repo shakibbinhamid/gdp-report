@@ -269,7 +269,7 @@ In \textbf{Listing \ref{lst:example-feature-file}}, we use the \texttt{feature} 
     	And I click the "SubmitPayment" button on "BuyCredits" page
     	Then I should be on "CreditsHistory" page
 \end{minted}
-\captionof{listing}{Example feature for payment feature}
+\captionof{listing}{Example \texttt{Feature} File}
 \label{lst:example-feature-file-scenario}
 \end{listing}
 
@@ -281,19 +281,50 @@ Next thing we need to do is create a \texttt{steps} file where we will write ste
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 module.exports = function () {
     this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/, function (buttonName, pageName) {
-        return this.Support.clickButton(buttonName, pageName);
+		//return this.Support.clickButton(buttonName, pageName);    
     });
     this.Given(/^I Correctly type in my details$/, {timeout: 60*1000}, function () {
-        return this.BuyCreditsPage.fillDefaultCardDetails();
+    	//return this.BuyCreditsPage.fillDefaultCardDetails();
     });
     this.Given(/^I should be on "([^"]*)" page$/, function (pageName) {
-        return this.Support.waitUntil(this.Support.urlChanged(this.Support.getPageUrl(pageName)), 2000)();
+    	//return this.Support.waitUntil(this.Support.urlChanged(this.Support.getPageUrl(pageName)), 2000)();
     });
 }
 \end{minted}
-\captionof{listing}{Example feature for payment feature}
-\label{lst:example-feature-file-scenario}
+\captionof{listing}{Example \texttt{Steps File}}
+\label{lst:example-steps-file}
 \end{listing}
+
+Consider \textbf{Listing \ref{lst:example-feature-file}}. Here we define the \texttt{steps} we wrote in \textbf{Listing \ref{lst:example-feature-file-scenario}} using reqular expressions. Now we need to actually write code to interact with the html page in question. Follong our framework's principles, we  need to create a \texttt{page object} file as defined in \textbf{Section \ref{subsec:page-objects}}. The \texttt{scnario} we wrote in \textbf{Listing \ref{lst:example-feature-file-scenario}} will be interacting will the payment form (\textbf{See Figure \ref{fig:paymentform-screenshot}}) and we need to consider all the elements and components of payment form to create a one to one mapping to these elements in the \texttt{page object} file. Consider  \textbf{Listing \ref{lst:example-page-file}}.
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+var buyCreditsPage = {
+    Title : "BuyCredits",
+    Url : browser.deployment.hostUrl + 'buycredit',
+    billing_nameInput : element(by.model('billingName')),
+    numberInput : element(by.model('cardNumber')),
+    cvcInput : element(by.model('cardCVC')),
+//code omitted
+\end{minted}
+\captionof{listing}{Example \texttt{Steps File}}
+\label{lst:example-steps-file}
+\end{listing}
+
+In \textbf{Listing \ref{lst:example-page-file}}, you can see that we create a map of ll the elements of the payment form. Now we can write code to carry out intercations on the page. The first step definition of clicking some button on some page is pretty generic and following the conventions of our framework metioned in \ref{subsec:reusable-support-functions}, we should implement a generic method to handle this interaction in the support.js file.
+
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+
+//code omitted
+\end{minted}
+\captionof{listing}{Example \texttt{Steps File}}
+\label{lst:example-steps-file}
+\end{listing}
+
+
 
 
 go like we start with a requirement -> adding a feature file -> writing a full test in Gherkin and let it fail -> then developers start developing -> at the same time tests write steps -> add pages -> ...
