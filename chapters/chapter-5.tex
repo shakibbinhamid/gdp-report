@@ -303,4 +303,57 @@ In \textbf{Listing \ref{lst:example-page-file}}, you can see that we create a ma
 
 \subsection{Assessment}
 \label{subsec:assessment}
-The framework's capabilities where thoroughly tested by Deepak, who wrote most of the test cases. To get an outside perspective, Tom, who had no background knowledge using the frame work, came in and tried to write tests using the \texttt{readme.md} documentation.
+
+The framework's capabilities where thoroughly tested by Deepak, who wrote most of the test cases. Tom focused on the second iteration of the payment feature and was purposefully not involved in the initial prototyping of the testing framework. This enabled Tom to have an outside perspective of the framework to provide an assessment of its ease of use. Armed with the framework repository and a readme file, Tom set about writing a test for the latest payment feature functionality he had added.\\ 
+
+Following the readme file, the first step is to install the dependencies. This was the first time the framework had been installed on a Windows machine and due to an installation of Visual Studio, an error occurred. After resolving this issue, the relevant steps were added to the readme and progress resumed. After browsing the existing files relevant to each section in the readme, it was apparent that nearly all the tools Tom needed existed already. Lines 1-3 \& 5 of \textbf{Listing \ref{lst:toms-first-test}} make use of existing step methods however, line 4 required an extension of the existing method in \textbf{Listing \ref{lst:buycredits-step-file}} to allow repeated clicks as shown in \textbf{Listing \ref{lst:additional-step-method}}.\\
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+  Scenario: Maximum purchase cost reached
+    Given I click the "Profile" button on "SideMenu" page
+    Given I click the "BuyCredit" button on "Profile" page
+    Given I click the "IncrementCredit" button on "BuyCredits" page 59 times
+    Then Increment credit button should be disabled
+\end{minted}
+\captionof{listing}{Tom's First Test}
+\label{lst:toms-first-test}
+\end{listing}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+    this.Given(/^I click the "([^"]*)" button on "([^"]*)" page (\d+) times$/, function (buttonName, pageName, times) {
+        var promises = [];
+        for(var i = 0; i < times; i++) {
+            promises.push(this.Support.clickButton(buttonName, pageName));
+        }
+        return Promise.all(promises);
+    });
+\end{minted}
+\captionof{listing}{Additional Step Method}
+\label{lst:additional-step-method}
+\end{listing}
+
+Again, referring to the readme file, Tom ran the test suite on his local development machine and watched as the test he had written passed first time. As this was local testing, the actions were executed in a browser window providing visual confirmation that the desired actions were performed. Thus, with no prior knowledge, Tom was able to use the framework to write and execute a successful E2E test.\\ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
