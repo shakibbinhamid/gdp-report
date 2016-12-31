@@ -183,7 +183,7 @@ PaySavedRadioButton : element
  	\label{fig:paymentform-screenshot}
 \end{minipage}
 
-Here you have the \texttt{buycredits.html} page (\textbf{Figure \ref{fig:paymentform-screenshot}}) and it's corresponding \texttt{buycreditspage.js} \textit{page object file} (\textbf{Listing \ref{lst:buycredits-page-code}}) which is basically a one to one mapping from the html page components. Page object files also house methods to interact with elements (defined in the same \textit{page object model}) which are only applicable to the particular page in question e.g. \texttt{buycreditspage.js} has a method called \texttt{fillDefaultCardDetails} which fills in the payment form fields and is only applicable to \texttt{buycredits.html} page. The main advantages of implementing page objects were reduced code duplication and easy maintainability i.e.  if any of the UI element of the application was changed, we only have to modify them in the page object file instead of fixing them in each \texttt{step} which used that UI element \cite{semaphore}. Another advantage is that it structures the framework, improving readability.
+Here we have the \texttt{buycredits.html} page (\textbf{Figure \ref{fig:paymentform-screenshot}}) and it's corresponding \texttt{buycreditspage.js} \textit{page object file} (\textbf{Listing \ref{lst:buycredits-page-code}}) which is basically a one to one mapping from the html page components. Page object files also house methods to interact with elements (defined in the same \textit{page object model}) which are only applicable to the particular page in question e.g. \texttt{buycreditspage.js} has a method called \texttt{fillDefaultCardDetails} which fills in the payment form fields and is only applicable to \texttt{buycredits.html} page. The main advantages of implementing page objects were reduced code duplication and easy maintainability i.e.  if any of the UI element of the application was changed, we only have to modify them in the page object file instead of fixing them in each \texttt{step} which used that UI element \cite{semaphore}. Another advantage is that it structures the framework, improving readability.
 
 \subsection{Deployment Definition}
 \label{subsec:deployment-definition}
@@ -224,7 +224,7 @@ When running the E2E tests, we simply need to pass the name of object which repr
  \subsection{Example Test Case}
 \label{subsec:example-test-case}
 
-When testing a feature of the application, we initially start with a requirement which will form the description of the \texttt{feature file}. For example, say we want to test the \texttt{payment feature} and our requirement is \texttt{As a user of SynoteI should be able to successfully buy credits when logged in}, we would create a feature life like in \textbf{Listing \ref{lst:example-feature-file}}.
+When testing a feature of the application, we initially start with a requirement which will later form the description of the \texttt{feature file}. For example, say we want to test the \texttt{payment feature} and our requirement is \texttt{As a user of Synote I should be able to successfully buy credits when logged in}. First we will need to create a feature file as in \textbf{Listing \ref{lst:example-feature-file}}.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{cucumber}
@@ -236,7 +236,7 @@ Feature: Buying Credit feature
 \label{lst:example-feature-file}
 \end{listing}
 
-In \textbf{Listing \ref{lst:example-feature-file}}, we use the \texttt{feature} keyword to title the feature under test i.e. \texttt{payment feature} and write the requirement under it. The requirement is then broken down into sub-requirements which will together satisfy the main requirement. The sub-requirements are written as \texttt{scenarios}. For example, say our sub-requirement was \texttt{Buy credit with valid card details}, then its corresponding \texttt{scenario} will look like:
+In \textbf{Listing \ref{lst:example-feature-file}} we use the \texttt{feature} keyword to title the feature under test i.e. \texttt{payment feature} and describe it via the requirement. The requirement is then broken down into sub-requirements which will together satisfy the main requirement. The sub-requirements are written as \texttt{scenarios}. For example, say our sub-requirement was \texttt{Buy credit with valid card details}, then its corresponding \texttt{scenario} will look like:
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{cucumber}
@@ -252,20 +252,18 @@ Scenario: Buy credit with valid card details
 \label{lst:example-feature-file-scenario}
 \end{listing}
 
-In \textbf{Listing \ref{lst:example-feature-file-scenario}}, you can see that we've labelled the \texttt{scenario} with the sub-requirement itself and written \texttt{steps} in \texttt{Gherkin} to test it. If any of the \texttt{steps} take in a parameter, we specify them using quotes.\\
+In \textbf{Listing \ref{lst:example-feature-file-scenario}}, we have labelled the \texttt{scenario} with the sub-requirement definition itself and wrote \texttt{steps} in \texttt{Gherkin} for testing it. If any of the \texttt{steps} take parameter, we specify them with quotes.\\
 
-Next thing we need to do is create a \texttt{steps} file where we will write step definitions for the 5 steps in \textbf{Listing \ref{lst:example-feature-file-scenario}}. Consider \textbf{Listing \ref{lst:example-steps-file}}.
+Next we need to is create a \texttt{steps} file where step definitions for the 5 steps in \textbf{Listing \ref{lst:example-feature-file-scenario}} will be written. Consider \textbf{Listing \ref{lst:example-steps-file}}.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 module.exports = function () {
   this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/,
     function (buttonName, pageName) {
-      //return this.Support.clickButton(buttonName, pageName);
   });
   this.Given(/^I Correctly type in my details$/, {timeout: 60*1000},
     function () {
-      //return this.BuyCreditsPage.fillDefaultCardDetails();
   });
   this.Given(/^I should be on "([^"]*)" page$/,
     function (pageName) {
@@ -279,7 +277,7 @@ module.exports = function () {
 \label{lst:example-steps-file}
 \end{listing}
 
-Consider \textbf{Listing \ref{lst:example-feature-file}}. Here we define the \texttt{steps} we wrote in \textbf{Listing \ref{lst:example-feature-file-scenario}} using reqular expressions. Now we need to actually write code to interact with the html page in question. Follong our framework's principles, we  need to create a \texttt{page object} file as defined in \textbf{Section \ref{subsec:page-objects}}. The \texttt{scnario} we wrote in \textbf{Listing \ref{lst:example-feature-file-scenario}} will be interacting will the payment form (\textbf{See Figure \ref{fig:paymentform-screenshot}}) and we need to consider all the elements and components of payment form to create a one to one mapping to these elements in the \texttt{page object} file. Consider  \textbf{Listing \ref{lst:example-page-file}}.
+In \textbf{Listing \ref{lst:example-steps-file}} we define the \texttt{steps} written in \textbf{Listing \ref{lst:example-feature-file-scenario}} using reqular expressions. The \texttt{scenario} in \textbf{Listing \ref{lst:example-feature-file-scenario}} will be interacting with the payment form (\textbf{See Figure \ref{fig:paymentform-screenshot}}) and so we need to create a texttt{page object} file for it as defined in  \textbf{Section \ref{subsec:page-objects}}. 
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -292,11 +290,121 @@ var buyCreditsPage = {
 //code omitted
 }
 \end{minted}
-\captionof{listing}{Example \texttt{Steps File}}
+\captionof{listing}{Example \texttt{Page Object} File}
 \label{lst:example-page-file}
 \end{listing}
 
-In \textbf{Listing \ref{lst:example-page-file}}, you can see that we create a map of ll the elements of the payment form. Now we can write code to carry out intercations on the page. The first step definition of clicking some button on some page is pretty generic and following the conventions of our framework metioned in \textbf{Section \ref{subsec:reusable-support-functions}}, we should implement a generic method to handle this interaction in the support.js file.
+In \textbf{Listing \ref{lst:example-page-file}}, we created a one to one mapping of all the elements of the payment form. Next step is to actually write interaction code to complete the step definitions in \textbf{Listing \ref{lst:example-steps-file}} with the help of page object.\\ 
+
+Consider the 1st \texttt{step} definition in \textbf{Listing \ref{lst:example-steps-file}}. This can be grouped as a generic \texttt{step} since it can be applicable to many elements on different pages. Therefore we should create a generic method in \texttt{support.js} file for this interaction as mentioned in  \textbf{Section \ref{subsec:reusable-support-functions}}. Consider  \textbf{Listing \ref{lst:example-support-func}}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+clickButton: function (buttonName, pageName) {
+        loadPageOnSupport(pageName);
+        var button = support.getButton(buttonName, pageName);
+        return button.click();
+},
+\end{minted}
+\captionof{listing}{Example Support Function for clicking}
+\label{lst:example-support-func}
+\end{listing} 
+
+\textbf{Listing \ref{lst:example-support-func}} shows section of the \texttt{support} file with the generic method to handle clicking. See \textbf{Listing \ref{lst:example-step-def-click-completed}} to see usage of this function in the step definition.
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/, 
+	function (buttonName, pageName) {
+        return this.Support.clickButton(buttonName, pageName);
+});
+//code omitted
+\end{minted}
+\captionof{listing}{Completed Step Definition For Clicking Buttons}
+\label{lst:example-step-def-click-completed}
+\end{listing} 
+
+Now consider the 2nd \texttt{step} definition in \textbf{Listing \ref{lst:example-steps-file}}. This \texttt{step} is specific to the payment form only. Hence this interaction should be handled in the \texttt{page object} file for payment form. 
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+	fillInputsOnPage : function (pageName, fieldValMap){
+        loadPageOnSupport(pageName);
+        if (support[pageName]) {
+            var promises = [];
+            // enter the exception fields
+            _.forOwn(fieldValMap, function (val, field) {
+                if (field && val) {
+                    promises.push(support.fillInputOnPage(pageName, field, val));
+                }
+            });
+            return Promise.all(promises);
+        }
+    },
+//code omitted
+\end{minted}
+\captionof{listing}{Payment Form Page Specific Method for Filling in Fields}
+\label{lst:example-page-specific-method}
+\end{listing} 
+
+\textbf{Listing \ref{lst:example-page-specific-method}} shows section of the \texttt{page} file with implementation of method to fill inputs of payment form. See \textbf{Listing \ref{lst:example-step-def-fillin-completed}} to see usage of this function in the step definition.
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+	this.Given(/^I Correctly type in my details$/, {timeout: 60*1000}, function () {
+        return this.BuyCreditsPage.fillDefaultCardDetails();
+    });
+//code omitted
+\end{minted}
+\captionof{listing}{Completed Step Definition For Filling in Payment Form}
+\label{lst:example-step-def-fillin-completed}
+\end{listing} 
+
+Finally, Consider the 3st \texttt{step} definition in \textbf{Listing \ref{lst:example-steps-file}}. This can also be grouped as a generic \texttt{step} since it is applicable to different pages. Here we need to create the following methods in \texttt{support} file for:
+
+\begin{itemize}
+\item Waiting a certain time for page to load
+\item Checking current URL matches passed in URL
+\end{itemize}
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+	waitUntil : function (action, time) {
+        return function () {
+            return browser.wait(action, time);
+        }
+    },
+
+    urlChanged : function(url) {
+        return function () {
+            return browser.getCurrentUrl().then(function(actualUrl) {
+                return actualUrl === url;
+            });
+        };
+    },
+//code omitted
+\end{minted}
+\captionof{listing}{Example Support Function For Checking Page URL}
+\label{lst:example-support-func2}
+\end{listing} 
+
+\textbf{Listing \ref{lst:example-support-func2}} shows implementation generic methods required to complete the final step definition. See \textbf{Listing \ref{lst:example-step-def-url-check-completed}} to see usage of these function in the step definition.
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
+//code omitted
+	this.Given(/^I should be on "([^"]*)" page$/, function (pageName) {
+        return this.Support.waitUntil(this.Support.urlChanged(this.Support.getPageUrl(pageName)), 2000)();
+    });
+//code omitted
+\end{minted}
+\captionof{listing}{Completed Step Definition For Verifying Current URL}
+\label{lst:example-step-def-url-check-completed}
+\end{listing} 
 
 \subsection{Reporting}
 \label{subsec:reporting}
