@@ -277,7 +277,7 @@ module.exports = function () {
 \label{lst:example-steps-file}
 \end{listing}
 
-In \textbf{Listing \ref{lst:example-steps-file}} we define the \texttt{steps} written in \textbf{Listing \ref{lst:example-feature-file-scenario}} using reqular expressions. The \texttt{scenario} in \textbf{Listing \ref{lst:example-feature-file-scenario}} will be interacting with the payment form (\textbf{See Figure \ref{fig:paymentform-screenshot}}) and so we need to create a texttt{page object} file for it as defined in  \textbf{Section \ref{subsec:page-objects}}. 
+In \textbf{Listing \ref{lst:example-steps-file}} we define the \texttt{steps} written in \textbf{Listing \ref{lst:example-feature-file-scenario}} using reqular expressions. The \texttt{scenario} in \textbf{Listing \ref{lst:example-feature-file-scenario}} will be interacting with the payment form (\textbf{See Figure \ref{fig:paymentform-screenshot}}) and so we need to create a texttt{page object} file for it as defined in  \textbf{Section \ref{subsec:page-objects}}.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -287,81 +287,82 @@ var buyCreditsPage = {
   billing_nameInput : element(by.model('billingName')),
   numberInput : element(by.model('cardNumber')),
   cvcInput : element(by.model('cardCVC'))
-//code omitted
+  //code omitted
 }
 \end{minted}
 \captionof{listing}{Example \texttt{Page Object} File}
 \label{lst:example-page-file}
 \end{listing}
 
-In \textbf{Listing \ref{lst:example-page-file}}, we created a one to one mapping of all the elements of the payment form. Next step is to actually write interaction code to complete the step definitions in \textbf{Listing \ref{lst:example-steps-file}} with the help of page object.\\ 
+In \textbf{Listing \ref{lst:example-page-file}}, we created a one to one mapping of all the elements of the payment form. Next step is to actually write interaction code to complete the step definitions in \textbf{Listing \ref{lst:example-steps-file}} with the help of page object.\\
 
 Consider the 1st \texttt{step} definition in \textbf{Listing \ref{lst:example-steps-file}}. This can be grouped as a generic \texttt{step} since it can be applicable to many elements on different pages. Therefore we should create a generic method in \texttt{support.js} file for this interaction as mentioned in  \textbf{Section \ref{subsec:reusable-support-functions}}. Consider  \textbf{Listing \ref{lst:example-support-func}}
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 clickButton: function (buttonName, pageName) {
-        loadPageOnSupport(pageName);
-        var button = support.getButton(buttonName, pageName);
-        return button.click();
+  loadPageOnSupport(pageName);
+  var button = support.getButton(buttonName, pageName);
+  return button.click();
 },
 \end{minted}
 \captionof{listing}{Example Support Function for clicking}
 \label{lst:example-support-func}
-\end{listing} 
+\end{listing}
 
 \textbf{Listing \ref{lst:example-support-func}} shows section of the \texttt{support} file with the generic method to handle clicking. See \textbf{Listing \ref{lst:example-step-def-click-completed}} to see usage of this function in the step definition.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
-this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/, 
-	function (buttonName, pageName) {
-        return this.Support.clickButton(buttonName, pageName);
+this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/,
+  function (buttonName, pageName) {
+    return this.Support.clickButton(buttonName, pageName);
 });
 //code omitted
 \end{minted}
 \captionof{listing}{Completed Step Definition For Clicking Buttons}
 \label{lst:example-step-def-click-completed}
-\end{listing} 
+\end{listing}
 
-Now consider the 2nd \texttt{step} definition in \textbf{Listing \ref{lst:example-steps-file}}. This \texttt{step} is specific to the payment form only. Hence this interaction should be handled in the \texttt{page object} file for payment form. 
+Now consider the 2nd \texttt{step} definition in \textbf{Listing \ref{lst:example-steps-file}}. This \texttt{step} is specific to the payment form only. Hence this interaction should be handled in the \texttt{page object} file for payment form.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
-	fillInputsOnPage : function (pageName, fieldValMap){
-        loadPageOnSupport(pageName);
-        if (support[pageName]) {
-            var promises = [];
-            // enter the exception fields
-            _.forOwn(fieldValMap, function (val, field) {
-                if (field && val) {
-                    promises.push(support.fillInputOnPage(pageName, field, val));
-                }
-            });
-            return Promise.all(promises);
-        }
-    },
+fillInputsOnPage : function (pageName, fieldValMap){
+  loadPageOnSupport(pageName);
+  if (support[pageName]) {
+    var promises = [];
+    // enter the exception fields
+    _.forOwn(fieldValMap, function (val, field) {
+      if (field && val) {
+        promises.push(support.fillInputOnPage(pageName, field, val));
+      }
+    });
+    return Promise.all(promises);
+  }
+}
 //code omitted
 \end{minted}
 \captionof{listing}{Payment Form Page Specific Method for Filling in Fields}
 \label{lst:example-page-specific-method}
-\end{listing} 
+\end{listing}
 
 \textbf{Listing \ref{lst:example-page-specific-method}} shows section of the \texttt{page} file with implementation of method to fill inputs of payment form. See \textbf{Listing \ref{lst:example-step-def-fillin-completed}} to see usage of this function in the step definition.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
-	this.Given(/^I Correctly type in my details$/, {timeout: 60*1000}, function () {
-        return this.BuyCreditsPage.fillDefaultCardDetails();
-    });
+this.Given(/^I Correctly type in my details$/, {timeout: 60*1000},
+  function () {
+    return this.BuyCreditsPage.fillDefaultCardDetails();
+});
 //code omitted
 \end{minted}
 \captionof{listing}{Completed Step Definition For Filling in Payment Form}
 \label{lst:example-step-def-fillin-completed}
-\end{listing} 
+\end{listing}
 
 Finally, Consider the 3st \texttt{step} definition in \textbf{Listing \ref{lst:example-steps-file}}. This can also be grouped as a generic \texttt{step} since it is applicable to different pages. Here we need to create the following methods in \texttt{support} file for:
 
@@ -373,38 +374,40 @@ Finally, Consider the 3st \texttt{step} definition in \textbf{Listing \ref{lst:e
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
-	waitUntil : function (action, time) {
-        return function () {
-            return browser.wait(action, time);
-        }
-    },
+waitUntil : function (action, time) {
+  return function () {
+    return browser.wait(action, time);
+  }
+},
 
-    urlChanged : function(url) {
-        return function () {
-            return browser.getCurrentUrl().then(function(actualUrl) {
-                return actualUrl === url;
-            });
-        };
-    },
+urlChanged : function(url) {
+  return function () {
+    return browser.getCurrentUrl().then(function(actualUrl) {
+      return actualUrl === url;
+    });
+  };
+},
 //code omitted
 \end{minted}
 \captionof{listing}{Example Support Function For Checking Page URL}
 \label{lst:example-support-func2}
-\end{listing} 
+\end{listing}
 
 \textbf{Listing \ref{lst:example-support-func2}} shows implementation generic methods required to complete the final step definition. See \textbf{Listing \ref{lst:example-step-def-url-check-completed}} to see usage of these function in the step definition.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 //code omitted
-	this.Given(/^I should be on "([^"]*)" page$/, function (pageName) {
-        return this.Support.waitUntil(this.Support.urlChanged(this.Support.getPageUrl(pageName)), 2000)();
-    });
+this.Given(/^I should be on "([^"]*)" page$/, function (pageName) {
+  return this.Support.waitUntil
+      (this.Support.urlChanged(this.Support.getPageUrl(pageName))
+    , 2000)();
+});
 //code omitted
 \end{minted}
 \captionof{listing}{Completed Step Definition For Verifying Current URL}
 \label{lst:example-step-def-url-check-completed}
-\end{listing} 
+\end{listing}
 
 \subsection{Reporting}
 \label{subsec:reporting}
