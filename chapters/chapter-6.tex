@@ -110,6 +110,46 @@ sudo service nginx restart
  	\label{fig:jenkin-build-trigger}
 \end{figure}
 
+\subsubsection{Automatically}
+\label{subsubsec:triggering-builds-automatically}
+
+Builds can be triggered automatically when changes are made to the repository. In order to set this up, the following steps must be followed:
+
+\begin{itemize}
+\item Install the BitBucket Jenkins Plugin. This plugin can be found in the \textit{Manage Jenkins} $\rightarrow$ \textit{Manage Plugins} section.
+
+\item Once installed, go to the Jenkins project and click \textit{Configure}. Under \textit{Build Triggers}, select the BitBucket option as shown below:
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.78\textwidth]{bitbucket-build-trigger.png}
+  	\caption{BitBucket Build Trigger}
+ 	\label{fig:bitbucket-build-trigger}
+\end{figure}
+
+\item Set up the BitBucket WebHook. Go to the BitBucket repository website under the \textit{Settings} $\rightarrow$ \textit{WebHooks} section. Click on \textit{Add webhook}, give it a name and paste in the webhook which is of the form \textit{jenkins-address:8080/bitbucket-hook/}. The current setup has this URL in place: \textit{https://jenkins-cicd.synote.com/bitbucket-hook/}. The trailing slash must be kept in the URL.
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.78\textwidth]{bitbucket-webhook.png}
+  	\caption{BitBucket WebHook}
+ 	\label{fig:bitbucket-webhook}
+\end{figure}
+
+\end{itemize}
+
+\subsubsection{Manually}
+\label{subsubsec:triggering-builds-manually}
+
+Triggering a build manually is very easy. Just select a Jenkins project and click \textit{Build Now}.
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.78\textwidth]{triggering-builds-manually.png}
+  	\caption{Triggering Builds Manually}
+ 	\label{fig:triggering-builds-manually}
+\end{figure}
+
 \section{Pre-build Preparation}
 \label{sec:pre-build-preparation}
 
