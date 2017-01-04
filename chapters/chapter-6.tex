@@ -290,6 +290,8 @@ cp -RT $SYNOTE_JENKINS $SYNOTE_MAIN
 \subsection{Automated Database Migration}
 \label{subsec:automated-database-migration}
 
+When a change is made in the schema, databases from various sites will need to be updated at some point. This is done via an SQL migration script. Problems may arise whenever changes from the migration are already present on the database that we are running the script against. This stops the script execution altogether making it cumbersome to automate.
+
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
 
@@ -304,6 +306,82 @@ mysql -u synote '-p<mysqlpass>' synote_server_experiment < v0.9.0-v0.10.0.sql # 
 \captionof{listing}{Automated DB Migration}
 \label{lst:automated-db-migration}
 \end{listing}
+
+\subsubsection{SQL Procedures}
+\label{subsubsec:sql-procedures}
+
+To overcome the above issue, we can use MySQL procedures. These are in essence functions to which we can add useful logic. In our case, we wish to check if a change is already present and if it is, we ignore the error so the migration script can carry on unhindered. An example procedure can seen below.
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{sql}
+
+DROP PROCEDURE IF EXISTS addColumnSafe;
+DELIMITER //
+CREATE PROCEDURE addColumnSafe (IN _table VARCHAR(64), IN _column VARCHAR(64), IN _type varchar(64))
+BEGIN
+	DECLARE _stmt VARCHAR(1024);
+	SET @ddl = CONCAT('ALTER TABLE ', _table, ' ADD COLUMN ', _column, ' ', _type);
+	IF NOT EXISTS 
+	(
+		SELECT * FROM information_schema.COLUMNS
+			WHERE TABLE_NAME=_table AND COLUMN_NAME=_column
+	)
+	THEN
+		PREPARE _stmt FROM @ddl;
+		EXECUTE _stmt;
+		DEALLOCATE PREPARE _stmt;
+END IF;
+END //
+DELIMITER ;
+
+\end{minted}
+\captionof{listing}{SQL procedure}
+\label{lst:sql-procedure}
+\end{listing}
+
+Before doing any migration, the procedures must be updated:
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
+
+mysql -u some_user -p some_database < ~/backend/db/migrate/procedures.sql
+
+\end{minted}
+\captionof{listing}{Updating SQL procedures}
+\label{lst:updating-sql-procedures}
+\end{listing}
+
+\subsubsection{Automated Migration Convetion}
+\label{subsubsec:automated-migration-convention}
+
+Whenever changes are needed in the schema, a procedure must be used to avoid the duplicate change error. There should be a procedure for every possible schema alteration (new table, new table column, etc). Within the migration script, you call the procedure with the required parameters. 
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{sql}
+
+CALL addColumnSafe('some_table', 'some_column', 'some_type')
+
+\end{minted}
+\captionof{listing}{Calling an SQL procedure}
+\label{lst:calling-an-sql-procedure}
+\end{listing}
+
+If you try to insert data that is already present, MySQL will complain and cease execution. To avoid this, we append this line after every data insertion statement:
+
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{sql}
+
+ON DUPLICATE KEY UPDATE id=id;
+
+\end{minted}
+\captionof{listing}{Avoiding duplicate data insertion errors}
+\label{lst:avoiding-duplicate-data-insertion-errors}
+\end{listing}
+
+This works under the assumption that each table has a primary key called \texttt{id} which is true with the currently used ORM.
+\\
+
+Details on how database migration is handled can be found in \texttt{CONTRIBUTING.md} on the Synote repository.
 
 \subsection{Restarting the New Build}
 \label{subsec:restarting-the-new-build}
