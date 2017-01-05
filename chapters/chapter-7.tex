@@ -36,34 +36,33 @@ it('should not view credit if not credit owner himself', function (done) {
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
-    var req, res, cb;
+var req, res, cb;
 
-    beforeEach(function (done) {
-        req = {
-            user_profile: {
-                id: '',
-                role: ''
-            },
-            user: {sub: ''}
-        };
-        res = {};
-        cb = sinon.spy();
-        done();
-    });
+beforeEach(function (done) {
+  req = {
+    user_profile: {
+      id: '',
+      role: ''
+    },
+    user: {sub: ''}
+  };
+  res = {};
+  cb = sinon.spy();
+  done();
+});
+it('If bearer does not match user and not admin, it is forbidden',
+  function (done) {
+    req.method = 'GET';
+    req.user_profile.id = 'fakeid';
+    req.user.sub = 'not matching fakeid';
+    req.user.admin = 'not admin';
+    res.forbidden = sinon.spy();
+    canListCreditHitory(req, res, cb);
 
-    it('If bearer does not match user and not admin, it is forbidden', function (done) {
-        req.method = 'GET';
-        req.user_profile.id = 'fakeid';
-        req.user.sub = 'not matching fakeid';
-        req.user.admin = 'not admin';
-        res.forbidden = sinon.spy();
-
-        canListCreditHitory(req, res, cb);
-
-        expect(res.forbidden).called;
-        expect(cb).not.called;
-        done();
-    });
+    expect(res.forbidden).called;
+    expect(cb).not.called;
+    done();
+});
 \end{minted}
 \captionof{listing}{\texttt{canListCreditHistory.test.js} snippet}
 \label{lst:can-list-credit-test}

@@ -122,7 +122,7 @@ Builds can be triggered automatically when changes are made to the repository. I
 
 \begin{figure}[!hbt]
   	\centering
- 	\includegraphics[width=0.78\textwidth]{bitbucket-build-trigger.png}
+ 	\includegraphics[width=0.5\textwidth]{bitbucket-build-trigger.png}
   	\caption{BitBucket Build Trigger}
  	\label{fig:bitbucket-build-trigger}
 \end{figure}
@@ -145,7 +145,7 @@ Triggering a build manually is very easy. Just select a Jenkins project and clic
 
 \begin{figure}[!hbt]
   	\centering
- 	\includegraphics[width=0.78\textwidth]{triggering-builds-manually.png}
+ 	\includegraphics[width=0.6\textwidth]{triggering-builds-manually.png}
   	\caption{Triggering Builds Manually}
  	\label{fig:triggering-builds-manually}
 \end{figure}
@@ -314,26 +314,26 @@ To overcome the above issue, we can use MySQL procedures. These are in essence f
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{sql}
-
 DROP PROCEDURE IF EXISTS addColumnSafe;
 DELIMITER //
-CREATE PROCEDURE addColumnSafe (IN _table VARCHAR(64), IN _column VARCHAR(64), IN _type varchar(64))
+CREATE PROCEDURE addColumnSafe
+  (IN _table VARCHAR(64), IN _column VARCHAR(64), IN _type varchar(64))
 BEGIN
-	DECLARE _stmt VARCHAR(1024);
-	SET @ddl = CONCAT('ALTER TABLE ', _table, ' ADD COLUMN ', _column, ' ', _type);
-	IF NOT EXISTS 
-	(
-		SELECT * FROM information_schema.COLUMNS
-			WHERE TABLE_NAME=_table AND COLUMN_NAME=_column
-	)
-	THEN
-		PREPARE _stmt FROM @ddl;
-		EXECUTE _stmt;
-		DEALLOCATE PREPARE _stmt;
-END IF;
+  DECLARE _stmt VARCHAR(1024);
+  SET @ddl = CONCAT
+    ('ALTER TABLE ', _table, ' ADD COLUMN ', _column, ' ', _type);
+  IF NOT EXISTS
+  (
+    SELECT * FROM information_schema.COLUMNS
+    WHERE TABLE_NAME=_table AND COLUMN_NAME=_column
+  )
+  THEN
+    PREPARE _stmt FROM @ddl;
+    EXECUTE _stmt;
+    DEALLOCATE PREPARE _stmt;
+  END IF;
 END //
 DELIMITER ;
-
 \end{minted}
 \captionof{listing}{SQL procedure}
 \label{lst:sql-procedure}
@@ -354,7 +354,7 @@ mysql -u some_user -p some_database < ~/backend/db/migrate/procedures.sql
 \subsubsection{Automated Migration Convetion}
 \label{subsubsec:automated-migration-convention}
 
-Whenever changes are needed in the schema, a procedure must be used to avoid the duplicate change error. There should be a procedure for every possible schema alteration (new table, new table column, etc). Within the migration script, you call the procedure with the required parameters. 
+Whenever changes are needed in the schema, a procedure must be used to avoid the duplicate change error. There should be a procedure for every possible schema alteration (new table, new table column, etc). Within the migration script, you call the procedure with the required parameters.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{sql}
