@@ -7,13 +7,13 @@
 \subsection{Manual vs Automatic E2E Testing}
 \label{sec:manual-vs-automatic-e2e-testing}
 
-The advantages of automated testing versus manual testing become apparent when considering the complexity of handling all possible test cases, their results and how to mitigate application build issues based on the test results. 
+The advantages of automated testing versus manual testing become apparent when considering the complexity of handling all possible test cases, their results and how to mitigate application build issues based on the test results.
 \\
 
 Manual testing requires the use of a test table of cases which needs to administered by a human. It is not efficient as it takes a long time to go through especially if there are a large number of test cases. The overhead of admin work necessary for updating the table with results slows down the most important process which is development and shifts the focus towards less critical work.
 \\
 
-The unlikeliness of this procedure to succeed becomes bigger as complexity grows because of the need to test on multiple browsers and against multiple builds which may differ in any number of ways. 
+The unlikeliness of this procedure to succeed becomes bigger as complexity grows because of the need to test on multiple browsers and against multiple builds which may differ in any number of ways.
 \\
 
 We can get rid of many of these problems using automation. In automated E2E testing, a program can be written which can:
@@ -59,7 +59,7 @@ We can get rid of many of these problems using automation. In automated E2E test
 The Selenium WebDriver is an open-source software that interacts directly with the browser. It can be used to automate browser interactions such as clicking buttons, scrolling up and down a page, accessing specific URLs and much more.
 \\
 
-The Selenium WebDriver operates via a server that takes incoming requests via an API interface. The server translates these into asynchronous commands which communicate with the browser driver. 
+The Selenium WebDriver operates via a server that takes incoming requests via an API interface. The server translates these into asynchronous commands which communicate with the browser driver.
 \\
 
 Many API interfaces have been written to work with Selenium so it can be used with a multitude of languages including Javascript. It is compatible with the majority of BDD and TDD testing frameworks. For our project we used the \texttt{webdriver-manager} Node module which is embedded within the Protractor framework.
@@ -73,7 +73,7 @@ The role of Protractor is essentially of a wrapper around Selenium WebDriver to 
 
 \subsection{Cucumber}
 \label{subsec:cucumber}
-Cucumber is an open-source BDD testing framework used to add business level logic to automated testing. It has a number of different implementations for a variety of languages. 
+Cucumber is an open-source BDD testing framework used to add business level logic to automated testing. It has a number of different implementations for a variety of languages.
 \\
 
 As explained in \textbf{Subsection \ref{subsec:quantifying-qa-process-success}}, BDD allows for a certain layering of abstraction levels to satisfy both non-technical and technical people. It defines its formal requirements in feature files which contain test scenarios that the related feature should be able to offer. These files can document all the necessary functionality of a particular application. The business level language used in feature files is called Gherkin. Examples of syntax can be seen in \textbf{Figure \ref{fig:e2e-test-cases}}. Each action in a scenario is called a step and each step has an underlying implementation provided by a step function.
@@ -224,37 +224,50 @@ The way we accomplish this is by sending a POST request to the Synote server tel
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 setupTestData : function (argArr) {
-	return httpPost('Testing/setup', argArr);
+  return httpPost('Testing/setup', argArr);
 }
 \end{minted}
 \captionof{listing}{Method in \texttt{support.js} for inserting test data}
 \label{lst:inserting-test-data}
 \end{listing}
 
-The process of specifying what data to add is wrapped around a Cucumber step function which describes the application pre-existing state that is needed. For example, the scenario below requires that the user already has a card saved with some specific details. 
+The process of specifying what data to add is wrapped around a Cucumber step function which describes the application pre-existing state that is needed. For example, the scenario below requires that the user already has a card saved with some specific details.
 
-\begin{figure}[!hbt]
-  	\centering
- 	\includegraphics[width=\textwidth]{example-scenario-with-db-setup.png}
-  	\caption{Example scenario with DB setup}
- 	\label{fig:example-scenario-with-db-setup}
-\end{figure}
+\begin{listing}[H]
+\begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{cucumber}
+Scenario: Pay with saved card
+  Given I already have a card saved with correct details except "4242424242424242,7,2017,123" for "number,exp_month,exp_year,cvc"
+  Given I click the "Profile" button on "SideMenu" page
+  Given I click the "BuyCredit" button on "Profile" page
+  Then "PaySavedRadio" Button on "BuyCredits" page should be visible
+  Given I click card at position "1" on BuyCredits page
+  And I click the "SubmitPayment" button on "BuyCredits" page
+  Then  I should be on "CreditsHistory" page
+\end{minted}
+\captionof{listing}{Example scenario with DB setup}
+\label{lst:example-scenario-with-db-setup}
+\end{listing}
 
 The highlighted step will map to the function below which will send the arguments to the Synote backend.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
-this.Given(/^I already have a card saved with correct details except "([^"]*)" for "([^"]*)"$/, function (value, fieldName) {
-	var tempCard = this.Support.getEnvFieldCustom("defaultCard",this._.zipObject(this._.split(fieldName, ','), this._.split(value, ',')));
-	delete tempCard['billing_name'];
-	tempCard['exp_month'] = this.BuyCreditsPage.convertMonthNameToNumber(tempCard['exp_month']);
-	return this.Support.setupTestData({
-	steps : 'saveCard',
-		params : {
-			card : tempCard
-		},
-	email : browser.deployment.defaultUser.email
-	});
+this.Given(/^I already have a card saved with correct details except "([^"]*)" for "([^"]*)"$/,
+  function (value, fieldName) {
+    var tempCard = this.Support.getEnvFieldCustom("defaultCard",
+      this._.zipObject(this._.split(fieldName, ','),
+      this._.split(value, ',')));
+    delete tempCard['billing_name'];
+    tempCard['exp_month'] = this.
+      BuyCreditsPage.convertMonthNameToNumber(tempCard['exp_month']);
+
+    return this.Support.setupTestData({
+      steps : 'saveCard',
+      params : {
+        card : tempCard
+      },
+      email : browser.deployment.defaultUser.email
+    });
 });
 \end{minted}
 \captionof{listing}{Data insertion step function}
@@ -266,7 +279,8 @@ All the test data related to a user is cleared out before each scenario and each
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 this.Before(function () {
-	return this.Support.cleanTestData(browser.deployment.defaultUser.email);
+  return this.Support.cleanTestData
+          (browser.deployment.defaultUser.email);
 });
 \end{minted}
 \captionof{listing}{Remove test data before scenario}
@@ -282,17 +296,21 @@ Cucumber hooks can also used for logging in and logging out users. Currently we 
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 
 this.Before(function () {
-	this.Support.fillInputOnPage(this.LoginPage.Title, "Email", browser.deployment.defaultUser.email);
-    this.Support.fillInputOnPage(this.LoginPage.Title, "Password", browser.deployment.defaultUser.password);
-    return this.Support
-    	.clickButton("Login", this.LoginPage.Title)
-		.then(this.Support.waitUntil(this.Support.urlChanged(browser.deployment.hostUrl), 2000)); 
+  this.Support.fillInputOnPage(this.LoginPage.Title, "Email", browser.deployment.defaultUser.email);
+  this.Support.fillInputOnPage(this.LoginPage.Title, "Password", browser.deployment.defaultUser.password);
+  return this.Support
+    .clickButton("Login", this.LoginPage.Title)
+    .then(this.Support.waitUntil(this.Support.urlChanged
+          (browser.deployment.hostUrl)
+        , 2000));
 });
 
 this.After(function () {
-	return this.Support
-		.clickButton("Logout", this.HeaderPage.Title)
-		.then(this.Support.waitUntil(this.Support.urlChanged(this.Support.getPageUrl(this.LoginPage.Title)), 2000));
+  return this.Support
+    .clickButton("Logout", this.HeaderPage.Title)
+    .then(this.Support.waitUntil(this.Support.urlChanged
+          (this.Support.getPageUrl(this.LoginPage.Title))
+        , 2000));
 });
 
 \end{minted}
@@ -315,19 +333,17 @@ Methods in \texttt{support.js} handle sending the HTTP requests as seen below:
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
-
 lockUser : function (role) {
-	return httpPost('Testing/lock', {
-		role : role
-	});
+  return httpPost('Testing/lock', {
+    role : role
+  });
 },
 
 unlockUser : function (email) {
-	return httpPost('Testing/unlock', {
-		email : email
-	});
-},
-
+  return httpPost('Testing/unlock', {
+    email : email
+  });
+}
 \end{minted}
 \captionof{listing}{Login and logout hooks}
 \label{lst:login-and-logout-hooks}
@@ -646,13 +662,13 @@ The node module that we used for reporting is \texttt{cucumber-html-report}. You
 After a number of application builds and subsequent E2E test runs, there will be plenty of reports that stack up. A convention is needed for making sense of these, organising them and linking them with application builds.
 \\
 
-All of the test reports are stored under the /reports folder. In here we have separate directories for each Synote site the framework was run against. 
+All of the test reports are stored under the /reports folder. In here we have separate directories for each Synote site the framework was run against.
 \\
 
-One level underneath, we have folders that map to a particular version of the application (latest commit hash). This makes it easier to debug issues and it allows for a critical comparison between versions of Synote. If, for example, a change breaks a large number of tests, the knowledge of the git commit hashes allows us to rollback to a more stable version. 
+One level underneath, we have folders that map to a particular version of the application (latest commit hash). This makes it easier to debug issues and it allows for a critical comparison between versions of Synote. If, for example, a change breaks a large number of tests, the knowledge of the git commit hashes allows us to rollback to a more stable version.
 \\
 
-In every hash commit folder, we have one or more directories whose names represent time stamps. They are of the form 
+In every hash commit folder, we have one or more directories whose names represent time stamps. They are of the form
 \texttt{year-month-day\_hour-minute-second}.
 \\
 
