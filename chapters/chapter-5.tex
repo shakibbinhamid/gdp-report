@@ -221,7 +221,7 @@ Consider \textbf{Listing \ref{lst:deployment-file}}. Here you can see that each 
 
 When running the E2E tests, we simply need to pass the name of object which represents the deployment we want to test against. For example: consider \textbf{Listing \ref{lst:specifying-deployment-test-run}}, here we pass in \texttt{dev} as a parameter so the framework will execute tests on \texttt{development} deployment with data defined in \texttt{dev} object.  To overcome the issues with some tests only being suitable for certain deployments, we used \texttt{cucumber tags} which can be placed on \texttt{feature} keyword of \texttt{feature} files or on desired \texttt{scenarios}. For example, in \textbf{Listing \ref{lst:buycredits-feature-file}} we place \texttt{dev} and \texttt{experiment} keywords on the \texttt{feature} keyword so all the test \texttt{scenarios} will run for both of these deployments. The desired test suite to be executed has to be specified as a parameter when executing the tests (see \textbf{Listing \ref{lst:specifying-deployment-test-run}}).
 
- \subsection{Example Test Case}
+\subsection{Example Test Case}
 \label{subsec:example-test-case}
 
 When testing a feature of the application, we initially start with a requirement which will later form the description of the \texttt{feature file}. For example, say we want to test the \texttt{payment feature} and our requirement is \texttt{As a user of Synote I should be able to successfully buy credits when logged in}. First we will need to create a feature file as in \textbf{Listing \ref{lst:example-feature-file}}.
@@ -411,6 +411,80 @@ this.Given(/^I should be on "([^"]*)" page$/, function (pageName) {
 
 \subsection{Reporting}
 \label{subsec:reporting}
+
+Reporting is a very important part of the E2E testing framework. It should allow us to have a clear overview of what went wrong during tests, give a good overview of the state of the application and aid us in debugging issues.
+
+\subsubsection{Types of Reporting}
+\label{subsubsec:types-of-reporting}
+
+Reporting for the E2E test results is of 3 types:
+
+\begin{enumerate}
+
+\item \textbf{Pretty printing in the console}
+\\
+This can be seen in \textbf{Figure \ref{fig:e2e-test-cases}}. It is mainly helpful for doing development as it offers a fast way of checking test results and debugging issues with stack traces.
+
+\item \textbf{JSON reporting}
+\\
+This type of reporting is mainly used as a means of saving test results to file. It is what the majority of HTML reporting software uses as input.
+
+\item \textbf{HTML reporting}
+\\
+The node module that we used for reporting is \texttt{cucumber-html-report}. You can see a screenshot of an example report below on \textbf{Figure \ref{fig:html-report-example}}. We chose it mainly because:
+
+\begin{itemize}
+\item It has a nice outline that allows you to navigate rapidly between test cases and scenarios.
+\item Colour coding makes it easy to read.
+\item Good debugging power as it shows you the stack trace of the failed tests.
+\end{itemize}
+
+\end{enumerate}
+
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=\textwidth]{html-report-example}
+  	\caption{HTML Report Example}
+ 	\label{fig:html-report-example}
+\end{figure}
+
+\subsubsection{Reporting Convention}
+\label{subsubsec:reporting-convention}
+
+After a number of application builds and subsequent E2E test runs, there will be plenty of reports that stack up. A convention is needed for making sense of these, organising them and linking them with application builds.
+\\
+
+All of the test reports are stored under the /reports folder. In here we have separate directories for each Synote site the framework was run against. 
+\\
+
+One level underneath, we have folders that map to a particular version of the application (latest commit hash). This makes it easier to debug issues and it allows for a critical comparison between versions of Synote. If, for example, a change breaks a large number of tests, the knowledge of the git commit hashes allows us to rollback to a more stable version. 
+\\
+
+In every hash commit folder, we have one or more directories whose names represent time stamps. They are of the form 
+\texttt{year-month-day\_hour-minute-second}.
+\\
+
+Finally, in each timestamp folder we have the actual test report in HTML and JSON format along with screenshots of the failed tests. An example overview of this convention can be seen below.
+\\
+
+\dirtree{%
+  .1 reports/.
+  .2 experiment/.
+  .3 18cc3efc46dc0185a46315b8e97710c8666057c2.
+  .4 2016-12-24-23-59-59.
+  .5 index.html.
+  .5 index.json.
+  .5 Buy\_credit\_with\_empty\_card\_number\_42.png.
+  .2 production/.
+  .3 b6bd0be898f0c3285684d3a25a542914840a42ee.
+  .4 2016-11-31-00-00-00.
+  .5 index.html.
+  .5 index.json.
+  .5 Buy\_credit\_with\_invalid\_expiry\_60.png.
+  .5 VAT\_will\_be\_added\_at\_20\_when\_buying\_credits\_78.png.
+}
+\captionof{figure}{Example Reports File Structure}
+\label{fig:reports-file-structure}
 
 \subsection{Assessment}
 \label{subsec:assessment}
