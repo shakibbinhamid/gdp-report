@@ -10,13 +10,13 @@
 The advantages of automated testing versus manual testing become apparent when considering the complexity of handling all possible test cases, their results and how to mitigate application build issues based on the test results.
 \\
 
-Manual testing requires the use of a test table of cases which needs to administered by a human. It is not efficient as it takes a long time to go through especially if there are a large number of test cases. The overhead of admin work necessary for updating the table with results slows down the most important process which is development and shifts the focus towards less critical work.
+Manual testing requires the use of a test table of cases which needs to administered by a human. It is not efficient as it takes a long time to go through especially if there are a large number of test cases. The overhead of administrative work necessary for updating the table with results slows down the most important process which is development and shifts the focus towards less critical work.
 \\
 
-The unlikeliness of this procedure to succeed becomes bigger as complexity grows because of the need to test on multiple browsers and against multiple builds which may differ in any number of ways.
+The situation worsens as complexity grows because of the need to test on multiple browsers and against multiple builds which may differ in any number of ways.
 \\
 
-We can get rid of many of these problems using automation. In automated E2E testing, a program can be written which can:
+We can solve many of these problems using automation. In automated E2E testing, a program can be written which can:
 
 \begin{itemize}
 \item Allow human readable test scenarios (BDD).
@@ -34,13 +34,13 @@ We can get rid of many of these problems using automation. In automated E2E test
  \hline
  	Accuracy & Prone to human error. & More reliable as it is performed by automation tools.\\
  \hline
-    Time consuming & Very time consuming, taking up human resources. & Generally faster than manual testing but with a considerable amount of test cases it can also be time consuming.\\
+    Time consuming & Time consuming, taking up human resources. & Generally faster than manual testing but with a considerable amount of test cases it can also take long.\\
  \hline
     Practicality & Not practical with a large number of test cases or when frequent repetition is required. & Practical option when the test cases are run repeatedly over a long period of time.\\
  \hline
     Results Accuracy & Gives low accuracy results. & Gives high accuracy results.\\
  \hline
-    Human Observation & Human observation is part of the testing process making it easier to reason about the results. & No human observation as tests are run via automated scripts.\\
+    Human Observation & Human observation is part of the testing process and easier to reason about the results. & No human observation as tests are run via automated scripts.\\
  \hline
     Cost effectiveness & Less costs because of the lack of need of tools but overall the cost of human resources makes it an expensive practice. & Expensive due to tool costs but can be mitigated by using open-source software. Less budget needed for human resources.\\
  \hline
@@ -56,31 +56,30 @@ We can get rid of many of these problems using automation. In automated E2E test
 
 \subsection{Selenium}
 \label{subsec:selenium}
-The Selenium WebDriver is an open-source software that interacts directly with the browser. It can be used to automate browser interactions such as clicking buttons, scrolling up and down a page, accessing specific URLs and much more.
+The \textit{Selenium WebDriver} is an open-source software that interacts directly with the browser. It can be used to automate browser interactions such as clicking buttons, scrolling up and down a page, accessing specific URLs and much more.
 \\
 
-The Selenium WebDriver operates via a server that takes incoming requests via an API interface. The server translates these into asynchronous commands which communicate with the browser driver.
+The \textit{Selenium WebDriver} operates via a server that takes incoming requests via an API interface. The server translates these into asynchronous commands which communicate with the browser driver.
 \\
 
-Many API interfaces have been written to work with Selenium so it can be used with a multitude of languages including Javascript. It is compatible with the majority of BDD and TDD testing frameworks. For our project we used the \texttt{webdriver-manager} Node module which is embedded within the Protractor framework.
+Many API interfaces have been written to work with \textit{Selenium} so it can be used with a multitude of languages including Javascript. It is compatible with the majority of BDD and TDD testing frameworks. For our project we used the \texttt{webdriver-manager} Node module which is embedded within the \textit{Protractor} framework.
 
 \subsection{Protractor}
 \label{subsec:protractor}
-Protractor is an end-to-end test framework for AngularJS applications. It can be combined with a number of TDD/BDD test frameworks such as Jasmine, Mocha and Cucumber. Protractor works in conjunction with Selenium to provide an automated test infrastructure that can simulate a user’s interaction with an Angular application running in a browser or a mobile device.
+\textit{Protractor} is an end-to-end test framework for \textit{AngularJS} applications. It can be combined with a number of TDD/BDD test frameworks such as \textit{Jasmine}, \textit{Mocha} and \textit{Cucumber}. \textit{Protractor} works in conjunction with \textit{Selenium} to provide an automated test infrastructure that can simulate a user’s interaction with an \textit{Angular} application running in a browser or a mobile device.
 \\
 
-The role of Protractor is essentially of a wrapper around Selenium WebDriver to better suit AngularJS applications. It gets rid of the overhead of managing asynchronous calls and blends nicely the nature of Javascript with the particularities of Selenium.
+The role of \textit{Protractor} is essentially of a wrapper around \textit{Selenium WebDriver} to better suit \textit{AngularJS} applications. It gets rid of the overhead of managing asynchronous calls and blends nicely the nature of Javascript with the particularities of \textit{Selenium}.
 
 \subsection{Cucumber}
 \label{subsec:cucumber}
-Cucumber is an open-source BDD testing framework used to add business level logic to automated testing. It has a number of different implementations for a variety of languages.
+\textit{Cucumber} is an open-source BDD testing framework used to add business level logic to automated testing. It has a number of different implementations for a variety of languages.
 \\
 
-As explained in \textbf{Subsection \ref{subsec:quantifying-qa-process-success}}, BDD allows for a certain layering of abstraction levels to satisfy both non-technical and technical people. It defines its formal requirements in feature files which contain test scenarios that the related feature should be able to offer. These files can document all the necessary functionality of a particular application. The business level language used in feature files is called Gherkin. Examples of syntax can be seen in \textbf{Figure \ref{fig:e2e-test-cases}}. Each action in a scenario is called a step and each step has an underlying implementation provided by a step function.
+As explained in \textbf{Section \ref{subsubsec:bdd}}, BDD allows for a certain layering of abstraction levels to satisfy both non-technical and technical people. It defines its formal requirements in feature files which contain test scenarios that the related feature should be able to offer. These files can document all the necessary functionality of a particular application. The business level language used in feature files is called \textit{Gherkin}. Examples of syntax can be seen in \textbf{Figure \ref{fig:e2e-test-cases}}. Each action in a scenario is called a step and each step has an underlying implementation provided by a step function.
 \\
 
-Cucumber sits on top of Protractor, offering a convenient BDD environment best suited for AngularJS applications.
-
+\textit{Cucumber} sits on top of \textit{Protractor}, offering a convenient BDD environment best suited for \textit{AngularJS} applications.
 
 \section{Test Framework Components}
 \label{sec:test-framework-components}
@@ -88,7 +87,7 @@ Cucumber sits on top of Protractor, offering a convenient BDD environment best s
 \subsection{Feature Definition as Requirements}
 \label{subsec:feautre-definition-as-requirements}
 
-Feature files can be seen as an entry point to cucumber test cases \cite{featurefile1}. Each of the feature file should be written to test a single feature of the application or a particular area of feature \cite{featurefile2}. Since we were writing E2E tests for the payment feature, we created \texttt{buycredits.feature} file for testing this aspect. Consider \textbf{Listing \ref{lst:buycredits-feature-file}}:\\
+Feature files can be seen as an entry point to cucumber test cases \cite{featurefile1}. Each of the feature files should be written to test a single feature of the application or a particular area of feature \cite{featurefile2}. Since we were writing E2E tests for the payment feature, we created \texttt{buycredits.feature} file for testing this aspect. Consider \textbf{Listing \ref{lst:buycredits-feature-file}}:\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{cucumber}
@@ -113,11 +112,11 @@ Feature: Buying Credit feature
 \label{lst:buycredits-feature-file}
 \end{listing}
 
-The section in \textbf{Listing \ref{lst:buycredits-feature-file}} is written in a language called \texttt{Gherkin}. \texttt{Gherkin} makes use of Business Readable Domain Specific Language (BRDSL) which allows us to write the test cases at a business level without getting into implementation details.
+The section in \textbf{Listing \ref{lst:buycredits-feature-file}} is written in a language called \textit{Gherkin}. \texttt{Gherkin} makes use of Business Readable Domain Specific Language (BRDSL) which allows us to write the test cases at a business level without getting into implementation details.\\
 
-Our client required us to document the requirements/specification for the new payment feature. Most of Synote's team are developers and since the feature file used \texttt{Gherkin}, it was readable on a business level and could act as automation test script \cite{featurefile1}. Hence, we recommended using the feature files themselves as the requirements documentation.\\
+Our client required us to document the requirements/specification for the new payment feature. Most of Synote's team are developers and since the feature file used \textit{Gherkin}, it was readable on a business level and could act as automation test script \cite{featurefile1}. Hence, we recommended using the feature files themselves as the requirements documentation.\\
 
-Each of the feature file should be defined with \texttt{Feature} keyword which consists of a name  (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  2) and brief description  (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  3-4). Each of the test cases are defined with \texttt{Scenario} keyword followed by a brief description of that test (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  6 and 11). Each scenario should \cite{featurefile3}:
+Each of the feature files should be defined with \texttt{Feature} keyword which consists of a name  (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  2) and brief description  (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  3-4). Each of the test cases are defined with \texttt{Scenario} keyword followed by a brief description of that test (see \textbf{Listing \ref{lst:buycredits-feature-file}} line  6 and 11). Each scenario should \cite{featurefile3}:
 \begin{itemize}
 \item Describe event taking place
 \item Describe expected result
@@ -148,11 +147,10 @@ We use \texttt{Steps} to achieved this. Consider the \texttt{Access buy credits 
 \subsection{Reusable Steps Definition}
 \label{subsec:reusable-steps-definition}
 
-Cucumber is not able to execute the scenarios as they are. Instead, we have to write \texttt{step} definitions. Step definitions use regular expression to map the \texttt{Gherkin steps} to actions which will drive system interactions \cite{stepfile1}. Each of the \texttt{steps} written for scenarios in the \texttt{feature} file should have a \texttt{step} definition declared in its corresponding \texttt{step} file.\\ A \texttt{step} file should only contain definitions for \texttt{steps} used in corresponding \texttt{feature} file. Consider \textbf{Listing \ref{lst:buycredits-step-file}}:\\
+\textit{Cucumber} is not able to execute the scenarios as they are. Instead, we have to write \texttt{step} definitions. Step definitions use regular expression to map the \textit{Gherkin} \texttt{steps} to actions which will drive system interactions \cite{stepfile1}. Each of the \texttt{steps} written for \texttt{scenario}s in the \texttt{feature} file should have a \texttt{step} definition declared in its corresponding \texttt{step} file. A \texttt{step} file should only contain definitions for \texttt{steps} used in corresponding \texttt{feature} file. Consider \textbf{Listing \ref{lst:buycredits-step-file}}:\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
-@dev @experiment
 //code omitted
 this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/,
   function (buttonName, pageName) {
@@ -170,7 +168,7 @@ this.Given(/^I should be on "([^"]*)" page$/, function (pageName) {
 \label{lst:buycredits-step-file}
 \end{listing}
 
-In our case, all the \texttt{steps} written in \texttt{buycredits.feature} file are defined in the \texttt{buycredits.steps.js} file. Each step should have a unique definition else an \texttt{ambiguous match} exception will be thrown. \textbf{Listing \ref{lst:buycredits-step-file}} contains the step definitions for \texttt{Access buy credits page when logged in} scenario in \textbf{Listing \ref{lst:buycredits-feature-file}}. Inside the step definitions, we write javascript code to handle the interaction logic e.g. 1st definition in \textbf{Listing \ref{lst:buycredits-step-file}} (line 3) handles clicking of button provided  \texttt{buttonName and pageName} parameters and 2nd definition (line 7) handles checking we are on a page with certain URL provided  \texttt{pageName} parameter. Nearly all of out step definitions take parameters instead of hard-coding them. This way, we can satisfy the \texttt{DRY} principle by reusing generic step definitions, making both  \texttt{feature} and  \texttt{step} files easily maintainable and readable in the long run.
+In our case, all the \texttt{steps} written in \texttt{buycredits.feature} file are defined in the \texttt{buycredits.steps.js} file. Each step should have a unique definition else an \texttt{ambiguous match exception} will be thrown. \textbf{Listing \ref{lst:buycredits-step-file}} contains the step definitions for \texttt{Access buy credits page when logged in} scenario in \textbf{Listing \ref{lst:buycredits-feature-file}}. Inside the step definitions, we write Javascript code to handle the interaction logic e.g. 1st definition in \textbf{Listing \ref{lst:buycredits-step-file}} (line 3) handles clicking of button provided  \texttt{buttonName and pageName} parameters and 2nd definition (line 7) handles checking we are on a page with certain URL provided  \texttt{pageName} parameter. Nearly all of our \texttt{step} definitions take parameters instead of hard-coding them. This way, we can satisfy the DRY principle by reusing generic step definitions, making both  \texttt{feature} and  \texttt{step} files easily maintainable and readable in the long run.
 
 \subsection{Reusable Support Functions}
 \label{subsec:reusable-support-functions}
@@ -186,7 +184,6 @@ In order to have generic \texttt{step} definitions (e.g. see \textbf{Listing \re
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
-@dev @experiment
 //code omitted
 function loadPageOnSupport(pageName) {
   if (!support[pageName]) {
@@ -208,18 +205,18 @@ fillInputOnPage: function (pageName, textBox, text) {
 \label{lst:support-file-methods}
 \end{listing}
 
-Consider \textbf{Listing \ref{lst:support-file-methods}}. The \texttt{fillInputOnPage} is a common generic method i.e. it can be used to fill any input field on any page, hence its placement in the \texttt{support.js} file. The \texttt{loadPageOnSupport} method helps \texttt{support.js} file to be generic in applying its methods in different contexts by dynamically requiring desired pages objects. Main advantage of \texttt{support.js} is that testers will never have to rewrite any code they have already written, satisfying the \texttt{DRY} principle.
+Consider \textbf{Listing \ref{lst:support-file-methods}}. The \texttt{fillInputOnPage} is a common generic method i.e. it can be used to fill any input field on any page, hence its placement in the \texttt{support.js} file. The \texttt{loadPageOnSupport} method helps \texttt{support.js} file to be generic in applying its methods in different contexts by dynamically requiring desired pages objects. Main advantage of \texttt{support.js} is that testers will never have to rewrite any code they have already written, satisfying the DRY principle.
 
 \subsection{Pre and Post Hooks}
 \label{subsec:pre-and-post-hooks}
 
-Hooks are snippets of code that can be executed before or after individual test scenarios (Cucumber hooks) or the entire test suite (Protractor hooks). We use them for a variety of purposes.
+Hooks are snippets of code that can be executed before or after individual test scenarios (\textit{Cucumber} hooks) or the entire test suite (\textit{Protractor} hooks). We use them for a variety of purposes.
 
 \subsubsection{Data Insertion and Clearing}
 \label{subsubsec:data-insertion-and-clearing}
-In order to enforce the SILO principle such that each test scenario is independent of other scenario, we clear any previous data related to that case that might have existed before-hand and then we insert the information that we need.
+In order to enforce the SILO principle such that each test scenario is independent of other scenarios, we clear any previous data related to a case that might have existed before and then we insert the information that we need.\\
 
-The way we accomplish this is by sending a POST request to the Synote server telling it what data we need. The server will then parse the incoming request, map it to an action route and then add the required data to the database. This is done via the \texttt{setupTestData} method in \texttt{support.js} which constructs the request with the given arguments and sends it to the backend to be parsed. This can be seen below:
+The way we accomplish this is by sending a POST request to the Synote server telling it what data we need. The server will then parse the incoming request, map it to an action route and then add the required data to the database. This is done via the \texttt{setupTestData} method in \texttt{support.js} which constructs the request with the given arguments and sends it to the server to be parsed. This can be seen below:
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -231,7 +228,7 @@ setupTestData : function (argArr) {
 \label{lst:inserting-test-data}
 \end{listing}
 
-The process of specifying what data to add is wrapped around a Cucumber step function which describes the application pre-existing state that is needed. For example, the scenario below requires that the user already has a card saved with some specific details.
+The process of specifying what data to add is wrapped around a \textit{Cucumber} \texttt{step} function which describes the application's pre-existing state that is needed. For example, the scenario below requires that the user already has a card saved with some specific details.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{cucumber}
@@ -248,7 +245,7 @@ Scenario: Pay with saved card
 \label{lst:example-scenario-with-db-setup}
 \end{listing}
 
-The highlighted step will map to the function below which will send the arguments to the Synote backend.
+The highlighted step will map to the function below which will send the arguments to the Synote server.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -290,14 +287,16 @@ this.Before(function () {
 \subsubsection{Login and Logout}
 \label{subsubsec:login-and-logout}
 
-Cucumber hooks can also used for logging in and logging out users. Currently we login before each test scenario and logout afterwards. This can be seen on the listing below:
+\textit{Cucumber} hooks can also used for logging in and out users. Currently we login before each test scenario and logout afterwards. This can be seen on the listing below:
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
 
 this.Before(function () {
   this.Support.fillInputOnPage(this.LoginPage.Title, "Email", browser.deployment.defaultUser.email);
+
   this.Support.fillInputOnPage(this.LoginPage.Title, "Password", browser.deployment.defaultUser.password);
+
   return this.Support
     .clickButton("Login", this.LoginPage.Title)
     .then(this.Support.waitUntil(this.Support.urlChanged
@@ -323,13 +322,10 @@ In the future, an enhancement would be to add Cucumber tags to the scenarios tha
 \subsubsection{User locking and unlocking}
 \label{subsubsec:user-locking-and-unlocking}
 
-A problematic context is when multiple people are using the framework at the same time and running tests on the same deployment with the same user test accounts. We envisioned this might cause issues so as a way of dealing with it, we created a pool of user accounts. This is represented by a database table on the backend which contains all the user test accounts along with a flag for each. The flag says whether or not the account in question is locked for testing or not. The account is locked once the test suite begins executing and is then unblocked at the end.
+A problematic context is when multiple people are using the framework at the same time and running tests on the same deployment with the same user test accounts. We envisioned this might cause issues. To deal with it, we created a pool of user accounts. This is represented by a database table on the server which contains all the user test accounts along with a flag for each. The flag says whether or not the account in question is locked for testing or not. The account is locked once the test suite begins executing and is then unlocked at the end.
 \\
 
-This is done via HTTP post requests to the Synote backend. When locking a user, the framework demands a user of a particular type. If all the accounts of that type are locked, an informative error is thrown.
-\\
-
-Methods in \texttt{support.js} handle sending the HTTP requests as seen below:
+This is done via HTTP post requests to the Synote server. When locking a user, the framework demands a user of a particular type. If all the accounts of that type are locked, an informative error is thrown. Methods in \texttt{support.js} handle sending the HTTP requests as seen below:
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -351,7 +347,9 @@ unlockUser : function (email) {
 
 \subsection{Page Objects}
 \label{subsec:page-objects}
-There are few key interactions which are very common throughout the application e.g. clicking buttons, filling in inputs, navigating to pages etc. It seemed tedious and time consuming to actually write separate methods for these interactions on different pages. We came to the conclusion that the interactions themselves should be generic enough so they can be applied to any page. The pages of application differed in the elements and components they had. Hence, we have definitions of \texttt{Page Object Models} which is composed of elements a page has.
+There are few key interactions which are very common throughout the application e.g. clicking buttons, filling in inputs, navigating to pages etc. It seemed tedious and time consuming to actually write separate methods for these interactions on different pages. We came to the conclusion that the interactions themselves should be generic enough so they can be applied to any page. The pages of application differed in the elements and components they had. Hence, we have definitions of \texttt{Page Object Models} which are composed of a page's elements.\\
+
+The \texttt{buycredits.html} page (\textbf{Figure \ref{fig:paymentform-screenshot}}) and it's corresponding \texttt{page object file} (\textbf{Listing \ref{lst:buycredits-page-code}}) which is basically a one to one mapping from the html page components. Page object files also house methods to interact with elements (defined in the same \textit{page object model}) which are only applicable to the particular page in question e.g. \texttt{buycreditspage.js} has a method called \texttt{fillDefaultCardDetails} which fills in the payment form fields and is only applicable to \texttt{buycredits.html} page. The main advantages of implementing page objects were reduced code duplication and easy maintainability i.e.  if any of the UI element of the application was changed, we only have to modify them in the page object file instead of fixing them in each \texttt{step} which used that UI element \cite{semaphore}. Another advantage is that it structures the framework, improving readability.
 
 \begin{minipage}{.48\textwidth}
 \begin{listing}[H]
@@ -391,11 +389,9 @@ PaySavedRadioButton : element
  	\label{fig:paymentform-screenshot}
 \end{minipage}
 
-Here we have the \texttt{buycredits.html} page (\textbf{Figure \ref{fig:paymentform-screenshot}}) and it's corresponding \texttt{buycreditspage.js} \textit{page object file} (\textbf{Listing \ref{lst:buycredits-page-code}}) which is basically a one to one mapping from the html page components. Page object files also house methods to interact with elements (defined in the same \textit{page object model}) which are only applicable to the particular page in question e.g. \texttt{buycreditspage.js} has a method called \texttt{fillDefaultCardDetails} which fills in the payment form fields and is only applicable to \texttt{buycredits.html} page. The main advantages of implementing page objects were reduced code duplication and easy maintainability i.e.  if any of the UI element of the application was changed, we only have to modify them in the page object file instead of fixing them in each \texttt{step} which used that UI element \cite{semaphore}. Another advantage is that it structures the framework, improving readability.
-
 \subsection{Deployment Definition}
 \label{subsec:deployment-definition}
-One of the requirements of our client was that our framework should be capable of running the E2E test suite against different deployments of Synote application. The main concern we had here was that tests which worked on one deployment may not work on another deployment because each deployments of Synote is uses different parameters. For example host url of \texttt{development} deployment is \texttt{http://localhost:9000/\#/} and for  \texttt{experiment} deployment, it is \texttt{https://experiment.synote.com/\#/}. Same with other parameters such as cards e.g. \texttt{development} should use test card whereas live deployments such as \texttt{experiment} should use live cards. It can be very time consuming to manually enter all this data when you want to test a deployment. To overcome this problem, we created \texttt{deployment.js} file which can be used to easily define different deployments of Synote application.
+One of the requirements of our client was that our framework should be capable of running the E2E test suite against different deployments of Synote application. The main concern we had here was that tests which worked on one deployment may not work on another deployment because each deployments of Synote is uses different parameters. For example host url of \texttt{development} deployment is \url{http://localhost:9000/\#/} and for  \texttt{experiment} deployment, it is \url{https://experiment.synote.com/\#/}. Same with other parameters such as cards e.g. \texttt{development} should use test card whereas live deployments such as \texttt{experiment} should use live cards. It can be very time consuming to manually enter all this data when you want to test a deployment. Thus we created \texttt{deployment.js} file which can be used to easily define different deployments of Synote application.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -432,7 +428,7 @@ When running the E2E tests, we simply need to pass the name of object which repr
 \subsection{Example Test Case}
 \label{subsec:example-test-case}
 
-When testing a feature of the application, we initially start with a requirement which will later form the description of the \texttt{feature file}. For example, say we want to test the \texttt{payment feature} and our requirement is \texttt{As a user of Synote I should be able to successfully buy credits when logged in}. First we will need to create a feature file as in \textbf{Listing \ref{lst:example-feature-file}}.
+When testing a feature of the application, we initially start with a requirement which will later form the description of the \texttt{feature file}. For example, we want to test the \texttt{payment feature} and our requirement is \texttt{As a user of Synote I should be able to successfully buy credits when logged in}. First we will need to create a feature file as in \textbf{Listing \ref{lst:example-feature-file}}.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{cucumber}
@@ -444,7 +440,7 @@ Feature: Buying Credit feature
 \label{lst:example-feature-file}
 \end{listing}
 
-In \textbf{Listing \ref{lst:example-feature-file}} we use the \texttt{feature} keyword to title the feature under test i.e. \texttt{payment feature} and describe it via the requirement. The requirement is then broken down into sub-requirements which will together satisfy the main requirement. The sub-requirements are written as \texttt{scenarios}. For example, say our sub-requirement was \texttt{Buy credit with valid card details}, then its corresponding \texttt{scenario} will look like:
+In \textbf{Listing \ref{lst:example-feature-file}} we use the \texttt{feature} keyword to title the feature under test i.e. \texttt{payment feature} and describe it via the requirement. The requirement is then broken down into sub-requirements which will together satisfy the main requirement. The sub-requirements are written as \texttt{scenarios}. Let a sub-requirement be \texttt{Buy credit with valid card details}, then its corresponding \texttt{scenario} will look like:
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{cucumber}
@@ -460,7 +456,7 @@ Scenario: Buy credit with valid card details
 \label{lst:example-feature-file-scenario}
 \end{listing}
 
-In \textbf{Listing \ref{lst:example-feature-file-scenario}}, we have labelled the \texttt{scenario} with the sub-requirement definition itself and wrote \texttt{steps} in \texttt{Gherkin} for testing it. If any of the \texttt{steps} take parameter, we specify them with quotes.\\
+In \textbf{Listing \ref{lst:example-feature-file-scenario}}, we have labelled the \texttt{scenario} with the sub-requirement definition itself and wrote \texttt{steps} in \textit{Gherkin} for testing it. If any of the \texttt{steps} take parameter, we specify them with quotes.\\
 
 Next we need to is create a \texttt{steps} file where step definitions for the 5 steps in \textbf{Listing \ref{lst:example-feature-file-scenario}} will be written. Consider \textbf{Listing \ref{lst:example-steps-file}}.
 
@@ -469,15 +465,15 @@ Next we need to is create a \texttt{steps} file where step definitions for the 5
 module.exports = function () {
   this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/,
     function (buttonName, pageName) {
+      // write a generic method
   });
   this.Given(/^I Correctly type in my details$/, {timeout: 60*1000},
     function () {
+      // write a page specific method for buy credits page
   });
   this.Given(/^I should be on "([^"]*)" page$/,
     function (pageName) {
-      //return this.Support.waitUntil
-      //  (this.Support.urlChanged(this.Support.getPageUrl(pageName))
-      // , 2000)();
+      //write a generic method;
   });
 }
 \end{minted}
@@ -502,9 +498,9 @@ var buyCreditsPage = {
 \label{lst:example-page-file}
 \end{listing}
 
-In \textbf{Listing \ref{lst:example-page-file}}, we created a one to one mapping of all the elements of the payment form. Next step is to actually write interaction code to complete the step definitions in \textbf{Listing \ref{lst:example-steps-file}} with the help of page object.\\
+In \textbf{Listing \ref{lst:example-page-file}}, we created a one to one mapping of all the elements of the payment form. Next step is to actually write interaction code to complete the step definitions in \textbf{Listing \ref{lst:example-steps-file}} using page object.\\
 
-Consider the 1st \texttt{step} definition in \textbf{Listing \ref{lst:example-steps-file}}. This can be grouped as a generic \texttt{step} since it can be applicable to many elements on different pages. Therefore we should create a generic method in \texttt{support.js} file for this interaction as mentioned in  \textbf{Section \ref{subsec:reusable-support-functions}}. Consider  \textbf{Listing \ref{lst:example-support-func}}
+Consider the 1st \texttt{step} definition in \textbf{Listing \ref{lst:example-steps-file}}. This can be grouped as a generic \texttt{step} since it can be applicable to many elements on different pages. Therefore we should create a generic method in \texttt{support.js} file for this interaction as mentioned in  \textbf{Section \ref{subsec:reusable-support-functions}}.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -581,21 +577,18 @@ Finally, Consider the 3st \texttt{step} definition in \textbf{Listing \ref{lst:e
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
-//code omitted
 waitUntil : function (action, time) {
   return function () {
     return browser.wait(action, time);
   }
 },
-
 urlChanged : function(url) {
   return function () {
     return browser.getCurrentUrl().then(function(actualUrl) {
       return actualUrl === url;
     });
   };
-},
-//code omitted
+}
 \end{minted}
 \captionof{listing}{Example Support Function For Checking Page URL}
 \label{lst:example-support-func2}
@@ -662,14 +655,13 @@ The node module that we used for reporting is \texttt{cucumber-html-report}. You
 After a number of application builds and subsequent E2E test runs, there will be plenty of reports that stack up. A convention is needed for making sense of these, organising them and linking them with application builds.
 \\
 
-All of the test reports are stored under the /reports folder. In here we have separate directories for each Synote site the framework was run against.
+All test reports are stored under the \texttt{/reports} folder. There we have separate directories for each Synote site the framework was run against.
 \\
 
 One level underneath, we have folders that map to a particular version of the application (latest commit hash). This makes it easier to debug issues and it allows for a critical comparison between versions of Synote. If, for example, a change breaks a large number of tests, the knowledge of the git commit hashes allows us to rollback to a more stable version.
 \\
 
-In every hash commit folder, we have one or more directories whose names represent time stamps. They are of the form
-\texttt{year-month-day\_hour-minute-second}.
+In every hash commit folder, we have one or more directories whose names represent timestamps as year-month-day\_hour-minute-second.
 \\
 
 Finally, in each timestamp folder we have the actual test report in HTML and JSON format along with screenshots of the failed tests. An example overview of this convention can be seen below.
@@ -679,13 +671,13 @@ Finally, in each timestamp folder we have the actual test report in HTML and JSO
   .1 reports/.
   .2 experiment/.
   .3 18cc3efc46dc0185a46315b8e97710c8666057c2.
-  .4 2016-12-24-23-59-59.
+  .4 2016-12-24\_23-59-59.
   .5 index.html.
   .5 index.json.
   .5 Buy\_credit\_with\_empty\_card\_number\_42.png.
   .2 production/.
   .3 b6bd0be898f0c3285684d3a25a542914840a42ee.
-  .4 2016-11-31-00-00-00.
+  .4 2016-11-31\_00-00-00.
   .5 index.html.
   .5 index.json.
   .5 Buy\_credit\_with\_invalid\_expiry\_60.png.
@@ -697,7 +689,7 @@ Finally, in each timestamp folder we have the actual test report in HTML and JSO
 \subsection{Assessment}
 \label{subsec:assessment}
 
-The framework's capabilities where thoroughly tested by Deepak, who wrote most of the test cases. Tom focused on the second iteration of the payment feature and was purposefully not involved in the initial prototyping of the testing framework. This enabled Tom to have an outside perspective of the framework to provide an assessment of its ease of use. Armed with the framework repository and a readme file, Tom set about writing a test for the latest payment feature functionality he had added.\\
+The framework's capabilities were thoroughly tested by Deepak, who wrote most of the test cases. Tom focused on the second iteration of the payment feature and was purposefully not involved in the initial prototyping of the testing framework. This enabled Tom to have an outside perspective of the framework to provide an assessment of its ease of use. Armed with the framework repository and a readme file, Tom set about writing a test for the latest payment feature functionality he had added.\\
 
 Following the readme file, the first step is to install the dependencies. This was the first time the framework had been installed on a Windows machine and due to an installation of Visual Studio, an error occurred. After resolving this issue, the relevant steps were added to the readme and progress resumed. After browsing the existing files relevant to each section in the readme, it was apparent that nearly all the tools Tom needed existed already. Lines 1-3 \& 5 of \textbf{Listing \ref{lst:toms-first-test}} make use of existing step methods however, line 4 required an extension of the existing method in \textbf{Listing \ref{lst:buycredits-step-file}} to allow repeated clicks as shown in \textbf{Listing \ref{lst:additional-step-method}}.\\
 
