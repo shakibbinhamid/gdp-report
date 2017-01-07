@@ -6,38 +6,38 @@
 \section{Sever Side Implementation}
 \label{sec:server-side-implementation}
 
-The greatest concern in implementing a payment feature for Synote is remaining PCI DSS (Payment Card Industry Data Security Standard) compliant. To remove most of the burden and with the approval of our client Yunjia Li, Stripe was chosen as the payment gateway. Stripe also allows custom merchant forms which our client favours over redirection and generated forms.\\
+The greatest concern in implementing a payment feature for Synote is remaining PCI DSS (Payment Card Industry Data Security Standard) compliant. To remove most of the burden \textit{Stripe} was chosen as the payment gateway with the approval of our client Yunjia Li. \textit{Stripe} also allows custom merchant forms which our client favours over redirection and generated forms.\\
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=0.78\textwidth]{synote-architecture.png}
-  	\caption{Synote Architecture}
+  \caption{Synote Architecture}
  	\label{fig:synote-architecture}
 \end{figure}
 
-\textbf{Figure \ref{fig:synote-architecture}} depicts Synote's existing architecture which uses Node.js (Node) and Sails.js (Sails) web frameworks on the server. Sails includes a powerful Object Relational Mapping (ORM) tool called Waterline to provide a data access layer to the underlying MySQL database.\\
+\textbf{Figure \ref{fig:synote-architecture}} depicts Synote's existing architecture which uses \textit{Node.js} (\textit{Node}) and \textit{Sails.js} (\textit{Sails}) web frameworks on the server. \textit{Sails} includes a powerful Object Relational Mapping (ORM) tool called \textit{Waterline} to provide a data access layer to the underlying \textit{MySQL} database.\\
 
-As a custom merchant form is desired for gathering payment information, Stripe must be used to tokenize the payment data before it can be sent to Synote's server. As mentioned in \textbf{Section \ref{subsec:security}}, HTTPS is required for secure transmission of payment data over a network, so the first stage of integration is to use an HTTPS/SSL certificate to enable HTTPS communication. The resulting architecture is shown in \textbf{Figure \ref{fig:stripe-integration}}.\\
+As a custom merchant form is desired for gathering payment information, \textit{Stripe} must be used to tokenise the payment data before it can be sent to Synote's server. As mentioned in \textbf{Section \ref{subsec:security}}, HTTPS is required for secure transmission of payment data over a network, so the first stage of integration is to use an HTTPS/SSL certificate to enable HTTPS communication (\textbf{Figure \ref{fig:stripe-integration}}).\\
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=0.7\textwidth]{stripe-integration.png}
-  	\caption{Integrating Stripe}
+  \caption{Integrating Stripe}
  	\label{fig:stripe-integration}
 \end{figure}
 
 The first iteration of the payment feature requires simple functionality: A customer must be able to enter payment information to buy \texttt{X} amount of credits which will be stored against their Synote account, along with a record of the transaction. \textbf{Figure \ref{fig:simple-sequence}} shows the full sequence of events necessary to achieve this behavior, however, server side implementation concerns only what happens as a result of the \texttt{POST} action to Synote's server.\\
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=\textwidth]{simple-sequence.png}
-  	\caption{Sequence Diagram Of Simple Payment}
+  \caption{Sequence Diagram Of Simple Payment}
  	\label{fig:simple-sequence}
 \end{figure}
 
-Step one is to create the endpoint to which a Stripe token and any additional required information can be posted. Sails has an API called Blueprint which creates RESTful routes when an endp oint is created with a \texttt{model} and \texttt{controller}. Further routes can be added to the endpoint route through the concept of action routes, thus a \texttt{controller} file named \texttt{CreditHistoryController.js} containing an action route of \texttt{topup} exposes the route: \texttt{/credithistory/topup}.\\
+Step one is to post a \textit{Stripe} token and any additional required information to a new REST endpoint. \textit{Sails} has an API called \textit{Blueprint} which creates RESTful routes when an endpoint is created with a \texttt{model} and a \texttt{controller}. Further sub-routes can be added to the endpoint through the concept of action routes, thus a \texttt{controller} file named \texttt{CreditHistoryController.js} containing an action route of \texttt{topup} exposes the route: \texttt{/credithistory/topup}.\\
 
-Making charges against a token requires Stripe's API \cite{stripe-api} which can be added using the \texttt{require} keyword and must include a secret key provided by Stripe. Stripe's API lists examples of functions in Node, but in the form of callbacks. As covered in \textbf{Section \ref{sec:synote}}, the convention is to use promises in favour of callbacks which altogether results in code similar to \textbf{Listing \ref{lst:stripe-charge}}.\\
+Making charges against a token requires \textit{Stripe}'s API \cite{stripe-api} which can be added using the \texttt{require} keyword and must include a secret key provided by \textit{Stripe}. \textit{Stripe}'s API lists examples of functions in \textit{Node}, but in the form of callbacks. As covered in \textbf{Section \ref{subsec:conventions}}, the convention is to use promises in favour of callbacks which altogether results in code similar to \textbf{Listing \ref{lst:stripe-charge}}.\\
 
 \hspace{0.1\textwidth}
 \begin{minipage}{.76\textwidth}
@@ -45,9 +45,9 @@ Making charges against a token requires Stripe's API \cite{stripe-api} which can
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray]{js}
 return stripe.charges.create({
-        amount: cost,
-        currency: "gbp",
-        source: token.id
+  amount: cost,
+  currency: "gbp",
+  source: token.id
 });
 \end{minted}
 \captionof{listing}{Stripe Charge Promisified Example}
@@ -57,16 +57,16 @@ return stripe.charges.create({
 \hspace{0.1\textwidth}
 \vspace{0.3cm}
 
-Information required to make a charge includes a single use token, charge amount and currency. The token and charge amount are provided in the \texttt{POST} from a client as a JSON object in the request (\texttt{req}) body. It is convention that a \texttt{req} is only processed within a \texttt{policy} and \texttt{controller}. Sails uses policies for authorization and access control such that each \texttt{action route} for each \texttt{controller} can be assigned one or more policies. As Synote uses Auth0 \cite{auth0} a policy called \texttt{hasJsonWebToken} exists to add a user's profile to a \texttt{req} which, aside from authorization, has the added benefit of providing a user's ID that can be used to determine which user is making a purchase.\\
+Information required to make a charge includes a single use token, charge amount and currency. The token and charge amount are provided in the \texttt{POST} from a client as a JSON object in the request (\texttt{req}) body. It is convention that a \texttt{req} is only processed within a \texttt{policy} and \texttt{controller}. \textit{Sails} uses policies for authorization and access control such that each \texttt{action route} for each \texttt{controller} can be assigned one or more policies. As Synote uses \textit{Auth0} \cite{auth0} a policy called \texttt{hasJsonWebToken} exists to add a user's profile to a \texttt{req} which, aside from authorization, has the added benefit of providing a user's ID that can be used to determine which user is making a purchase.\\
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=\textwidth]{db-credit.png}
-  	\caption{Credit \& Credit History Database Tables}
+  \caption{Credit \& Credit History Database Tables}
  	\label{fig:db-credit}
 \end{figure}
 
-The remaining task is recording the transaction and assigning purchased credits to a user. The setup for this task requires alteration to the existing database (DB), a Sails \texttt{model} and Waterline methods to interact with the DB. \textbf{Figure \ref{fig:db-credit}} shows the schema of the credit and credit history tables with their relations to the existing user table. Adding these tables to an existing database requires use of an SQL migration file as shown in \textbf{Listing \ref{lst:migration-file}}.\\
+The remaining task is recording the transaction and assigning purchased credits to a user. The setup for this task requires alteration to the existing database (DB), a \textit{Sails} \texttt{model} and \textit{Waterline} methods to interact with the DB. \textbf{Figure \ref{fig:db-credit}} shows the schema of the credit and credit history tables with their relations to the existing user table. Adding these tables to an existing database requires use of an SQL migration file as shown in \textbf{Listing \ref{lst:migration-file}}.\\
 
 \hspace{0.1\textwidth}
 \begin{minipage}{.72\textwidth}
@@ -91,7 +91,7 @@ CREATE TABLE `testing` (
 \hspace{0.1\textwidth}
 \vspace{0.3cm}
 
-A section of the \texttt{model} file required for Waterline ORM to interact with the database is shown in \textbf{Listing \ref{lst:credit-history-model}}. Each attribute of the \texttt{model} is a one-to-one mapping with a field in the corresponding table, in this case \texttt{stripeChargeResponse} is shown with a type of \texttt{text} which can clearly be seen in the \texttt{credithistory} table of \textbf{Figure \ref{fig:db-credit}}. This field exists to store a record of the charge response from Stripe and contains redacted PCI DSS compliant information such as the last four digits of the charged card. Also of note in \textbf{Listing \ref{lst:credit-history-model}} are two examples of Waterline functions: \texttt{findOne} and \texttt{update} which in this instance are part of a hook to update the quantity of credits for a user after a purchase. These functions are a subset of the available functions to Create, Read, Update and Destroy (CRUD) DB records.
+A section of the \texttt{model} file required for \textit{Waterline} ORM to interact with the database is shown in \textbf{Listing \ref{lst:credit-history-model}}. Each attribute of the \texttt{model} is a one-to-one mapping with a field in the corresponding table, in this case \texttt{stripeChargeResponse} is shown with a type of \texttt{text} which can clearly be seen in the \texttt{credithistory} table of \textbf{Figure \ref{fig:db-credit}}. This field exists to store a record of the charge response from \textit{Stripe} and contains redacted PCI DSS compliant information such as the last four digits of the charged card. Also of note in \textbf{Listing \ref{lst:credit-history-model}} are two examples of \textit{Waterline} functions: \texttt{findOne} and \texttt{update} which in this instance are part of a hook to update the quantity of credits for a user after a purchase. These functions are a subset of the available functions to Create, Read, Update and Destroy (CRUD) DB records.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -123,36 +123,36 @@ module.exports = {
 \label{lst:credit-history-model}
 \end{listing}
 
-The second iteration of the payment feature requires extended functionality: A customer must be able to save payment information for faster future purchases. Stripe provides a method of saving payment data which encapsulates sources such as payment cards in a \textit{customer} object. The ID of a customer object can be used to charge a user's default payment source, or the combination of customer object id and source-data ID can be used to charge a specific card owned by a customer. Building on the first iteration and following the process above, server side implementation for saving cards and paying with saved cards involves:
+The second iteration of the payment feature requires extended functionality: A customer must be able to save payment information for faster future purchases. \textit{Stripe} provides a method of saving payment data which encapsulates sources such as payment cards in a \texttt{customer} object. The \texttt{id} of a customer object can be used to charge a user's default payment source, or the combination of customer object id and source-data \texttt{id} can be used to charge a specific card owned by a customer. Building on the first iteration and following the process above, server side implementation for saving cards and paying with saved cards involves:
 
 \begin{enumerate}
 	\item Adding action routes in the \texttt{CreditHistoryController.js} file to retrieve/delete cards
     \item Providing additional parameters in the \texttt{req} body JSON to indicate the Stripe token should be used to save the payment data
     \item Adding policies to secure the new routes
-    \item Adding Stripe functions to save payment data in a Stripe customer object
-    \item Updating the database schema using a migration file to store a Stripe customer object against a user
-    \item Updating the relevant \texttt{model} to include the Stripe customer field
-    \item Adding Waterline functions to CRUD Stripe customer records in the DB
+    \item Adding \textit{Stripe} functions to save payment data in a Stripe customer
+    \item Updating the database schema using a migration file to store a \textit{Stripe} customer object against a user
+    \item Updating the relevant \texttt{model} to include the \textit{Stripe} customer field
+    \item Adding \textit{Waterline} functions to CRUD \textit{Stripe} customer records
 \end{enumerate}
 
-All of the Stripe and Waterline methods can exist in \texttt{CreditHistoryController.js} file, but this constitutes poor cohesion and it is convention to keep reusable functions in a \texttt{service} file to prevent repetition. Consequently all reusable Stripe functions are placed in \texttt{StripeService.js} and all reusable Waterline functions are placed in \texttt{ChargeService.js} for maximal cohesion. The resulting solution architecture is shown in \textbf{Figure \ref{fig:synote-stripe}}.\\
+\textit{Stripe} and \textit{Waterline} methods can exist in \texttt{CreditHistoryController.js} file, but this constitutes poor cohesion and it is convention to keep reusable functions in a \texttt{service} file to prevent repetition. Consequently all reusable \textit{Stripe} functions are placed in \texttt{StripeService.js} and all reusable \textit{Waterline} functions are placed in \texttt{ChargeService.js} for maximum cohesion. The resulting  architecture is shown in \textbf{Figure \ref{fig:synote-stripe}}.\\
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=\textwidth]{synote-stripe-overview.png}
-  	\caption{Overview Of Synote-Stripe Architecture}
+  \caption{Overview Of Synote-Stripe Architecture}
  	\label{fig:synote-stripe}
 \end{figure}
 
 \section{Server Side Testing}
 \label{sec:server-side-testing}
 
-Testing is crucial in order to provide a robust and reliable feature. The existing testing strategy in Synote's server code uses Mocha \cite{mocha} test running framework paired with Chai \cite{chai} assertion library. Unit, Integration and server side end-to-end (E2E) tests have been written for the payment feature. Through use of Istanbul \cite{istanbul} code coverage tool, we can show high coverage in policies, services and the controller as shown in \textbf{Figure \ref{fig:coverage}}. To thoroughly test our implementation we have written tests for presence, edge-cases and branch coverage. A collection of tests from \texttt{StripeService.test.js} are shown in \textbf{Listing \ref{lst:stripe-test-cases}}.\\
+Testing is crucial in order to provide a robust and reliable feature. The existing testing strategy in Synote's server code uses \textit{Mocha} \cite{mocha} test running framework paired with \textit{Chai} \cite{chai} assertion library. Unit, Integration and server side end-to-end (E2E) tests have been written for the payment feature. Through use of \textit{Istanbul} \cite{istanbul} code coverage tool, we can show high coverage in policies, services and the controller as shown in \textbf{Figure \ref{fig:coverage}}. To thoroughly test our implementation we have written tests for presence, edge-cases and branch coverage. A collection of tests from \texttt{StripeService.test.js} are shown in \textbf{Listing \ref{lst:stripe-test-cases}}.\\
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=0.9\textwidth]{coverage-all.png}
-  	\caption{Istanbul Coverage Report Section}
+  \caption{Istanbul Coverage Report Section}
  	\label{fig:coverage}
 \end{figure}
 
@@ -183,33 +183,33 @@ All test cases attempt to follow the SILO and DRY (Don't Repeat Yourself) princi
 \subsection{Wireframes}
 \label{subsec:wireframes}
 
-First step in design was to mock up some wireframes and get them approved by our Client. Consider the final wireframe iterations below:\\
+First step in design was to mock up some wireframes and get them approved by our Client. Consider the final wireframes below:\\
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=0.7\textwidth]{profile-page-payment-feature.png}
-  	\caption{Profile Page Payment and Credits Section Wireframe}
+  \caption{Profile Page Payment and Credits Section Wireframe}
  	\label{fig:profile-wireframe}
 \end{figure}
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=0.8\textwidth]{saved-card-wireframe.png}
-  	\caption{Saved Card Payment Form Wireframe}
+  \caption{Saved Card Payment Form Wireframe}
  	\label{fig:saved-card-wireframe}
 \end{figure}
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=0.6\textwidth]{credits-history-wireframe.png}
-  	\caption{Credits History Wireframe}
+  \caption{Credits History Wireframe}
  	\label{fig:credits-history-wireframe}
 \end{figure}
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=0.8\textwidth]{payment-form-wireframe.png}
-  	\caption{Payment Form Wireframe}
+  \caption{Payment Form Wireframe}
  	\label{fig:payment-form-wireframe}
 \end{figure}
 
@@ -217,9 +217,9 @@ First step in design was to mock up some wireframes and get them approved by our
 \label{subsec:payment-system-infrastructure}
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=0.6\textwidth]{frontend-infrastructure.png}
-  	\caption{Frontend Infrastructure}
+  \caption{Frontend Infrastructure}
  	\label{fig:frontend-infrastructure-diagram}
 \end{figure}
 
@@ -233,21 +233,21 @@ Client side should handle these properties of the payment feature:
 \item Validation messages
 \end{itemize}
 
-“Credits History” and “Buy Credits” are very different components of the payment feature, so we created 2 separate controllers i.e. \texttt{buyCreditController} and \texttt{creditsHistoryController} to handle their logic independently.
+“Credits History” and “Buy Credits” are very different components of the payment feature, so we created 2 separate controllers - \texttt{buyCreditController} and \texttt{creditsHistoryController} to handle their logic independently.
 
 \subsubsection{Buy Credits Feature}
 \label{subsubsec:buy-credits-feature}
 
-As mentioned in \textbf{Figure \ref{fig:simple-sequence}}, it is the client application's responsibility to tokenise payment data and handle the response from Stripe. The \texttt{buyCreditController} handles all the payment related business logic with the help of \texttt{paymentService} service class (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). This class provides the \texttt{buyCreditController} with:
+As mentioned in \textbf{Figure \ref{fig:simple-sequence}}, it is the client application's responsibility to tokenise payment data and handle the response from \textit{Stripe}. The \texttt{buyCreditController} handles all the payment related business logic with the help of \texttt{paymentService} service class (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). This class provides the \texttt{buyCreditController} with:
 
 \begin{itemize}
-\item Stripe tokenisation and response handler methods
+\item \textit{Stripe} tokenisation and response handler methods
 \item Payment form input validation methods
 \item Charge card method (server request)
 \item Delete card method (server request)
 \end{itemize}
 
-Initially, all of this logic was handled by the \texttt{buyCreditController} itself and this lead to lot of code repetition. Doing simple things like changing the POST request URL for charging a card proved to be a hassle since we had to make these changes at multiple locations. We refactored all the reusable functions into \texttt{paymentService} making simplifying service updates. \\
+Initially, all of this logic was handled by the \texttt{buyCreditController} itself and it lead to lot of code repetition. Doing simple things like changing the POST request URL for charging a card proved to be a hassle since we had to make these changes at multiple locations. We refactored all the reusable functions into \texttt{paymentService} making simplifying service updates. \\
 
 To use \texttt{Stripe.js} on client side, we first had to include its library as a script in the \texttt{index.html} page. Consider \textbf{Listing \ref{lst:index-head-html}}:\\
 
@@ -265,11 +265,11 @@ To use \texttt{Stripe.js} on client side, we first had to include its library as
 \label{lst:index-head-html}
 \end{listing}
 
-We also had to include our actual publishable API key as a script which will be used to identify Synote to Stripe when sending requests. Consider \textbf{Listing \ref{lst:buycredit-html-stripe-key}}:\\
+We also had to include our actual publishable API key as a script which will be used to identify Synote to \textit{Stripe} when sending requests. Consider \textbf{Listing \ref{lst:buycredit-html-stripe-key}}:\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
-//code omitted
+<!-- code omitted -->
 <script type="text/javascript">
   Stripe.setPublishableKey('<pk_test_key_here>');
 </script>
@@ -281,7 +281,7 @@ We also had to include our actual publishable API key as a script which will be 
 
 Payment can be of 2 forms - via a saved card or via a new card.\\
 
-We had to ensure side secure transmission of card details from client i.e. they should not be intercepted and manipulated by an outsider. To achieve this level of security, we tokenise the critical payment fields via Stipe’s API and post this to Synote’s server along with other details such as amount of credits and price to pay. This way, we can assure that original customer details will not be sent to the server.\\
+We had to ensure secure transmission of card details from client i.e. they should not be intercepted and manipulated by an outsider. To achieve this level of security, we tokenise the critical payment fields via \textit{Stipe}’s API and post this to Synote’s server along with other details such as amount of credits and price to pay. This way, we can assure that original customer details will not be sent to the server.\\
 
 \texttt{paymentService} is responsible for converting the user input payment details into a single use representative token.  Consider \textbf{Listing \ref{lst:create-token-payment-service-method}}:\\
 
@@ -312,7 +312,7 @@ createStripeToken: function (tokenHelperObject) {
 \label{lst:create-token-payment-service-method}
 \end{listing}
 
-The method provided by Stripe’s API is \texttt{Stripe.Card.createToken} (line 4). This is in callback style and Synote’s conventions (see \textbf{Section \ref{subsec:conventions}}) favours promises over callbacks. Our \texttt{createStripeToken} method uses Angular’s \texttt{\$q} constructor service to to turn callbacks into promises \cite{jdotjdot} \& \cite{angularjsq}. The token helper object consists of input payment details i.e. billing name, number, cvc, expiry month and year.\\
+The method provided by \textit{Stripe}’s API is \texttt{Stripe.Card.createToken} (line 4). This is in callback style and Synote’s conventions (see \textbf{Section \ref{subsec:conventions}}) favours promises over callbacks. Our \texttt{createStripeToken} method uses \textit{Angular}’s \texttt{\$q} constructor service to to turn callbacks into promises \cite{jdotjdot} \& \cite{angularjsq}. The token helper object consists of input payment details i.e. billing name, number, cvc, expiry month and year.\\
 
 If the response from Stripe was successful, \texttt{buyCreditController} will then move onto processing the payment via \texttt{paymentService}. Consider \textbf{Listing \ref{lst:charge-card-service-method}}:\\
 
@@ -334,7 +334,7 @@ chargeCard: function (parameters) {
 
 Here we simply make a post request to Synote’s server at \texttt{topup} endpoint along with the single use representative token, credits, charge amount, save boolean as parameters. 'Save boolean flag' is set true if user checks the save card option. It tells the server to save the card currently used for payment.\\
 
-The logic behind is similar to using a new card apart from the fact that we no longer need to tokenise the payment details. When user is routed to the \texttt{buycredit} URI, we send a HTTP GET request to Synote’s server to retrieve saved cards for logged-in users (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). Consider \textbf{Listing \ref{lst:get-cards-req}}:\\
+The logic behind is similar to using a new card apart from the fact that we no longer need to tokenise the payment details. When a user is routed to the \texttt{buycredit} URI, we send a HTTP GET request to Synote’s server to retrieve saved cards for logged-in users (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). Consider \textbf{Listing \ref{lst:get-cards-req}}:\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -401,7 +401,7 @@ The loaded credit history data is then displayed as a reverse chronological tabl
 \subsection{Clientside Payment Details Validation}
 \label{subsec:clientside-payment-details-validation}
 
-Client side validation is handled via methods provided by Stipe’s API and an Angular payment validation module  (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}) called \texttt{angular-payments} \cite{angularpayments}. Stripe’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service. Consider validation for card number field as an example:
+Client side validation is handled via methods provided by \textit{Stipe}’s API and an \textit{Angular} payment validation module  (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}) called \texttt{angular-payments} \cite{angularpayments}. \textit{Stripe}’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service. Consider validation for card number field as an example:
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
@@ -413,7 +413,7 @@ Client side validation is handled via methods provided by Stipe’s API and an A
 \label{lst:buycredit-html-cardnumber-input}
 \end{listing}
 
-In \textbf{Listing \ref{lst:buycredit-html-cardnumber-input}}, we  use Angular’s \texttt{ng-change} directive to execute \texttt{checkCardNumber} method whenever it detects an input change e.g. keypress. \texttt{payments-format=”card”} is provided by \texttt{angular-payments} and ensures input to be 16 digits maximum.\\
+In \textbf{Listing \ref{lst:buycredit-html-cardnumber-input}}, we  use \textit{Angular}’s \texttt{ng-change} directive to execute \texttt{checkCardNumber} method whenever it detects an input change e.g. keypress. \texttt{payments-format=”card”} is provided by \texttt{angular-payments} and ensures input to be 16 digits maximum.\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -446,12 +446,12 @@ isCardNumberTypeValid: function (cardNumber) {
 \label{lst:payment-service-checkcardnumber-method}
 \end{listing}
 
-In \textbf{Listing \ref{lst:payment-service-checkcardnumber-method}}, we use Stripe provided methods to validate provided card number.\\
+\textit{Stripe} provided methods validate card number (\textbf{Listing \ref{lst:payment-service-checkcardnumber-method}}).\\
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=0.6\textwidth]{live-validation-screenshot.png}
-  	\caption{Live Validation In Action}
+  \caption{Live Validation In Action}
  	\label{fig:live-validation-screenshot}
 \end{figure}
 
@@ -461,13 +461,13 @@ In \textbf{Listing \ref{lst:payment-service-checkcardnumber-method}}, we use Str
 Synote uses \texttt{Toastr} alert messages throughout its implementation. An issue arose whilst writing automated E2E tests where the \texttt{Toastr} alerts would prevent WebDriver from accessing the logout button. Consider \textbf{Figure \ref{fig:toastr-alert-problem-screenshot}}:\\
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=\textwidth]{toastr-alert-problem-screenshot.png}
-  	\caption{Example of Error Caused by \texttt{Toastr} Alerts}
+  \caption{Example of Error Caused by \texttt{Toastr} Alerts}
  	\label{fig:toastr-alert-problem-screenshot}
 \end{figure}
 
-To overcome this issue, we switched to Bootstrap alerts which are added on the fly and set to disappear after 5 seconds. Consider \textbf{Listing \ref{lst:buycredit-html-alert-code}}:\\
+To overcome this issue, we switched to \textit{Bootstrap} alerts which are added on the fly and set to disappear after 5 seconds. Consider \textbf{Listing \ref{lst:buycredit-html-alert-code}}:\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
@@ -482,41 +482,41 @@ To overcome this issue, we switched to Bootstrap alerts which are added on the f
 \end{listing}
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=0.8\textwidth]{alert-fail.png}
-  	\caption{Alert Shown When Payment Couldn't Be Processed}
+  \caption{Alert Shown When Payment Couldn't Be Processed}
  	\label{fig:alert-success}
 \end{figure}
 
 \begin{figure}[!hbt]
-  	\centering
+  \centering
  	\includegraphics[width=0.8\textwidth]{alert-success.png}
-  	\caption{Alert Shown When payment Was Successful}
+  \caption{Alert Shown When payment Was Successful}
  	\label{fig:alert-fail}
 \end{figure}
 
 \subsection{Responsive Design}
 \label{subsec:responsive-design}
 
-To fit in with the responsive style of Synote, Bootstrap framework was used and the responsiveness of view files we added were tested using Firefox’s responsive design mode \cite{firefoxresponsive} which let us emulate screen sizes of different devices. Consider the screenshots of tests in action:\\
+To fit in with the responsive style of Synote, \textit{Bootstrap} framework was used and the responsiveness of view files we added were tested using Firefox’s responsive design mode \cite{firefoxresponsive} which let us emulate screen sizes of different devices. Consider the screenshots of tests in action:\\
 
 \begin{figure}[!htb]
     \centering
     \begin{minipage}{.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{responsive-profile-page.png}
-          \caption{Profile Page Responsive View}
+        \caption{Profile Page Responsive View}
         \label{fig:responsive-profile}
         \includegraphics[width=\textwidth]{responsive-credits-history.png}
-          \caption{Credits History Responsive View}
+        \caption{Credits History Responsive View}
         \label{fig:responsive-credits-history}
     \end{minipage}%
     \hspace{0.1cm}
     \begin{minipage}{0.5\textwidth}
-        \centering
-        \centering
+      \centering
+      \centering
       \includegraphics[width=\textwidth]{responsive-payment-form.png}
-        \caption{Payment Form Responsive View}
+      \caption{Payment Form Responsive View}
       \label{fig:responsive-payment-form}
     \end{minipage}
 \end{figure}
