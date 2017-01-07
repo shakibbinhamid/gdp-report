@@ -15,17 +15,17 @@ A complete Synote CI process will deploy and test on the experiment deployment, 
  	\label{fig:synote-ci-proc}
 \end{figure}
 
-We focused on CI for the experiment deployment since we had access to it. In this chapter, we will elucidate the key steps necessary to configure a complete CI environment using Jenkins.\\
+We focused on CI for the experiment deployment since we had access to it. In this chapter, we will elucidate the key steps necessary to configure a complete CI environment using \textit{Jenkins}.\\
 
 The key issues in this phase were -
 
 \begin{itemize}
 
-  \item Installing and configuring Jenkins with SSL, restricted user access etc. (\textbf{Section \ref{subsec:setting-up-jenkins}})
+  \item Installing and configuring \textit{Jenkins} with SSL, restricted user access etc. (\textbf{Section \ref{subsec:setting-up-jenkins}})
 
-  \item Synote is deployed as user \texttt{ubuntu}, however, Jenkins runs the build scripts as user \texttt{jenkins}. So, permissions for the deployment folders need to be rectified (\textbf{Listing \ref{lst:deployment-folder-permissions}}).
+  \item Synote is deployed as user \texttt{ubuntu}, however, \textit{Jenkins} runs the build scripts as user \texttt{jenkins}. So, permissions for the deployment folders need to be rectified (\textbf{Listing \ref{lst:deployment-folder-permissions}}).
 
-  \item \texttt{jenkins} needs to have access to the PM2 (a process manager) processes started by \texttt{ubuntu} (\textbf{Listing \ref{lst:jenkins-pm2-configuration}}).
+  \item \texttt{jenkins} needs to have access to the \textit{PM2} (a process manager) processes started by \texttt{ubuntu} (\textbf{Listing \ref{lst:jenkins-pm2-configuration}}).
 
   \item Running the E2E tests on a browser using a virtual display (\textbf{Section \ref{subsec:e2e-testing-on-remote}}).
 
@@ -34,7 +34,7 @@ The key issues in this phase were -
 \subsection{Setting up Jenkins}
 \label{subsec:setting-up-jenkins}
 
-We began by installing Jenkins on the experiment server (\textbf{Listing \ref{lst:install-jenkins}}). After monitoring the processes, we asked the client to upgrade the server to have 4GB RAM.\\
+We began by installing \textit{Jenkins} on the experiment server (\textbf{Listing \ref{lst:install-jenkins}}). After monitoring the processes, we asked the client to upgrade the server to have 4GB RAM.\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -50,7 +50,7 @@ sudo apt-get install jenkins
 \label{lst:install-jenkins}
 \end{listing}
 
-Then we added one admin account with complete Jenkins control, and one developer account with reduced control (e.g. cannot delete projects). Finally, we needed to run Jenkins behind a reverse proxy server (nginx) so that SSL encryption works properly and the domain reaches it (\textbf{Listing \ref{lst:make-jenkins-available}}). The Synote experiment CI project can be seen in \textbf{Figure \ref{fig:synote-jenkins-server}}\\
+Then we added one admin account with complete \textit{Jenkins} control, and one developer account with reduced control (e.g. cannot delete projects). Finally, we needed to run \textit{Jenkins} behind a reverse proxy server (nginx) so that SSL encryption works properly and the domain reaches it (\textbf{Listing \ref{lst:make-jenkins-available}}). The Synote experiment CI project can be seen in \textbf{Figure \ref{fig:synote-jenkins-server}}\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -103,22 +103,15 @@ sudo service nginx restart
 \subsection{Triggering Builds}
 \label{subsec:triggering-builds}
 
-\begin{figure}[!hbt]
-  	\centering
- 	\includegraphics[width=0.78\textwidth]{jenkins-build-trigger.png}
-  	\caption{Jenkins Build Trigger}
- 	\label{fig:jenkin-build-trigger}
-\end{figure}
-
 \subsubsection{Automatically}
 \label{subsubsec:triggering-builds-automatically}
 
 Builds can be triggered automatically when changes are made to the repository. In order to set this up, the following steps must be followed:
 
 \begin{itemize}
-\item Install the BitBucket Jenkins Plugin. This plugin can be found in the \textit{Manage Jenkins} $\rightarrow$ \textit{Manage Plugins} section.
+\item Install the \textit{BitBucket Jenkins Plugin}. This plugin can be found in the \textit{Manage Jenkins} $\rightarrow$ \textit{Manage Plugins} section.
 
-\item Once installed, go to the Jenkins project and click \textit{Configure}. Under \textit{Build Triggers}, select the BitBucket option as shown below:
+\item Once installed, go to the \textit{Jenkins} project and click \textit{Configure}. Under \textit{Build Triggers}, select the \textit{BitBucket} option as shown below:
 
 \begin{figure}[!hbt]
   	\centering
@@ -127,7 +120,7 @@ Builds can be triggered automatically when changes are made to the repository. I
  	\label{fig:bitbucket-build-trigger}
 \end{figure}
 
-\item Set up the BitBucket WebHook. Go to the BitBucket repository website under the \textit{Settings} $\rightarrow$ \textit{WebHooks} section. Click on \textit{Add webhook}, give it a name and paste in the webhook which is of the form \textit{jenkins-address:8080/bitbucket-hook/}. The current setup has this URL in place: \textit{https://jenkins-cicd.synote.com/bitbucket-hook/}. The trailing slash must be kept in the URL.
+\item Set up the \textit{BitBucket WebHook}. Go to the \textit{BitBucket} repository website under the \textit{Settings} $\rightarrow$ \textit{WebHooks} section. Click on \textit{Add webhook}, give it a name and paste in the webhook which is of the form \textit{jenkins-address:8080/bitbucket-hook/}. The current setup has this URL in place: \textit{https://jenkins-cicd.synote.com/bitbucket-hook/}. The trailing slash must be kept in the URL.
 
 \begin{figure}[!hbt]
   	\centering
@@ -138,10 +131,17 @@ Builds can be triggered automatically when changes are made to the repository. I
 
 \end{itemize}
 
+\begin{figure}[!hbt]
+  	\centering
+ 	\includegraphics[width=0.78\textwidth]{jenkins-build-trigger.png}
+  	\caption{Jenkins Build Trigger}
+ 	\label{fig:jenkin-build-trigger}
+\end{figure}
+
 \subsubsection{Manually}
 \label{subsubsec:triggering-builds-manually}
 
-Triggering a build manually is very easy. Just select a Jenkins project and click \textit{Build Now}.
+Triggering a build manually is very easy. Just select a \textit{Jenkins} project and click \textit{Build Now}.
 
 \begin{figure}[!hbt]
   	\centering
@@ -245,7 +245,7 @@ sudo chmod 777 /home/ubuntu/.pm2/rpc.sock
 \section{Synote Build}
 \label{sec:synote-build}
 
-Once a build is triggered, Jenkins pulls the latest Synote repository. Then \texttt{jenkins} builds the server (\textbf{Listing \ref{lst:building-synote-server}}), the client (\textbf{Listing \ref{lst:building-synote-client}}) and moves the static assets to \texttt{backend}. Finally, the complete build folder replaces \texttt{ubuntu}'s Synote deployment folder (\textbf{Listing \ref{lst:replace current deployment source}}).\\
+Once a build is triggered, \textit{Jenkins} pulls the latest Synote repository. Then \texttt{jenkins} builds the server (\textbf{Listing \ref{lst:building-synote-server}}), the client (\textbf{Listing \ref{lst:building-synote-client}}) and moves the static assets to \texttt{backend}. Finally, the complete build folder replaces \texttt{ubuntu}'s Synote deployment folder (\textbf{Listing \ref{lst:replace current deployment source}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -310,14 +310,14 @@ mysql -u synote '-p<mysqlpass>' synote_server_experiment < v0.9.0-v0.10.0.sql # 
 \subsubsection{SQL Procedures}
 \label{subsubsec:sql-procedures}
 
-To overcome the above issue, we can use MySQL procedures. These are in essence functions to which we can add useful logic. In our case, we wish to check if a change is already present and if it is, we ignore the error so the migration script can carry on unhindered. An example procedure can seen below.
+To overcome the above issue, we can use \textit{MySQL} procedures. These are in essence functions to which we can add useful logic. In our case, we wish to check if a change is already present and if it is, we ignore the error so the migration script can carry on unhindered. An example procedure can seen below.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{sql}
 DROP PROCEDURE IF EXISTS addColumnSafe;
 DELIMITER //
 CREATE PROCEDURE addColumnSafe
-  (IN _table VARCHAR(64), IN _column VARCHAR(64), IN _type varchar(64))
+  (IN _table VARCHAR(64),IN _column VARCHAR(64),IN _type varchar(64))
 BEGIN
   DECLARE _stmt VARCHAR(1024);
   SET @ddl = CONCAT
@@ -354,7 +354,7 @@ mysql -u some_user -p some_database < ~/backend/db/migrate/procedures.sql
 \subsubsection{Automated Migration Convetion}
 \label{subsubsec:automated-migration-convention}
 
-Whenever changes are needed in the schema, a procedure must be used to avoid the duplicate change error. There should be a procedure for every possible schema alteration (new table, new table column, etc). Within the migration script, you call the procedure with the required parameters.
+Whenever changes are needed in the schema, a procedure must be used to avoid the duplicate change error. There should be a procedure for every possible schema alteration (new table, new table column, etc). Within the migration script, the procedure is called with the required parameters.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{sql}
@@ -366,7 +366,7 @@ CALL addColumnSafe('some_table', 'some_column', 'some_type')
 \label{lst:calling-an-sql-procedure}
 \end{listing}
 
-If you try to insert data that is already present, MySQL will complain and cease execution. To avoid this, we append this line after every data insertion statement:
+If we try to insert data that is already present, \textit{MySQL} will complain and cease execution. To avoid this, we append this line after every data insertion statement:
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{sql}
@@ -402,7 +402,7 @@ pm2 restart synote_experiment
 \section{E2E Testing on Remote}
 \label{subsec:e2e-testing-on-remote}
 
-In order to run the E2E tests, we first need the latest E2E test suite (located on a different repository) and to prepare it for use (\textbf{Listing \ref{lst:configure-latest-e2e-testing-repo}}) in a similar process to Synote deployment (described in \textbf{Section \ref{sec:synote-build}}).\\
+To run the E2E tests, we first need the latest E2E test suite (located on a different repository) and to prepare it for use (\textbf{Listing \ref{lst:configure-latest-e2e-testing-repo}}) in a similar process to Synote deployment (described in \textbf{Section \ref{sec:synote-build}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -523,4 +523,4 @@ We have found that Synote's CI allowed us to -
 
 \end{itemize}
 
-Finally, the implementation gave us self confidence in writing bash scripts and we learnt about reverse proxy servers, process managers, using remote servers and, of course, Jenkins which is an industry favourite CI tool.
+Finally, the implementation gave us self confidence in writing bash scripts and we learnt about reverse proxy servers, process managers, using remote servers and, of course, \textit{Jenkins} which is an industry favourite CI tool.
