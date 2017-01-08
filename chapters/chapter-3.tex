@@ -6,7 +6,7 @@
 
 \subsection{Overview}
 \label{subsec:quick-overview}
-Synote is a web application developed at the University of Southampton. Its primary functionality is the automatic transcription of lecture videos using speech recognition. It also provides a collaborative editor for students to make any needed corrections to transcripts. \\
+Synote is a web application developed at the University of Southampton. Its primary functionality is the automatic transcription of lecture videos using speech recognition. It also provides a collaborative editor for students to make corrections to transcripts. \\
 
 Synote has been successfully deployed at several universities and it plans to expand and offer its services to any client that may require them. \\
 
@@ -33,7 +33,7 @@ Trying to be efficient with the resources that we were given, we set up Continuo
 
 Over the duration of our project the definition and the scope of what was required from us changed as we kept on finishing tasks and taking on new ones. \\
 
-Chronologically listing, initially we believed our main goal was to create an automated testing framework for Synote but after the first meeting with our client, we were informed that the implementation of a payment feature was also required of us. After finishing with these two milestones, we moved on to set up Continuous Integration with Jenkins although this was categorised as something nice to have if time permitted it. We also managed to get 100\% test coverage on the backend tests of Synote although that was not initially scoped either but we felt it would make our overall solution be more robust. The testing methodology and all of its accompanying approaches and notions (such as guidelines on how to code new testing functionality or how to write new tests, etc) also needed to be formalised and centralised within a living document. \\
+Chronologically listing, we initially believed our main goal was to create an automated testing framework for Synote but after the first meeting with our client, we were informed that the implementation of a payment feature was also required of us. After finishing with these two milestones, we moved on to set up Continuous Integration with Jenkins although this was categorised as something nice to have if time permitted. We also managed to get 100\% test coverage on the backend tests of Synote although that was not initially scoped either but we felt it would make our overall solution more robust. The testing methodology and all of its accompanying approaches and notions (such as guidelines on how to code new testing functionality or how to write new tests, etc) also needed to be formalised and centralised within a living document. \\
 
 We have provided our client with the following items as deliverables. Written confirmation from the client can be seen in \textbf{Appendix \ref{appendix:client-sign-off}}.
 
@@ -50,13 +50,13 @@ We have provided our client with the following items as deliverables. Written co
 Every developer has their own programming style. When numerous individuals are contributing to a software product over time, it is necessary to provide a contribution document to ensure all developers adhere to the same conventions. Synote's conventions that applied to our development were:
 
 \begin{itemize}
-    \item \textbf{Promises over Callbacks} - To make the asynchronous code easier to read and understand.
-    \item \textbf{Specific error structure} - A JSON with properties for the thrown error and an appropriate error message.
-    \item \textbf{HTML element IDs} - All elements must have an \texttt{id} attribute of the form  \texttt{$<$name$>$\_$<$type$>$} where \texttt{name} is an intuitive name for the element and \texttt{type} corresponds to the type of the element.
+    \item \textbf{Promises over Callbacks} - To make asynchronous code easier to read and understand
+    \item \textbf{Specific error structure} - A JSON with properties for the thrown error and an appropriate error message
+    \item \textbf{HTML element ID} - All elements must have an \texttt{id} attribute of the form  \texttt{$<$name$>$\_$<$type$>$} where \texttt{name} is an intuitive name for the element and \texttt{type} corresponds to the type of the element
     \item \textbf{Server side testing} - Trigger all branches. If a branch cannot be tested it is considered a bug.
 \end{itemize}
 
-There are several additional conventions found in \texttt{CONTRIBUTING.md} which is a continuously evolving document. New conventions have been introduced as a result of our development, such as the HTML element ID convention and conventions regarding server side testing, which are discussed in \textbf{Chapter \ref{chap:further-work}}.
+There are several additional conventions found in \texttt{CONTRIBUTING.md} which is a continuously evolving document. New conventions have been introduced as a result of our development, such as the HTML element ID convention and those regarding server side testing, which are discussed in \textbf{Chapter \ref{chap:further-work}}.
 
 \section{Payment Systems}
 \label{sec:payment-systems}
@@ -73,7 +73,7 @@ The primary component of E-Commerce is the online payment system. A common appro
 \subsection{Considerations}
 \label{subsec:considerations}
 
-Security is an essential consideration for online payment systems. E-Commerce begins with customers trusting that the system provided by a merchant is \textit{safe} to use. For an online transaction to be considered \textit{safe}, it must be:
+Security is essential for online payment systems. E-Commerce begins with customers trusting that the system provided by a merchant is \textit{safe} to use. For an online transaction to be considered safe, it must be:
 
 \begin{itemize}
 	  \item Confidential - Inaccessible to unauthorized parties.
@@ -84,9 +84,9 @@ Security is an essential consideration for online payment systems. E-Commerce be
     \item of Integrity - Unalterable during transmission.
 \end{itemize}
 
-The Payment Card Industry (PCI) Security Standards Council, exists to develop standards which ensure the above criteria are met. The Data Security Standard (DSS) created by the PCI council "provides a baseline of technical and operational requirements designed to protect account data" and "applies to \textit{\textbf{all}} entities involved in payment card processing--including merchants" \cite{PCI-DSS}.\\
+The Payment Card Industry (PCI) Security Standards Council, exists to develop standards which ensure the above criteria are met. The Data Security Standard (DSS) created by the PCI council ``provides a baseline of technical and operational requirements designed to protect account data'' and ``applies to \textit{\textbf{all}} entities involved in payment card processing--including merchants'' \cite{PCI-DSS}.\\
 
-PCI DSS is intended to protect cardholder data that is "processed, stored or transmitted by merchants" \cite{PCI-DSS}. The forms of data in question are depicted in \textbf{Figure \ref{fig:card-data}}, each of which have guidelines associated with them regarding storage and protection. Payment gateway services handle most PCI DSS compliance to remove the burden from the merchant but in some cases, not all of it, as described in \textbf{Section \ref{subsec:gathering-payment-data}}.
+PCI DSS is intended to protect cardholder data that is ``processed, stored or transmitted by merchants'' \cite{PCI-DSS}. The forms of data in question are depicted in \textbf{Figure \ref{fig:card-data}}, each of which have guidelines associated with them regarding storage and protection. Payment gateway services handle most PCI DSS compliance to remove the burden from the merchant but in some cases, not all of it, as described in \textbf{Section \ref{subsec:gathering-payment-data}}.
 
 \begin{figure}[!hbt]
   \centering
@@ -98,7 +98,7 @@ PCI DSS is intended to protect cardholder data that is "processed, stored or tra
 \subsubsection{Security}
 \label{subsec:security}
 
-Encryption is an essential security measure when transmitting payment information over a network and ensures that only a specified receiver can decrypt the information. PCI DSS dictates the use of Hypertext Transfer Protocol Secure (HTTPS) which use either Secure Sockets Layer (SSL) or Transport Layer Security (TLS) protocols that have an asymmetric Public Key Infrastructure (PKI) system. This means that information can be encrypted with one key at the sender and decrypted by a different key at the receiver or vice-versa \cite{comodo}.\\
+Encryption is an essential security measure when transmitting payment information over a network and ensures that only a specified receiver can decrypt the information. PCI DSS dictates the use of Hypertext Transfer Protocol Secure (HTTPS) which uses either Secure Sockets Layer (SSL) or Transport Layer Security (TLS) protocols that have an asymmetric Public Key Infrastructure (PKI) system. This means that information can be encrypted with one key at the sender and decrypted by a different key at the receiver or vice-versa \cite{comodo}.\\
 
 To establish a secure connection over HTTPS, an HTTPS/SSL certificate is required, which creates a binding between an organizational identity and a domain name, server name or host name \cite{ssl-certificate}. The certificate is used during a handshake procedure between sender and receiver to establish a secure connection through which payment data is sent.
 
@@ -146,7 +146,7 @@ Methods 1 \& 2 fully remove the burden of PCI DSS compliance from the merchant a
 \subsection{Importance of Having Frameworks}
 \label{subsec:importance-of-having-frameworks}
 
-In a capsule, a framework can be thought of as an abstraction tool which makes it easier to write applications \cite{1stwebdesigner}. It is essentially a set of integrated software artefacts e.g. common pre-formatted classes and functions which work together to promote reuse of code \cite{framework-report-vamderbilt}. This in turn improves the productivity of developers since they can focus on implementing desired requirements instead of dealing with the overhead of application infrastructure \cite{cimetrix}. From a business point of view, having re-usability reduces software cost and improves its quality.
+In a nutshell a framework can be thought of as an abstraction tool which makes it easier to write applications \cite{1stwebdesigner}. It is essentially a set of integrated software artefacts e.g. common pre-formatted classes and functions which work together to promote reuse of code \cite{framework-report-vamderbilt}. This in turn improves the productivity of developers since they can focus on implementing desired requirements instead of dealing with the overhead of application infrastructure \cite{cimetrix}. From a business point of view, having re-usability reduces software cost and improves its quality.
 
 \subsection{What Makes a Good Framework?}
 \label{subsec:what-makes-a-good-framework}
@@ -156,9 +156,9 @@ In a capsule, a framework can be thought of as an abstraction tool which makes i
 
     \item \textbf{Enforces consistent coding style} - Forces the developers to adhere to best practices and conventions when coding to produce applications which are flexible and contain less bugs \cite{cimetrix}.
 
-    \item \textbf{Makes discrete components useful} - Frameworks should tie together complex components which are difficult to be used on its own and provide a wrapper around them which can be used to achieve desired functionality with ease e.g. \textit{LINQ} queries in \textit{ASP.NET MVC} which allows creation of \textit{SQL} statements with no prior knowledge of \textit{SQL} syntax \cite{social-msdn}.
+    \item \textbf{Makes discrete components useful} - Frameworks should tie together complex components which are difficult to be used on their own and provide a wrapper around them which can be used to achieve desired functionality with ease e.g. \textit{LINQ} queries in \textit{ASP.NET MVC} which allows creation of \textit{SQL} statements with no prior knowledge of \textit{SQL} syntax \cite{social-msdn}.
 
-    \item \textbf{Follows well recognised coding styles} - Using a well known programming style e.g. \textit{PHP} and \textit{Ruby on Rails} uses MVC framework, making it efficient and simple to debug because developers know exactly where to look for errors and bugs. It also allows separation of application logic from other components e.g. data access layer, views etc. making code management very easy \cite{speckyboy}.
+    \item \textbf{Follows well recognised coding styles} - Using a well known programming style e.g. \textit{PHP} and \textit{Ruby on Rails} use MVC framework, making it efficient and simple to debug because developers know exactly where to look for errors and bugs. It also allows separation of application logic from other components e.g. data access layer, views etc. making code management very easy \cite{speckyboy}.
 
 	  \item \textbf{Secure and supportive community} - Frameworks are typically written by a team of developers and it is guaranteed to be thoroughly tested before release. Even if a security threat is discovered later on, developers can contact the community for patches \cite{OSTraining}. The framework’s community should maintain it by releasing regular updates which improve performance, quality and provide new functionality etc. \cite{cimetrix}
 
@@ -168,11 +168,11 @@ In a capsule, a framework can be thought of as an abstraction tool which makes i
 \subsection{What Makes a Bad Framework?}
 \label{subsec:what-makes-a-bad-framework}
 \begin{itemize}
- 	  \item \textbf{Steep learning curve} - An initial learning curve is tolerable if framework brings benefits in the long run. However, it is important to ensure that this learning curve is not too steep that using a framework becomes an overhead instead of an advantage \cite{OSTraining}.
+ 	  \item \textbf{Steep learning curve} - An initial learning curve is tolerable if framework brings benefits in the long run. However, it is important to ensure that this learning curve is not so steep that using a framework becomes an overhead instead of an advantage \cite{OSTraining}.
 
-    \item \textbf{Lack of customisation } - It can be difficult to achieve a tailored functionality when framework does not allow overriding functions. In this case, developers will have to write this functionality independently and integrate it with the framework \cite{Quora}. Difficulty comes in when they have to really understand how the framework works under the hood to “hack” in the functionality.
+    \item \textbf{Lack of customisation } - It can be difficult to achieve a tailored functionality when a framework does not allow overriding functions. In this case, developers will have to write this functionality independently and integrate it with the framework \cite{Quora}. Difficulty arises when they have to really understand how the framework works under the hood to “hack” in the functionality.
 
-    \item \textbf{Risk of learning framework, not understanding the language} - Frameworks such as \textit{CakePHP} allow developers to setup a basic site in under 5 minutes. Its scaffolding feature can create controllers, views etc. on the fly with no input from developer. So being able to use a framework does not essentially mean that the developer knows the language well \cite{Vizteams}.
+    \item \textbf{Risk of learning framework, not understanding the language} - Frameworks such as \textit{CakePHP} allow developers to setup a basic site in under 5 minutes. Its scaffolding feature can create controllers, views etc. on the fly with no input from the developer. So being able to use a framework does not essentially mean that the developer knows the language well \cite{Vizteams}.
 
     \item \textbf{Risk of being outdated} - If a framework is not regularly maintained e.g. security risks not patched, no performance improvements etc., then its continued use is futile and potentially dangerous to business. Switching to another framework can be extremely expensive if the code base is very large \cite{Quora}.
 \end{itemize}
@@ -183,7 +183,7 @@ In a capsule, a framework can be thought of as an abstraction tool which makes i
 \subsection{Unit Testing}
 \label{subsec:unit-testing}
 
-Units tests are tests which isolate standalone units or functions of the application to verify their correctness. They are easier to be written by developers since understanding of code is required. Correctness is achieved via assertions i.e. statements of conditions and their expected results. To test a function which which identifies season, provided the date and location, a unit test could be - “I expect the answer ‘summer’ for 16th September in Wales".
+Units tests are tests which isolate standalone units or functions of the application to verify their correctness. They are usually written by the developers since understanding of code is required. Correctness is achieved via assertions i.e. statements of conditions and their expected results. To test a function which identifies season, provided the date and location, a unit test could be - “I expect the answer ‘summer’ for 16th September in Wales".
 
 \subsection{Integration Testing}
 \label{subsec:unit-testing}
@@ -192,7 +192,7 @@ Integration tests are carried out by testers after running Unit tests successful
 
 \begin{center}
 %Column widths dependent on page width/margins
-\begin{tabular}{ |p{4cm}|p{4cm}|p{4cm}|  }
+\begin{tabular}{ |p{4cm}|p{4cm}|p{4.5cm}|  }
 
  \hline
  	\multicolumn{1}{|c|}{Objective} &
@@ -210,7 +210,7 @@ Integration tests are carried out by testers after running Unit tests successful
 \subsection{E2E Testing}
 \label{subsec:e2e-testing}
 
-End-to-End tests are carried out after a complete deployment. They focus on testing the application as a whole (instead of focusing on specific client or server functions) by performing tests as to how a real world user might use the application with no understanding of the code base. E2E test cases should focus on testing critical areas such as communication with other systems, database, interfaces etc. \cite{tutorialspoint}. An example E2E test case to verify successful login may include these steps:
+End-to-End tests are carried out after a complete deployment. They focus on testing the application as a whole (instead of focusing on specific client or server functions) by performing tests like a real world user might use the application with no understanding of the code base. E2E test cases should focus on testing critical areas such as communication with other systems, database, interfaces etc. \cite{tutorialspoint}. An example E2E test case to verify successful login may include these steps:
 
 \begin{enumerate}
 	\item Given I go to the “Login” page
@@ -246,18 +246,18 @@ Speaking in a more pragmatic way, the main goal is to cover all test scenarios. 
 The most representative test coverage for the QA process is comprised of the E2E tests because they focus on the application as a whole thus giving us a more natural overview of the quality state of the product.
 \\
 
-Since in a software product there are multiple abstraction levels stacked on top of each other from the actual feature to the underlying low level implementation, it is quite hard to materialise the QA process and quantify test coverage.
+Since a software product may have multiple layers of abstraction from the feature to the underlying low level implementation, it is quite hard to materialise the QA process and quantify test coverage.
 
 \subsection{Behaviour Driven Development}
 \label{subsubsec:bdd}
 
-This is where Behaviour Driven Development comes in handy. In software engineering, it is a process derived from Test Driven Development (TDD) which promotes writing the tests for the application before writing any code.
+This is where Behaviour Driven Development (BDD) comes in handy. In software engineering, it is a process derived from Test Driven Development (TDD) which promotes writing the tests for the application before writing any code.
 \\
 
-BDD borrows that concept and adds another on top. Its main objective is to make possible for the tests to be managed both on the business, high-level functional level and the technical level. Thus we are able to define the business requirements of the product without having our perception distorted by irrelevant technical issues. Before starting the implementation of any new functionality, an outline of the new feature's high level requirements is made and then development can start with a clearer mindset. The effectiveness of this practice to achieve a very high coverage is correlated with the thoroughness of the outlining process and the clarity of vision concerning the newly introduced feature.
+BDD borrows that concept and adds another on top. Its main objective is to make it possible for the tests to be managed both on the business and the technical level. Thus we are able to define the business requirements of the product without having our perception distorted by irrelevant technical issues. Before starting the implementation of any new functionality, an outline of the new feature's high level requirements is made and then development can start with a clear mindset. The effectiveness of this practice to achieve a very high coverage is correlated with the thoroughness of the outlining process and the clarity of vision concerning the newly introduced feature.
 \\
 
-More concrete details about how we achieved this can be found in \textbf{Chapter \ref{chap:e2e-test-framework}}. In terms of test coverage, this is represented by the number of feature-related tests that pass. We are proud to state that we have achieved nearly 100\% test coverage for all test types. This can be seen in \textbf{Appendix \ref{appendix:server-test-cases}} for backend tests and \textbf{Appendix \ref{appendix:e2e-testing}} for E2E tests.
+More concrete details about how we achieved this can be found in \textbf{Chapter \ref{chap:e2e-test-framework}}.
 
 \subsection{Code Coverage}
 \label{subsec:code-coverage}
@@ -279,7 +279,7 @@ A CI strategy can have any number of automated steps depending on the applicatio
     \item Generate reports that show you the test results
 \end{itemize}
 
-There are various CI tools that can manage and centralise these steps. Many of them are open source such as the one we chose for our project (\textit{Jenkins}). \textit{Jenkins} offers a lot of useful functionality as it can be accessed and maintained remotely via a web interface. This makes it very easy to keep track of progress and any issues that may appear. For more details on how me managed CI, please look at \textbf{Chapter \ref{chap:continuous-integration}}.
+There are various CI tools that can manage and centralise these steps. Many of them are open source such as the one we chose for our project (\textit{Jenkins}). \textit{Jenkins} offers a lot of useful functionality as it can be accessed and maintained remotely via a web interface. This makes it very easy to keep track of progress and any issues that may appear. \textbf{Chapter \ref{chap:continuous-integration}} has more details on how we managed CI.
 
 \section{QA Methodology}
 \label{sec:qa-methodology}
@@ -293,5 +293,5 @@ For this purpose Synote created \texttt{CONTRIBUTING.md} which contains all the 
 Code convention is another important element to consider. In real world situations people in teams come with a variety of coding styles. Diversity can be helpful for the developers as they can learn from each other but in this context it is better to maintain a clear convention.
 \\
 
-For the automated testing framework, a clear practice is required because in this way we are able to write less code by making use of generic methods (see \textbf{Subsection \ref{subsec:reusable-steps-definition}}) and we also require consistency in the framework because we also use it as a means to document our test cases. This information can be found in the \texttt{readme.md} file on the repository.
+For the automated testing framework, a clear practice is required to able to write less code by making use of generic methods (see \textbf{Subsection \ref{subsec:reusable-steps-definition}}). We also require consistency in the framework because we also use it to document our test cases. This information can be found in the \texttt{readme.md} file in the repository.
 \\
