@@ -15,7 +15,7 @@ The greatest concern in implementing a payment feature for Synote is remaining P
  	\label{fig:synote-architecture}
 \end{figure}
 
-\textbf{Figure \ref{fig:synote-architecture}} depicts Synote's existing architecture which uses \textit{Node.js} (\textit{Node}) and \textit{Sails.js} (\textit{Sails}) web frameworks on the server. \textit{Sails} includes a powerful Object Relational Mapping (ORM) tool called \textit{Waterline} to provide a data access layer to the underlying \textit{MySQL} database.\\
+\textbf{Figure \ref{fig:synote-architecture}} depicts Synote's existing architecture which uses \textit{Node.js} (\textit{Node}) and \textit{Sails.js} (\textit{Sails}) web frameworks on the server. \textit{Sails} includes a powerful Object Relational Mapping (ORM) tool called \textit{Waterline} which provides a data access layer to the underlying \textit{MySQL} database.\\
 
 As a custom merchant form is desired for gathering payment information, \textit{Stripe} must be used to tokenise the payment data before it can be sent to Synote's server. As mentioned in \textbf{Section \ref{subsec:security}}, HTTPS is required for secure transmission of payment data over a network, so the first stage of integration is to use an HTTPS/SSL certificate to enable HTTPS communication (\textbf{Figure \ref{fig:stripe-integration}}).\\
 
@@ -35,9 +35,9 @@ The first iteration of the payment feature requires simple functionality: A cust
  	\label{fig:simple-sequence}
 \end{figure}
 
-Step one is to post a \textit{Stripe} token and any additional required information to a new REST endpoint. \textit{Sails} has an API called \textit{Blueprint} which creates RESTful routes when an endpoint is created with a \texttt{model} and a \texttt{controller}. Further sub-routes can be added to the endpoint through the concept of action routes, thus a \texttt{controller} file named \texttt{CreditHistoryController.js} containing an action route of \texttt{topup} exposes the route: \texttt{/credithistory/topup}.\\
+Step one is to \texttt{POST} a \textit{Stripe} token and any additional required information to a new REST endpoint. \textit{Sails} has an API called \textit{Blueprint} which creates RESTful routes when an endpoint is created with a \texttt{model} and a \texttt{controller}. Further sub-routes can be added to the endpoint through the concept of action routes, thus a \texttt{controller} file named \texttt{CreditHistoryController.js} containing an action route of \texttt{topup} exposes the route: \texttt{/credithistory/topup}.\\
 
-Making charges against a token requires \textit{Stripe}'s API \cite{stripe-api} which can be added using the \texttt{require} keyword and must include a secret key provided by \textit{Stripe}. \textit{Stripe}'s API lists examples of functions in \textit{Node}, but in the form of callbacks. As covered in \textbf{Section \ref{subsec:conventions}}, the convention is to use promises in favour of callbacks which altogether results in code similar to \textbf{Listing \ref{lst:stripe-charge}}.\\
+Making charges against a token requires \textit{Stripe}'s API \cite{stripe-api} which can be added using the \texttt{require} keyword and must include a secret key provided by \textit{Stripe}. \textit{Stripe}'s API lists examples of functions in \textit{Node}, but in the form of callbacks. As covered in \textbf{Section \ref{subsec:conventions}}, the convention is to use promises in favour of callbacks which culminates in code similar to \textbf{Listing \ref{lst:stripe-charge}}.\\
 
 \hspace{0.1\textwidth}
 \begin{minipage}{.76\textwidth}
@@ -66,7 +66,7 @@ Information required to make a charge includes a single use token, charge amount
  	\label{fig:db-credit}
 \end{figure}
 
-The remaining task is recording the transaction and assigning purchased credits to a user. The setup for this task requires alteration to the existing database (DB), a \textit{Sails} \texttt{model} and \textit{Waterline} methods to interact with the DB. \textbf{Figure \ref{fig:db-credit}} shows the schema of the credit and credit history tables with their relations to the existing user table. Adding these tables to an existing database requires use of an SQL migration file as shown in \textbf{Listing \ref{lst:migration-file}}.\\
+The remaining task is recording the transaction and assigning purchased credits to a user. The setup for this task requires alteration to the existing database (DB), a \textit{Sails} \texttt{model} and \textit{Waterline} methods to interact with the DB. \textbf{Figure \ref{fig:db-credit}} shows the schema of the credit and credit history tables with their relations to the existing user table. Adding these tables to an existing database requires use of an SQL migration script as shown in \textbf{Listing \ref{lst:migration-file}}.\\
 
 \hspace{0.1\textwidth}
 \begin{minipage}{.72\textwidth}
@@ -127,11 +127,11 @@ The second iteration of the payment feature requires extended functionality: A c
 
 \begin{enumerate}
 	\item Adding action routes in the \texttt{CreditHistoryController.js} file to retrieve/delete cards
-    \item Providing additional parameters in the \texttt{req} body JSON to indicate the Stripe token should be used to save the payment data
+    \item Providing additional parameters in the \texttt{req} body JSON to indicate the Stripe token should be used to save the resultant payment data
     \item Adding policies to secure the new routes
-    \item Adding \textit{Stripe} functions to save payment data in a Stripe customer
-    \item Updating the database schema using a migration file to store a \textit{Stripe} customer object against a user
-    \item Updating the relevant \texttt{model} to include the \textit{Stripe} customer field
+    \item Adding \textit{Stripe} functions to save payment data on the \textit{Stripe} server as a \textit{Stripe Customer} object
+    \item Updating the database schema using a migration script to store a \textit{Stripe Customer} object against a user
+    \item Updating the relevant \texttt{model} to include the \textit{Stripe Customer}  field
     \item Adding \textit{Waterline} functions to CRUD \textit{Stripe} customer records
 \end{enumerate}
 
@@ -147,7 +147,7 @@ The second iteration of the payment feature requires extended functionality: A c
 \section{Server Side Testing}
 \label{sec:server-side-testing}
 
-Testing is crucial in order to provide a robust and reliable feature. The existing testing strategy in Synote's server code uses \textit{Mocha} \cite{mocha} test running framework paired with \textit{Chai} \cite{chai} assertion library. Unit, Integration and server side end-to-end (E2E) tests have been written for the payment feature. Through use of \textit{Istanbul} \cite{istanbul} code coverage tool, we can show high coverage in policies, services and the controller as shown in \textbf{Figure \ref{fig:coverage}}. To thoroughly test our implementation we have written tests for presence, edge-cases and branch coverage. A collection of tests from \texttt{StripeService.test.js} are shown in \textbf{Listing \ref{lst:stripe-test-cases}}.\\
+Testing is crucial in order to provide a robust and reliable feature. The existing testing strategy in Synote's server code uses \textit{Mocha} \cite{mocha} test running framework paired with \textit{Chai} \cite{chai} assertion library. Unit, Integration and server side end-to-end (E2E) tests have been written for the payment feature. We use \textit{Istanbul} \cite{istanbul} code coverage tool to show high coverage in policies, services and the controller as shown in \textbf{Figure \ref{fig:coverage}}. To thoroughly test our implementation we have written tests for presence, edge-cases and branch coverage. A collection of tests from \texttt{StripeService.test.js} are shown in \textbf{Listing \ref{lst:stripe-test-cases}}.\\
 
 \begin{figure}[!hbt]
   \centering
@@ -175,7 +175,7 @@ it('Should throw error "chargeCard: Missing properties in provided JSON" when no
 \label{lst:stripe-test-cases}
 \end{listing}
 
-All test cases attempt to follow the SILO and DRY (Don't Repeat Yourself) principles to ensure each case is independent. While SILO has been completely achieved, DRY has not as the existing testing strategy for policies and controllers has forced code repetition. At present \texttt{policy} and \texttt{controller} files are being tested through endpoint calls which is not considered best practice and results in some code branches not being testable. The desired methodology for testing \texttt{policy} files is to do so in isolation using mocking for \texttt{req} objects and spies for function calls. We have included an example of this in \texttt{canListCreditHistory.text.js} in Synote's repository. Best practice for testing \texttt{controllers} and \texttt{services} is to use dependency injection to remove interaction with a real database and \texttt{http} context. This is far beyond the scope of our project but is recommended as future improvement for Synote.
+All test cases attempt to follow the SILO and DRY (Don't Repeat Yourself) principles to ensure each case is independent. While SILO has been completely achieved, DRY has not as the existing testing strategy for policies and controllers has forced code repetition. At present \texttt{policy} and \texttt{controller} files are being tested through endpoint calls which is not considered best practice and results in some code branches not being testable. The desired methodology for testing \texttt{policy} files is to do so in isolation using mocking for \texttt{req} objects and spies for function calls. We have included an example of this in \texttt{canListCreditHistory.text.js} in Synote's repository. Best practice for testing \texttt{controllers} and \texttt{services} is to use dependency injection to remove interaction with a real database and \texttt{http} context. This is far beyond the scope of our project but is recommended as future improvement for Synote (see \textbf{Section \ref{subsec:server-side-testing}}).
 
 \section{Client Side Implementation}
 \label{sec:client-side-implementation}
@@ -238,7 +238,7 @@ Client side should handle these properties of the payment feature:
 \subsubsection{Buy Credits Feature}
 \label{subsubsec:buy-credits-feature}
 
-As mentioned in \textbf{Figure \ref{fig:simple-sequence}}, it is the client application's responsibility to tokenise payment data and handle the response from \textit{Stripe}. The \texttt{buyCreditController} handles all the payment related business logic with the help of \texttt{paymentService} service class (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). This class provides the \texttt{buyCreditController} with:
+As mentioned in \textbf{Figure \ref{fig:simple-sequence}}, it is the client side application's responsibility to tokenise payment data and handle the response from \textit{Stripe}. The \texttt{buyCreditController} handles all the payment related business logic with the help of \texttt{paymentService} service class (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). This class provides the \texttt{buyCreditController} with:
 
 \begin{itemize}
 \item \textit{Stripe} tokenisation and response handler methods
@@ -247,7 +247,7 @@ As mentioned in \textbf{Figure \ref{fig:simple-sequence}}, it is the client appl
 \item Delete card method (server request)
 \end{itemize}
 
-Initially, all of this logic was handled by the \texttt{buyCreditController} itself and it lead to lot of code repetition. Doing simple things like changing the POST request URL for charging a card proved to be a hassle since we had to make these changes at multiple locations. We refactored all the reusable functions into \texttt{paymentService} making simplifying service updates. \\
+Initially, all of this logic was handled by the \texttt{buyCreditController} itself and it lead to lots of code repetition. Doing simple things like changing the POST request URL for charging a card proved to be a hassle since we had to make these changes at multiple locations. We refactored all the reusable functions into \texttt{paymentService}, thus simplifying possible future updates to the implementation. \\
 
 To use \texttt{Stripe.js} on client side, we first had to include its library as a script in the \texttt{index.html} page. Consider \textbf{Listing \ref{lst:index-head-html}}:\\
 
@@ -279,9 +279,9 @@ We also had to include our actual publishable API key as a script which will be 
 \label{lst:buycredit-html-stripe-key}
 \end{listing}
 
-Payment can be of 2 forms - via a saved card or via a new card.\\
+Payment can be of two forms - via a saved card or via a new card.\\
 
-We had to ensure secure transmission of card details from client i.e. they should not be intercepted and manipulated by an outsider. To achieve this level of security, we tokenise the critical payment fields via \textit{Stipe}’s API and post this to Synote’s server along with other details such as amount of credits and price to pay. This way, we can assure that original customer details will not be sent to the server.\\
+We had to ensure secure transmission of card details from client i.e. they should not be intercepted and manipulated by an outsider. To achieve this level of security, we tokenise the critical payment fields via \textit{Stipe}’s API and post this to Synote’s server along with other details such as amount of credits and price to pay. This way, we can ensure that original customer details will not be sent to Synote's server.\\
 
 \texttt{paymentService} is responsible for converting the user input payment details into a single use representative token.  Consider \textbf{Listing \ref{lst:create-token-payment-service-method}}:\\
 
@@ -312,7 +312,7 @@ createStripeToken: function (tokenHelperObject) {
 \label{lst:create-token-payment-service-method}
 \end{listing}
 
-The method provided by \textit{Stripe}’s API is \texttt{Stripe.Card.createToken} (line 4). This is in callback style and Synote’s conventions (see \textbf{Section \ref{subsec:conventions}}) favours promises over callbacks. Our \texttt{createStripeToken} method uses \textit{Angular}’s \texttt{\$q} constructor service to to turn callbacks into promises \cite{jdotjdot} \& \cite{angularjsq}. The token helper object consists of input payment details i.e. billing name, number, cvc, expiry month and year.\\
+The method provided by \textit{Stripe}’s API is \texttt{Stripe.Card.createToken} (line 4). This is in callback style and Synote’s conventions (see \textbf{Section \ref{subsec:conventions}}) favours promises over callbacks. Our \texttt{createStripeToken} method uses \textit{Angular}’s \texttt{\$q} constructor service to to turn callbacks into promises \cite{jdotjdot} \cite{angularjsq}. The token helper object consists of input payment details i.e. billing name, number, cvc, expiry month and year.\\
 
 If the response from Stripe was successful, \texttt{buyCreditController} will then move onto processing the payment via \texttt{paymentService}. Consider \textbf{Listing \ref{lst:charge-card-service-method}}:\\
 
@@ -332,9 +332,9 @@ chargeCard: function (parameters) {
 \label{lst:charge-card-service-method}
 \end{listing}
 
-Here we simply make a post request to Synote’s server at \texttt{topup} endpoint along with the single use representative token, credits, charge amount, save boolean as parameters. 'Save boolean flag' is set true if user checks the save card option. It tells the server to save the card currently used for payment.\\
+Here we simply make a \texttt{POST} request to Synote’s server at the \texttt{topup} endpoint along with the single use representative token, credits, charge amount, save boolean as parameters. `Save boolean flag' is set true if user checks the save card option. It tells the server to save the card currently used for payment.\\
 
-The logic behind is similar to using a new card apart from the fact that we no longer need to tokenise the payment details. When a user is routed to the \texttt{buycredit} URI, we send a HTTP GET request to Synote’s server to retrieve saved cards for logged-in users (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). Consider \textbf{Listing \ref{lst:get-cards-req}}:\\
+Using a new card is similar other than that we no longer need to tokenise the payment details. When a user is routed to the \texttt{buycredit} URI, we send a HTTP GET request to Synote’s server to retrieve saved cards for logged-in users (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}). Consider \textbf{Listing \ref{lst:get-cards-req}}:\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -353,7 +353,7 @@ cards: ['$http', 'authenticationService',
 \label{lst:get-cards-req}
 \end{listing}
 
-When charging against saved card, we invoke the same method from \texttt{paymentService} used for charging against a new card but with different parameters. Consider \textbf{Listing \ref{lst:params-charge-card}}:\\
+When charging against a saved card, we invoke the same method from \texttt{paymentService} used for charging against a new card but with different parameters. Consider \textbf{Listing \ref{lst:params-charge-card}}:\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -377,7 +377,7 @@ Instead of passing in the Stripe token, we now pass the \texttt{cardId} of selec
 \subsubsection{Credits History Feature}
 \label{subsubsec:credits-history-feature}
 
-When users are routed to the \texttt{creditsHistory} URI, we send a HTTP GET request to Synote’s server to retrieve credit history for logged in user. Consider \textbf{Listing \ref{lst:credits-history-req}}:\\
+When users are routed to the \texttt{creditsHistory} URI, we send a HTTP GET request to Synote’s server to retrieve credit history for the logged in user ( \textbf{Listing \ref{lst:credits-history-req}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -401,7 +401,7 @@ The loaded credit history data is then displayed as a reverse chronological tabl
 \subsection{Clientside Payment Details Validation}
 \label{subsec:clientside-payment-details-validation}
 
-Client side validation is handled via methods provided by \textit{Stipe}’s API and an \textit{Angular} payment validation module  (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}) called \texttt{angular-payments} \cite{angularpayments}. \textit{Stripe}’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service. Consider validation for card number field as an example:
+Client side validation is handled via methods provided by \textit{Stipe}’s API and an \textit{Angular} payment validation module  (see \textbf{Figure \ref{fig:frontend-infrastructure-diagram}}) called \texttt{angular-payments} \cite{angularpayments}. \textit{Stripe}’s validation methods are called via \texttt{buycredit.html} page $>$ \texttt{buycredit} controller $>$ \texttt{paymentservice} service.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
@@ -430,7 +430,7 @@ $scope.checkCardNumber = function () {
 \label{lst:buycredit-controller-checkcardnumber-method}
 \end{listing}
 
-In \textbf{Listing \ref{lst:buycredit-controller-checkcardnumber-method}}, we check validity of the payment form based on the input card number via \texttt{paymentService}.\\
+In \textbf{Listing \ref{lst:buycredit-controller-checkcardnumber-method}}, we check validity of the payment form based on the input card number via \texttt{paymentService}. Similarly \textit{Stripe} provided methods validate card number (\textbf{Listing \ref{lst:payment-service-checkcardnumber-method}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{js}
@@ -446,8 +446,6 @@ isCardNumberTypeValid: function (cardNumber) {
 \label{lst:payment-service-checkcardnumber-method}
 \end{listing}
 
-\textit{Stripe} provided methods validate card number (\textbf{Listing \ref{lst:payment-service-checkcardnumber-method}}).\\
-
 \begin{figure}[!hbt]
   \centering
  	\includegraphics[width=0.6\textwidth]{live-validation-screenshot.png}
@@ -458,7 +456,7 @@ isCardNumberTypeValid: function (cardNumber) {
 \subsection{Alert Messages}
 \label{subsec:alert-messages}
 
-Synote uses \texttt{Toastr} alert messages throughout its implementation. An issue arose whilst writing automated E2E tests where the \texttt{Toastr} alerts would prevent WebDriver from accessing the logout button. Consider \textbf{Figure \ref{fig:toastr-alert-problem-screenshot}}:\\
+Synote uses \texttt{Toastr} alert messages throughout its implementation. An issue arose whilst writing automated E2E tests where the \texttt{Toastr} alerts would prevent WebDriver from accessing the logout button (\textbf{Figure \ref{fig:toastr-alert-problem-screenshot}}).\\
 
 \begin{figure}[!hbt]
   \centering
@@ -467,7 +465,7 @@ Synote uses \texttt{Toastr} alert messages throughout its implementation. An iss
  	\label{fig:toastr-alert-problem-screenshot}
 \end{figure}
 
-To overcome this issue, we switched to \textit{Bootstrap} alerts which are added on the fly and set to disappear after 5 seconds. Consider \textbf{Listing \ref{lst:buycredit-html-alert-code}}:\\
+To overcome this issue, we switched to \textit{Bootstrap} alerts which are added on the fly and set to disappear after 5 seconds (\textbf{Listing \ref{lst:buycredit-html-alert-code}})\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{html}
