@@ -1,7 +1,7 @@
 \chapter{Project Management}
 \label{chap:project-management}
 
-Project management is often left as a side topic in university projects. This practice, sadly, often results in either the project not achieving its true potentials, or in worst cases catastrophic failure. It may be because of poor time management, unforseen risks for an unprepared team, a dominating project manager or the simple lack of teamwork between the team members. We believe that a GDP should have at least the following as their project management goals \cite{iansommerville2011} -
+Project management is often left as a side topic in university projects. This practice, sadly, often results in either the project not achieving its true potential, or in worst cases catastrophic failure. It may be because of poor time management, unforseen risks for an unprepared team, a dominating project manager or the simple lack of teamwork between the team members. We believe that a GDP should have at least the following as their project management goals \cite{iansommerville2011} -
 
 \begin{itemize}
 
@@ -11,7 +11,7 @@ Project management is often left as a side topic in university projects. This pr
 
 \end{itemize}
 
-Shakib was the project manager for GDP 8. We are proud of the professionalism that we have demonstrated during the project. We were pragmatic in our time management, professional and honest in our communication with our supervisor and our client and finally managed our risks well. In this chapter we will analyse how we were able to achieve the above goals.
+Shakib was the project manager for GDP 8. We are proud of the professionalism that we have demonstrated during the project. We were pragmatic in our time management, professional and honest in our communication with our supervisor and our client and finally we managed our risks well. In this chapter we will analyse how we were able to achieve the above goals.
 
 \section{Risk Analysis}
 \label{sec:risk-analysis}
@@ -27,9 +27,11 @@ We will begin with risk analysis, since our management techniques evolved throug
  \hline
  	%Example of column merging
  	\multicolumn{4}{|c|}{Risk Analysis} \\
- \hline
- 	%Examples of centering text
- 	Risk & Affects & Probability & Effect  \\
+  \hline
+  	\multicolumn{1}{|c|}{Risk} &
+  	\multicolumn{1}{|c|}{Affects} &
+  	\multicolumn{1}{|c|}{Probability} &
+  	\multicolumn{1}{|c|}{Effect}  \\
   \hline
  	 Goals are not clear & Project, Product & Very High & Catastrophic \\
    \hline
@@ -59,25 +61,25 @@ In the following sections we discuss how we managed the risks and in turn manage
 \label{sec:time-management}
 Since a 4th year MEng student should spend 2/3 of their time in GDP, we estimated that, we should each spend at least 30 hours/week (out of 50 hours/week). In our previous experience we found it very difficult to keep to strict hours, because of other commitments, e.g. societies, courseworks etc.\\
 
-To mitigate this risk, we booked a library room \textit{every weekday} for the entire 1st semester. This ensured that we always have a place to work together. We insisted on maximising our contact time, and in fact utilised the room bookings to the fullest extent by working above \textit{\textbf{30 hours}} together each week (\textbf{Appendix \ref{appendix:team-member-contribution}}).\\
+To mitigate this risk, we booked a library room \textit{every weekday} for the entire 1st semester. This ensured that we always had a place to work together. We insisted on maximising our contact time, and in fact utilised the room bookings to the fullest extent by working above \textit{\textbf{30 hours}} together each week (\textbf{Appendix \ref{appendix:team-member-contribution}}).\\
 
 We also estimated the work amount for other coursework in advance, and worked more on GDP in certain weeks. We kept our supervisor and our client well aware of our commitments each week so that we could prepare thusly. Our Gantt Chart in \textbf{Appendix \ref{appendix:gantt-charts}} demonstrates how well we followed our original plan, since work hours closely followed our initial estimates. In fact, the only change is that we finished our initial goals earlier than anticipated and could focus on further achievements like Continuous Integration(CI).
 
 \section{Weekly Meetings}
 \label{sec:weekly-meetings}
-We met both the supervisor and the client at least once each week since start of the term. The goal of these meetings was to -
+We met both the supervisor and the client at least once each week since the start of the term. The goal of these meetings was to -
 
 \begin{itemize}
 
   \item Demonstrate the current progress
-  \item Prioritise the tasks for the following week
+  \item Prioritise tasks for the following week
   \item Ensure that the client is satisfied with the direction and progress
 
 \end{itemize}
 
-The meetings mitigated the risk of not achieving the specification and guarded us from veering off to undesirable directions.\\
+These meetings mitigated the risk of not achieving the specification and guarded us from veering off course.\\
 
-A key focus during these meetings was to clarify the project goals, deliverables and the success criteria. This made us confident in our progress each week, since we could justify our project direction during demonstrations based on the agreed success criteria from the previous meetings. We tried to be as empirical as possible in estimating our work during the meetings so that we neither over-estimated, nor under-estimated the difficulty. Not only did this helped us achieve our initial goals, but also helped us extend the deliverables to implement Synote's first attempt at continuous integration. \\
+A key focus during these meetings was to clarify project goals, deliverables and the success criteria. This made us confident in our progress each week, since we could justify our project direction during demonstrations based on the agreed success criteria from the previous meetings. We tried to be as empirical as possible in estimating our work during the meetings so that we neither over-estimated, nor under-estimated the difficulty. Not only did this helped us achieve our initial goals, but also helped us extend the deliverables to implement Synote's first successful attempt at continuous integration. \\
 
 We met our client at least once more each week, in addition to continuous contact over \textit{Slack} to ensure that we were following his coding conventions, which greatly helped when we merged our code each week.
 
@@ -102,7 +104,7 @@ The team started a weekly team meeting after the first progress seminar feedback
 
 Usually, after the weekly meeting (\textbf{Section \ref{sec:weekly-meetings}}), we had 4-5 different major tasks for the week. The team members that were present during the team meetings picked the tasks they preferred. Otherwise, the manager assigned a task if any member was absent or did not have a preferrence. Finally, he picked the remaining tasks.\\
 
-If a team member finished his own task, he started others' remaining tasks if they were unavailable or helped out with ongoing ones. Similarly, if one's task depended on another's task and it was blocking the former's progress, they would either work together, or continue the other's work while they may be unavailable to work. Every effort was made to ensure that each developer had a task.\\
+If a team member finished his own task, he started others' remaining tasks if they were unavailable or helped out with other ongoing tasks. Similarly, if one's task depended on another's task and it was blocking the former's progress, they would either work together, or continue the other's work while they may be absent. Every effort was made to ensure that each developer had a task.\\
 
 \textbf{Appendix \ref{appendix:team-member-contribution}} clearly indicates each team member's individual contribution to the project, and \textbf{Appendix \ref{appendix:code-commits}} is the evidence in terms of code commits that they  produced. For example: Shakib performed nearly 60\% of the tasks of Synote's CI set up, Vlad and Tom each did 20\% of the tasks in CI, while Deepak wrote nearly 70\% of the E2E test cases of payment feature.\\
 
@@ -111,7 +113,7 @@ It must be noted though - not all contribution can be measured in terms of code 
 \subsection{Collaboration}
 \label{subsec:collaboration}
 
-Even though we each had our personal tasks that we completed every week (as explained in \textbf{Section \ref{subsec:dividing-work}}), 25 - 30\% of our tasks in fact required joint effort. Similar to any well functioning software development group, we often divided our work and came together to combine our work to achieve a requirement.\\
+Even though we each had our personal tasks that we completed every week (as explained in \textbf{Section \ref{subsec:dividing-work}}), 25 - 30\% of our tasks  required joint effort. Similar to any well functioning software development group, we often divided our work and came together to combine our work to achieve a requirement.\\
 
 \textbf{Appendix \ref{appendix:team-collaboration}} clearly shows timelines of each team member's major tasks throughout the project and demonstrates where and when he collaborated with others.\\
 
@@ -127,15 +129,15 @@ For example from \textbf{Figure \ref{fig:deepak-collaboration-snippet}}, which i
 \subsection{Team Skills}
 \label{subsec:team-skills}
 
-A major concern was the team's lack of practical knowledge of JavaScript, specially when the entire Synote application is JavaScript based. Shakib was the most proficient in JavaScript and he worked with each team member to help them with JavaScript initially to mitigate the risk early. Similarly, the rest of the team worked hard in the first 4-5 weeks to overcome any technical difficulties, including learning promise based structures, dynamic typing, closures, and the frameworks - Sails, Angular, Protractor, Cucumber etc.\\
+A major concern was the team's lack of practical knowledge of JavaScript, especially when the entire Synote application is JavaScript based. Shakib was the most proficient in JavaScript and he worked with each team member to help them with JavaScript initially to mitigate the risk early. Similarly, the rest of the team worked hard in the first 4-5 weeks to overcome any technical difficulties, including learning promise based structures, dynamic typing, closures, and the frameworks - Sails, Angular, Protractor, Cucumber etc.\\
 
 The team has picked up a number of development skills after this project. Tom and Vlad are more confident in their JavaScript knowledge, Deepak is fluent in front end development in Angular and HTML 5 than ever before and finally Shakib is assured of his JavaScript, Linux and team managemenet skills. Each team member also learned a significant amount about proper use of version control (See \textbf{Section \ref{sec:code-submission-process}}). The team members are also more optimistic about their individual strengths, as well as the group synergy.
 
 \subsection{Team Inclusion and Honesty}
 \label{subsec:team-inclusion}
-The manager, Shakib, emphasised on equality and inclusion of team members in their contribution to the project. Each member was informed of other's contribution through a shared contribution document (\textbf{Appendix \ref{appendix:team-member-contribution}}). He also informed absent team members about group decisions after each meeting so that they feel included. Any discrepancy was openly discussed with the team member so that each team member felt equally valued, and no one wast left with unfair resentment.\\
+The manager, Shakib, emphasised equality and inclusion of team members in their contribution to the project. Each member was informed of other's contribution through a shared contribution document (\textbf{Appendix \ref{appendix:team-member-contribution}}). He also informed absent team members about group decisions after each meeting so that they feel included. Any discrepancy was openly discussed with the team member so that each team member felt equally valued, and no one wast left with unfair resentment.\\
 
-Similarly, all team members respected other's responsibilities and even contributed to alleviate other's issues, for example: fill in the hours if someone was unavailable for a job interview.
+Similarly, all team members respected other's responsibilities and even contributed to alleviate other's issues, for example: fill in the hours if someone was unavailable due to a job interview.
 
 \section{Code Quality Management}
 \label{sec:code-quality-management}
@@ -177,4 +179,4 @@ In order to achieve the goals, we adopted a code submission strategy (\textbf{Fi
  	\label{fig:version-control}
 \end{figure}
 
-Once a feature was nearly complete, code review was performed on the feature branches. On Fridays, Shakib pushed the stable code on GDP8 master brances, merged with the latest client's master branch and finally re-ran all the tests. This ensured that the client had minimal effort in merging our one week's worth of code. In fact, we had \textbf{\textit{no conflicts}} in submitting our code to the client and did not break any functionality on the client's existing repositories, even when there were multiple other groups working on the same repositories.
+Once a feature was nearly complete, code review was performed on the feature branches. On Fridays, Shakib pushed the stable code on GDP8 master branches, merged with the latest client's master branch and finally re-ran all the tests. This ensured that the client had minimal effort in merging our one week's worth of code. In fact, we had \textbf{\textit{no conflicts}} in submitting our code to the client and did not break any functionality on the client's existing repositories, even when there were multiple other groups working on the same repositories.
