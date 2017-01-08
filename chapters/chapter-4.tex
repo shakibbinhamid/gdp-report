@@ -261,7 +261,7 @@ To use \texttt{Stripe.js} on client side, we first had to include its library as
  <!-- code omitted -->
 </head>
 \end{minted}
-\captionof{listing}{Section of \texttt{index.html} file}
+\captionof{listing}{Script to Include Stripe.js Library}
 \label{lst:index-head-html}
 \end{listing}
 
@@ -275,7 +275,7 @@ We also had to include our actual publishable API key as a script which will be 
 </script>
 <!-- code omitted -->
 \end{minted}
-\captionof{listing}{Section of \texttt{buycredit.html} file}
+\captionof{listing}{Script Including Stripe's Publishable API Key}
 \label{lst:buycredit-html-stripe-key}
 \end{listing}
 
@@ -308,7 +308,7 @@ createStripeToken: function (tokenHelperObject) {
 },
 //code omitted
 \end{minted}
-\captionof{listing}{Section of \texttt{paymentservice.js} file}
+\captionof{listing}{\texttt{createStripeToken} Method}
 \label{lst:create-token-payment-service-method}
 \end{listing}
 
@@ -328,7 +328,7 @@ chargeCard: function (parameters) {
 },
 //code omitted
 \end{minted}
-\captionof{listing}{Section of \texttt{paymentservice.js} file}
+\captionof{listing}{\texttt{chargeCard} method}
 \label{lst:charge-card-service-method}
 \end{listing}
 
@@ -349,7 +349,7 @@ cards: ['$http', 'authenticationService',
 }]
 //code omitted
 \end{minted}
-\captionof{listing}{Section of \texttt{app.js} file}
+\captionof{listing}{\texttt{HTTP} Request to Retreive User's Saved Cards}
 \label{lst:get-cards-req}
 \end{listing}
 
@@ -368,7 +368,7 @@ var parameters = {
 };
 //code omitted
 \end{minted}
-\captionof{listing}{Section of \texttt{buycredit.js} file}
+\captionof{listing}{Parameters for Charging Card}
 \label{lst:params-charge-card}
 \end{listing}
 
@@ -392,7 +392,7 @@ creditHistory: ['$http', 'authenticationService',
 }]
 //code omitted
 \end{minted}
-\captionof{listing}{Section of \texttt{app.js file}}
+\captionof{listing}{\texttt{HTTP} Request to Retreive User's Credits History}
 \label{lst:credits-history-req}
 \end{listing}
 
@@ -409,7 +409,7 @@ Client side validation is handled via methods provided by \textit{Stipe}’s API
 <input class="form-control" name="number" payments-format="card" ng-model="cardNumber" ng-paste="$event.preventDefault()" ng-change="checkCardNumber()" required>
 <!-- code omitted -->
 \end{minted}
-\captionof{listing}{Section of \texttt{buycredit.html file}}
+\captionof{listing}{\texttt{HTML} Code for Card Number Input Field}
 \label{lst:buycredit-html-cardnumber-input}
 \end{listing}
 
@@ -426,7 +426,7 @@ $scope.checkCardNumber = function () {
 };
 //code omitted
 \end{minted}
-\captionof{listing}{Section of \texttt{buycredit.js} file}
+\captionof{listing}{\texttt{checkCardNumber} method}
 \label{lst:buycredit-controller-checkcardnumber-method}
 \end{listing}
 
@@ -442,7 +442,7 @@ isCardNumberTypeValid: function (cardNumber) {
 },
 //code omitted
 \end{minted}
-\captionof{listing}{Section of \texttt{paymentservice.js} file}
+\captionof{listing}{\texttt{isCardNumberTypeValid} method}
 \label{lst:payment-service-checkcardnumber-method}
 \end{listing}
 
@@ -475,7 +475,7 @@ To overcome this issue, we switched to \textit{Bootstrap} alerts which are added
 </uib-alert>
 <!-- code omitted -->
 \end{minted}
-\captionof{listing}{Section of \texttt{buycredit.html} file}
+\captionof{listing}{\texttt{HTML} Code for Generating \texttt{Bootstrap} Alerts}
 \label{lst:buycredit-html-alert-code}
 \end{listing}
 
