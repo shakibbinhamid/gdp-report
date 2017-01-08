@@ -10,7 +10,7 @@
 The advantages of automated testing versus manual testing become apparent when considering the complexity of handling all possible test cases, their results and how to mitigate application build issues based on the test results.
 \\
 
-Manual testing requires the use of a test table of cases which needs to administered by a human. It is not efficient as it takes a long time to go through especially if there are a large number of test cases. The overhead of administrative work necessary for updating the table with results slows down the most important process which is development and shifts the focus towards less critical work.
+Manual testing requires the use of a test table of cases which needs to administered by a human. It is not efficient as it takes a long time to go through especially if there are a large number of test cases. The overhead of administrative work necessary for updating the table with results slows down the most important development process and shifts the focus towards less critical work.
 \\
 
 The situation worsens as complexity grows because of the need to test on multiple browsers and against multiple builds which may differ in any number of ways.
@@ -21,7 +21,7 @@ We can solve many of these problems using automation. In automated E2E testing, 
 \begin{itemize}
 \item Allow human readable test scenarios (BDD).
 \item Open a browser and execute the scenarios.
-\item Record the results and let us know if anything went wrong.
+\item Record the results and any issues.
 \item Insert and clear data associated with test runs.
 \end{itemize}
 
@@ -32,9 +32,9 @@ We can solve many of these problems using automation. In automated E2E testing, 
  \hline
  	& \multicolumn{1}{|c|}{Manual Testing} & \multicolumn{1}{|c|}{Automatic Testing} \\
  \hline
- 	Accuracy & Prone to human error. & More reliable as it is performed by automation tools.\\
+ 	Test Accuracy & Prone to human error. & More reliable as it is performed by automation tools.\\
  \hline
-    Time consuming & Time consuming, taking up human resources. & Generally faster than manual testing but with a considerable amount of test cases it can also take long.\\
+    Time Consuming & Time consuming, taking up human resources. & Generally faster than manual testing but with a considerable amount of test cases it can also take long.\\
  \hline
     Practicality & Not practical with a large number of test cases or when frequent repetition is required. & Practical option when the test cases are run repeatedly over a long period of time.\\
  \hline
@@ -42,7 +42,7 @@ We can solve many of these problems using automation. In automated E2E testing, 
  \hline
     Human Observation & Human observation is part of the testing process and easier to reason about the results. & No human observation as tests are run via automated scripts.\\
  \hline
-    Cost effectiveness & Less costs because of the lack of need of tools but overall the cost of human resources makes it an expensive practice. & Expensive due to tool costs but can be mitigated by using open-source software. Less budget needed for human resources.\\
+    Cost effectiveness & Costs less because fewer tools are needed but the cost of human resources makes it an expensive practice. & Expensive due to tool costs but can be mitigated by using open-source software. Less budget needed for human resources.\\
  \hline
     Results visibility & More insight when executing tests because of human observation but less overview on general testing outcome. & No insight while executing the automated tests but a good overview of testing outcomes due to reporting tools.\\
  \hline
@@ -76,7 +76,7 @@ The role of \textit{Protractor} is essentially of a wrapper around \textit{Selen
 \textit{Cucumber} is an open-source BDD testing framework used to add business level logic to automated testing. It has a number of different implementations for a variety of languages.
 \\
 
-As explained in \textbf{Section \ref{subsubsec:bdd}}, BDD allows for a certain layering of abstraction levels to satisfy both non-technical and technical people. It defines its formal requirements in feature files which contain test scenarios that the related feature should be able to offer. These files can document all the necessary functionality of a particular application. The business level language used in feature files is called \textit{Gherkin}. Examples of syntax can be seen in \textbf{Figure \ref{fig:e2e-test-cases}}. Each action in a scenario is called a step and each step has an underlying implementation provided by a step function.
+As explained in \textbf{Section \ref{subsubsec:bdd}}, BDD allows for a certain layering of abstraction levels to satisfy both non-technical and technical people. It defines its formal requirements in feature files which contain test scenarios that the related feature should be able to offer. These files can document all the necessary functionality of a particular application. The business level language used in feature files is called \textit{Gherkin}. Each action in a scenario is called a step and each step has an underlying implementation provided by a step function.
 \\
 
 \textit{Cucumber} sits on top of \textit{Protractor}, offering a convenient BDD environment best suited for \textit{AngularJS} applications.
