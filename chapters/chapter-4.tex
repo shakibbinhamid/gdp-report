@@ -15,7 +15,7 @@ The greatest concern in implementing a payment feature for Synote is remaining P
  	\label{fig:synote-architecture}
 \end{figure}
 
-\textbf{Figure \ref{fig:synote-architecture}} depicts Synote's existing architecture which uses \textit{Node.js} (\textit{Node}) and \textit{Sails.js} (\textit{Sails}) web frameworks on the server. \textit{Sails} includes a powerful Object Relational Mapping (ORM) tool called \textit{Waterline} to provide a data access layer to the underlying \textit{MySQL} database.\\
+\textbf{Figure \ref{fig:synote-architecture}} depicts Synote's existing architecture which uses \textit{Node.js} (\textit{Node}) and \textit{Sails.js} (\textit{Sails}) web frameworks on the server. \textit{Sails} includes a powerful Object Relational Mapping (ORM) tool called \textit{Waterline} which provides a data access layer to the underlying \textit{MySQL} database.\\
 
 As a custom merchant form is desired for gathering payment information, \textit{Stripe} must be used to tokenise the payment data before it can be sent to Synote's server. As mentioned in \textbf{Section \ref{subsec:security}}, HTTPS is required for secure transmission of payment data over a network, so the first stage of integration is to use an HTTPS/SSL certificate to enable HTTPS communication (\textbf{Figure \ref{fig:stripe-integration}}).\\
 
@@ -35,9 +35,9 @@ The first iteration of the payment feature requires simple functionality: A cust
  	\label{fig:simple-sequence}
 \end{figure}
 
-Step one is to post a \textit{Stripe} token and any additional required information to a new REST endpoint. \textit{Sails} has an API called \textit{Blueprint} which creates RESTful routes when an endpoint is created with a \texttt{model} and a \texttt{controller}. Further sub-routes can be added to the endpoint through the concept of action routes, thus a \texttt{controller} file named \texttt{CreditHistoryController.js} containing an action route of \texttt{topup} exposes the route: \texttt{/credithistory/topup}.\\
+Step one is to \texttt{POST} a \textit{Stripe} token and any additional required information to a new REST endpoint. \textit{Sails} has an API called \textit{Blueprint} which creates RESTful routes when an endpoint is created with a \texttt{model} and a \texttt{controller}. Further sub-routes can be added to the endpoint through the concept of action routes, thus a \texttt{controller} file named \texttt{CreditHistoryController.js} containing an action route of \texttt{topup} exposes the route: \texttt{/credithistory/topup}.\\
 
-Making charges against a token requires \textit{Stripe}'s API \cite{stripe-api} which can be added using the \texttt{require} keyword and must include a secret key provided by \textit{Stripe}. \textit{Stripe}'s API lists examples of functions in \textit{Node}, but in the form of callbacks. As covered in \textbf{Section \ref{subsec:conventions}}, the convention is to use promises in favour of callbacks which altogether results in code similar to \textbf{Listing \ref{lst:stripe-charge}}.\\
+Making charges against a token requires \textit{Stripe}'s API \cite{stripe-api} which can be added using the \texttt{require} keyword and must include a secret key provided by \textit{Stripe}. \textit{Stripe}'s API lists examples of functions in \textit{Node}, but in the form of callbacks. As covered in \textbf{Section \ref{subsec:conventions}}, the convention is to use promises in favour of callbacks which culminates in code similar to \textbf{Listing \ref{lst:stripe-charge}}.\\
 
 \hspace{0.1\textwidth}
 \begin{minipage}{.76\textwidth}
@@ -66,7 +66,7 @@ Information required to make a charge includes a single use token, charge amount
  	\label{fig:db-credit}
 \end{figure}
 
-The remaining task is recording the transaction and assigning purchased credits to a user. The setup for this task requires alteration to the existing database (DB), a \textit{Sails} \texttt{model} and \textit{Waterline} methods to interact with the DB. \textbf{Figure \ref{fig:db-credit}} shows the schema of the credit and credit history tables with their relations to the existing user table. Adding these tables to an existing database requires use of an SQL migration file as shown in \textbf{Listing \ref{lst:migration-file}}.\\
+The remaining task is recording the transaction and assigning purchased credits to a user. The setup for this task requires alteration to the existing database (DB), a \textit{Sails} \texttt{model} and \textit{Waterline} methods to interact with the DB. \textbf{Figure \ref{fig:db-credit}} shows the schema of the credit and credit history tables with their relations to the existing user table. Adding these tables to an existing database requires use of an SQL migration script as shown in \textbf{Listing \ref{lst:migration-file}}.\\
 
 \hspace{0.1\textwidth}
 \begin{minipage}{.72\textwidth}
@@ -127,9 +127,9 @@ The second iteration of the payment feature requires extended functionality: A c
 
 \begin{enumerate}
 	\item Adding action routes in the \texttt{CreditHistoryController.js} file to retrieve/delete cards
-    \item Providing additional parameters in the \texttt{req} body JSON to indicate the Stripe token should be used to save the payment data
+    \item Providing additional parameters in the \texttt{req} body JSON to indicate the Stripe token should be used to save the resultant payment data
     \item Adding policies to secure the new routes
-    \item Adding \textit{Stripe} functions to save payment data in a Stripe customer
+    \item Adding \textit{Stripe} functions to save payment data on the \textit{Stripe} server as a Stripe Customer object
     \item Updating the database schema using a migration file to store a \textit{Stripe} customer object against a user
     \item Updating the relevant \texttt{model} to include the \textit{Stripe} customer field
     \item Adding \textit{Waterline} functions to CRUD \textit{Stripe} customer records
