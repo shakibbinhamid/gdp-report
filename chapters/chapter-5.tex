@@ -227,7 +227,7 @@ setupTestData : function (argArr) {
   return httpPost('Testing/setup', argArr);
 }
 \end{minted}
-\captionof{listing}{Method in \texttt{support.js} for inserting test data}
+\captionof{listing}{Method in \texttt{support.js} for Inserting Test Data}
 \label{lst:inserting-test-data}
 \end{listing}
 
@@ -244,7 +244,7 @@ Scenario: Pay with saved card
   And I click the "SubmitPayment" button on "BuyCredits" page
   Then  I should be on "CreditsHistory" page
 \end{minted}
-\captionof{listing}{Example scenario with DB setup}
+\captionof{listing}{Example Scenario with DB Setup}
 \label{lst:example-scenario-with-db-setup}
 \end{listing}
 
@@ -270,7 +270,7 @@ this.Given(/^I already have a card saved with correct details except "([^"]*)" f
     });
 });
 \end{minted}
-\captionof{listing}{Data insertion \texttt{step} function}
+\captionof{listing}{Data Insertion \texttt{step} Function}
 \label{lst:data-insertion-step-function}
 \end{listing}
 
@@ -283,7 +283,7 @@ this.Before(function () {
           (browser.deployment.defaultUser.email);
 });
 \end{minted}
-\captionof{listing}{Remove test data before scenario}
+\captionof{listing}{Remove Test Data before \texttt{scenario}}
 \label{lst:remove-test-data-before-scenario}
 \end{listing}
 
@@ -316,7 +316,7 @@ this.After(function () {
 });
 
 \end{minted}
-\captionof{listing}{Login and logout hooks}
+\captionof{listing}{Login and Logout Hooks}
 \label{lst:login-and-logout-hooks}
 \end{listing}
 
@@ -528,7 +528,7 @@ this.Given(/^I click the "([^"]*)" button on "([^"]*)" page$/,
 });
 //code omitted
 \end{minted}
-\captionof{listing}{Completed Step Definition For Clicking Buttons}
+\captionof{listing}{Completed Step Definition for Clicking Buttons}
 \label{lst:example-step-def-click-completed}
 \end{listing}
 
@@ -567,7 +567,7 @@ this.Given(/^I Correctly type in my details$/, {timeout: 60*1000},
 });
 //code omitted
 \end{minted}
-\captionof{listing}{Completed Step Definition For Filling in Payment Form}
+\captionof{listing}{Completed Step Definition for Filling in Payment Form}
 \label{lst:example-step-def-fillin-completed}
 \end{listing}
 
@@ -593,7 +593,7 @@ urlChanged : function(url) {
   };
 }
 \end{minted}
-\captionof{listing}{Example Support Function For Checking Page URL}
+\captionof{listing}{Example Support Function for Checking Page URL}
 \label{lst:example-support-func2}
 \end{listing}
 
@@ -609,7 +609,7 @@ this.Given(/^I should be on "([^"]*)" page$/, function (pageName) {
 });
 //code omitted
 \end{minted}
-\captionof{listing}{Completed Step Definition For Verifying Current URL}
+\captionof{listing}{Completed Step Definition for Verifying Current URL}
 \label{lst:example-step-def-url-check-completed}
 \end{listing}
 
