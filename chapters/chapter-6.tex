@@ -89,7 +89,7 @@ server {
 sudo service nginx restart
 
 \end{minted}
-\captionof{listing}{Make Jenkins server available on nginx}
+\captionof{listing}{Make Jenkins Server Available on Nginx}
 \label{lst:make-jenkins-available}
 \end{listing}
 
@@ -167,7 +167,7 @@ sudo chown -R $USER:$GROUP ~/.npm
 sudo chown -R $USER:$GROUP ~/.config
 
 \end{minted}
-\captionof{listing}{Global npm dependency permission}
+\captionof{listing}{Global npm Dependency Permission}
 \label{lst:npm-permission}
 \end{listing}
 
@@ -184,7 +184,7 @@ E2E_MAIN=/home/ubuntu/gdp8-synote-e2e-testing
 REPORTS_WEBSITE_MAIN=$E2E_MAIN/reportsWebsite
 
 \end{minted}
-\captionof{listing}{Variables used during the Jenkins build script}
+\captionof{listing}{Variables Used During the Jenkins Build Script}
 \label{lst:jenkins-build-script-variables}
 \end{listing}
 
@@ -209,7 +209,7 @@ sudo chgrp -R synote $SYNOTE_MAIN
 sudo chmod -R 777 $SYNOTE_MAIN
 
 \end{minted}
-\captionof{listing}{Deployment folder permissions}
+\captionof{listing}{Deployment Folder Permissions}
 \label{lst:deployment-folder-permissions}
 \end{listing}
 
@@ -224,7 +224,7 @@ rm -rf $SYNOTE_MAIN/.git
 rm -rf $E2E_MAIN/.git
 
 \end{minted}
-\captionof{listing}{Deleting .git folders}
+\captionof{listing}{Deleting .git Folders}
 \label{lst:deleting-git-folders}
 \end{listing}
 
@@ -259,7 +259,7 @@ cd $SYNOTE_JENKINS/backend
 npm install
 
 \end{minted}
-\captionof{listing}{Building Synote server}
+\captionof{listing}{Building Synote Server}
 \label{lst:building-synote-server}
 \end{listing}
 
@@ -273,7 +273,7 @@ bower install
 grunt build:experiment
 
 \end{minted}
-\captionof{listing}{Building Synote client}
+\captionof{listing}{Building Synote Client}
 \label{lst:building-synote-client}
 \end{listing}
 
@@ -287,7 +287,7 @@ cp -RT $SYNOTE_JENKINS/frontend/dist/ $SYNOTE_JENKINS/backend/assets/
 cp -RT $SYNOTE_JENKINS $SYNOTE_MAIN
 
 \end{minted}
-\captionof{listing}{Replace the current experiment deployment source}
+\captionof{listing}{Replace the Current Experiment Deployment Source}
 \label{lst:replace current deployment source}
 \end{listing}
 
@@ -339,7 +339,7 @@ BEGIN
 END //
 DELIMITER ;
 \end{minted}
-\captionof{listing}{SQL procedure}
+\captionof{listing}{SQL Procedure}
 \label{lst:sql-procedure}
 \end{listing}
 
@@ -353,7 +353,7 @@ Before doing any migration, the procedures must be updated:
 mysql -u some_user -p some_database < ~/backend/db/migrate/procedures.sql
 
 \end{minted}
-\captionof{listing}{Updating SQL procedures}
+\captionof{listing}{Updating SQL Procedures}
 \label{lst:updating-sql-procedures}
 \end{listing}
 
@@ -368,7 +368,7 @@ Whenever changes are needed in the schema, a procedure must be used to avoid the
 CALL addColumnSafe('some_table', 'some_column', 'some_type')
 
 \end{minted}
-\captionof{listing}{Calling an SQL procedure}
+\captionof{listing}{Calling an SQL Procedure}
 \label{lst:calling-an-sql-procedure}
 \end{listing}
 
@@ -380,7 +380,7 @@ If we try to insert data that is already present, \textit{MySQL} will complain a
 ON DUPLICATE KEY UPDATE id=id;
 
 \end{minted}
-\captionof{listing}{Avoiding duplicate data insertion errors}
+\captionof{listing}{Avoiding Duplicate Data Insertion Errors}
 \label{lst:avoiding-duplicate-data-insertion-errors}
 \end{listing}
 
@@ -401,7 +401,7 @@ PM2 is a process manager that keeps processes alive even when users log off. Syn
 pm2 restart synote_experiment
 
 \end{minted}
-\captionof{listing}{Restart experiment deployment}
+\captionof{listing}{Restart Experiment Deployment}
 \label{lst:restart-experiment-deployment}
 \end{listing}
 
@@ -427,7 +427,7 @@ cd $E2E_MAIN
 npm install
 
 \end{minted}
-\captionof{listing}{Configure the latest E2E testing repository}
+\captionof{listing}{Configure the Latest E2E Testing Repository}
 \label{lst:configure-latest-e2e-testing-repo}
 \end{listing}
 
@@ -444,7 +444,7 @@ npm install
 pm2 restart reports_website
 
 \end{minted}
-\captionof{listing}{Deploy latest reporting website}
+\captionof{listing}{Deploy Latest Reporting Website}
 \label{lst:deploy-latest-reporting-website}
 \end{listing}
 
@@ -465,7 +465,7 @@ sudo apt-get install dbus-x11
 sudo apt-get install chromium-browser
 
 \end{minted}
-\captionof{listing}{Install virtual display library and browsers}
+\captionof{listing}{Install Virtual Display Library and Browsers}
 \label{lst:xvfb-browser-install}
 \end{listing}
 
@@ -483,7 +483,7 @@ echo "export DISPLAY=:99 && npm run start-manager" > $SYNOTE_JENKINS/depl.sh
 pm2 start $SYNOTE_JENKINS/depl.sh
 
 \end{minted}
-\captionof{listing}{Start virtual display and webdriver as PM2 processes}
+\captionof{listing}{Start Virtual Display and Webdriver as PM2 Processes}
 \label{lst:webdriver-pm2}
 \end{listing}
 
@@ -501,7 +501,7 @@ LATEST_HTML_REPORT="https://reports-cicd.synote.com/"`find /home/ubuntu/gdp8-syn
 curl -X POST -H 'Content-type: application/json' --data '{"text": "'"$LATEST_HTML_REPORT"'", "channel": "#testing", "username": "Jenkins Test Bot"}' https://hooks.slack.com/services/<webhooktoken>
 
 \end{minted}
-\captionof{listing}{Run E2E tests}
+\captionof{listing}{Run E2E Tests}
 \label{lst:run-e2e-tests}
 \end{listing}
 
