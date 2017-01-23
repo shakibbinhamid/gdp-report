@@ -1,12 +1,28 @@
 \chapter{Continuous Integration}
 \label{chap:continuous-integration}
 
-The final phase of our project was to implement a continuous integration (CI) process for Synote. Only by deploying a new version of Synote and testing it can we be sure that a feature implementation is stable and functioning. However, a Synote experiment deployment has quite a few steps (\textbf{Figure \ref{fig:synote-ci-proc}}), which can take 15-20 minutes. In fact, it is completely infeasible to regularly repeat all the steps without hampering a developer's work. Since making a deployment takes  considerable time, yet is incredibly useful in continuous automated testing on remote deployments, we extended our project scope to implement Synote's first continuous integration process.
+The final phase of our project was to implement a CI process for Synote. Only by deploying a new version of Synote and testing it can we be sure that a feature implementation is stable and functioning. However, a Synote experiment deployment has quite a few steps (\textbf{Figure \ref{fig:synote-ci-proc}}), which can take 15-20 minutes to complete. In fact, it is completely infeasible to regularly repeat all the steps without hampering a developer's work. Since making a deployment takes  considerable time, yet continuous automated testing on remote deployments is incredibly useful, we extended our project scope to implement Synote's first CI process.
 
 \section{Synote CI}
 \label{sec:synote-ci}
 
-A complete Synote CI process will deploy and test on the experiment deployment, followed by staging and finally production. Each stage will follow similar steps as shown in the Experiment Deployment (Step 2) of \textbf{Figure \ref{fig:synote-ci-proc}}.\\
+A complete Synote CI process will deploy and test on the experiment deployment, followed by staging and finally production. Each stage will follow similar steps as shown in the Experiment Deployment (Step 2 of \textbf{Figure \ref{fig:synote-ci-proc}}).\\
+
+We focused on CI for the experiment deployment since we had access to it. In this chapter, we will elucidate the key steps necessary to configure a complete CI environment using \textit{Jenkins}.\\
+
+The key issues in this phase were:
+
+\begin{itemize}
+
+  \item Installing and configuring \textit{Jenkins} with SSL, restricting user access etc. (\textbf{Section \ref{subsec:setting-up-jenkins}})
+
+  \item Synote is deployed as the user \texttt{ubuntu}, however, \textit{Jenkins} runs the build scripts as user \texttt{jenkins}. So, permissions for the deployment folders need to be rectified (\textbf{Listing \ref{lst:deployment-folder-permissions}})
+
+  \item \texttt{jenkins} needs to have access to the \textit{PM2} (a process manager) processes started by \texttt{ubuntu} (\textbf{Listing \ref{lst:jenkins-pm2-configuration}})
+
+  \item Running the E2E tests on a browser using a virtual display (\textbf{Section \ref{subsec:e2e-testing-on-remote}})
+
+\end{itemize}
 
 \begin{figure}[!hbt]
   	\centering
@@ -14,22 +30,6 @@ A complete Synote CI process will deploy and test on the experiment deployment, 
   	\caption{Synote Continuous Integration Procedure}
  	\label{fig:synote-ci-proc}
 \end{figure}
-
-We focused on CI for the experiment deployment since we had access to it. In this chapter, we will elucidate the key steps necessary to configure a complete CI environment using \textit{Jenkins}.\\
-
-The key issues in this phase were -
-
-\begin{itemize}
-
-  \item Installing and configuring \textit{Jenkins} with SSL, restricted user access etc. (\textbf{Section \ref{subsec:setting-up-jenkins}})
-
-  \item Synote is deployed as user \texttt{ubuntu}, however, \textit{Jenkins} runs the build scripts as user \texttt{jenkins}. So, permissions for the deployment folders need to be rectified (\textbf{Listing \ref{lst:deployment-folder-permissions}}).
-
-  \item \texttt{jenkins} needs to have access to the \textit{PM2} (a process manager) processes started by \texttt{ubuntu} (\textbf{Listing \ref{lst:jenkins-pm2-configuration}}).
-
-  \item Running the E2E tests on a browser using a virtual display (\textbf{Section \ref{subsec:e2e-testing-on-remote}}).
-
-\end{itemize}
 
 \subsection{Setting up Jenkins}
 \label{subsec:setting-up-jenkins}
@@ -50,7 +50,7 @@ sudo apt-get install jenkins
 \label{lst:install-jenkins}
 \end{listing}
 
-Then we added one admin account with complete \textit{Jenkins} control, and one developer account with reduced control (e.g. cannot delete projects). Finally, we needed to run \textit{Jenkins} behind a reverse proxy server (nginx) so that SSL encryption works properly and the domain reaches it (\textbf{Listing \ref{lst:make-jenkins-available}}). The Synote experiment CI project can be seen in \textbf{Figure \ref{fig:synote-jenkins-server}}\\
+Then we added one admin account with complete \textit{Jenkins} control, and one developer account with reduced control (e.g. cannot delete projects). Finally, we needed to run \textit{Jenkins} behind a reverse proxy server (Nginx) so that SSL encryption works properly and the domain reaches it (\textbf{Listing \ref{lst:make-jenkins-available}}). The Synote experiment CI project can be seen in \textbf{Figure \ref{fig:synote-jenkins-server}}\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -111,7 +111,7 @@ Builds can be triggered automatically when changes are made to the repository. I
 \begin{itemize}
 \item Install the \textit{BitBucket Jenkins Plugin}. This plugin can be found in the \textit{Manage Jenkins} $\rightarrow$ \textit{Manage Plugins} section.
 
-\item Once installed, go to the \textit{Jenkins} project and click \textit{Configure}. Under \textit{Build Triggers}, select the \textit{BitBucket} option as shown below:
+\item Once installed, go to the \textit{Jenkins} project and click \textit{Configure}. Under \textit{Build Triggers}, select the \textit{BitBucket} option (\textbf{Figure \ref{fig:bitbucket-build-trigger}}).\\
 
 \begin{figure}[!hbt]
   	\centering
@@ -120,7 +120,7 @@ Builds can be triggered automatically when changes are made to the repository. I
  	\label{fig:bitbucket-build-trigger}
 \end{figure}
 
-\item Set up the \textit{BitBucket WebHook}. Go to the \textit{BitBucket} repository website under the \textit{Settings} $\rightarrow$ \textit{WebHooks} section. Click on \textit{Add webhook}, give it a name and paste in the webhook which is of the form \textit{jenkins-address:8080/bitbucket-hook/}. The current setup has this URL in place: \textit{https://jenkins-cicd.synote.com/bitbucket-hook/}. The trailing slash must be kept in the URL.
+\item Set up the \textit{BitBucket WebHook}. Go to the \textit{BitBucket} repository website under the \textit{Settings} $\rightarrow$ \textit{WebHooks} section. Click on \textit{Add webhook}, give it a name and paste in the webhook which is of the form \textit{jenkins-address:8080/bitbucket-hook/}. The current setup has this URL in place: \textit{https://jenkins-cicd.synote.com/bitbucket-hook/}. The trailing slash must be kept in the URL.\\
 
 \begin{figure}[!hbt]
   	\centering
@@ -143,12 +143,16 @@ Builds can be triggered automatically when changes are made to the repository. I
 
 Triggering a build manually is very easy. Just select a \textit{Jenkins} project and click \textit{Build Now}.
 
+\vspace{0.5cm}
+
 \begin{figure}[!hbt]
   	\centering
  	\includegraphics[width=0.6\textwidth]{triggering-builds-manually.png}
   	\caption{Triggering Builds Manually}
  	\label{fig:triggering-builds-manually}
 \end{figure}
+
+\vspace{-0.5cm}
 
 \section{Pre-build Preparation}
 \label{sec:pre-build-preparation}
@@ -238,14 +242,14 @@ sudo chmod 777 /home/ubuntu/.pm2/pub.sock
 sudo chmod 777 /home/ubuntu/.pm2/rpc.sock
 
 \end{minted}
-\captionof{listing}{PM2 configuration for Jenkins}
+\captionof{listing}{PM2 Configuration for Jenkins}
 \label{lst:jenkins-pm2-configuration}
 \end{listing}
 
 \section{Synote Build}
 \label{sec:synote-build}
 
-Once a build is triggered, \textit{Jenkins} pulls the latest Synote repository. Then \texttt{jenkins} builds the server (\textbf{Listing \ref{lst:building-synote-server}}), the client (\textbf{Listing \ref{lst:building-synote-client}}) and moves the static assets to \texttt{backend}. Finally, the complete build folder replaces \texttt{ubuntu}'s Synote deployment folder (\textbf{Listing \ref{lst:replace current deployment source}}).\\
+Once a build is triggered, \textit{Jenkins} pulls the latest Synote repository. Then \texttt{jenkins} builds the server (\textbf{Listing \ref{lst:building-synote-server}}), the client (\textbf{Listing \ref{lst:building-synote-client}}) and moves the static assets to \texttt{backend/}. Finally, the complete build folder replaces \texttt{ubuntu}'s Synote deployment folder (\textbf{Listing \ref{lst:replace current deployment source}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -290,7 +294,7 @@ cp -RT $SYNOTE_JENKINS $SYNOTE_MAIN
 \subsection{Automated Database Migration}
 \label{subsec:automated-database-migration}
 
-When a change is made in the schema, databases from various sites will need to be updated at some point. This is done via an SQL migration script. Problems may arise whenever changes from the migration are already present on the database that we are running the script against. This stops the script execution altogether making it cumbersome to automate.
+When a change is made in the schema, databases from various sites will need to be updated at some point. This is done via a SQL migration script. Problems may arise whenever changes from the migration are already present on the database that we are running the script against. This stops the script execution making it cumbersome to automate.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -310,7 +314,7 @@ mysql -u synote '-p<mysqlpass>' synote_server_experiment < v0.9.0-v0.10.0.sql # 
 \subsubsection{SQL Procedures}
 \label{subsubsec:sql-procedures}
 
-To overcome the above issue, we can use \textit{MySQL} procedures. These are in essence functions to which we can add useful logic. In our case, we wish to check if a change is already present and if it is, we ignore the error so the migration script can carry on unhindered. An example procedure can seen below.
+To overcome the above issue, we can use \textit{MySQL} procedures. These are in essence functions to which we can add useful logic. In our case, we wish to check if a change is already present and if it is, we ignore the error so the migration script can carry on unhindered. An example procedure can seen in \textbf{Listing \ref{lst:sql-procedure}}.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{sql}
@@ -339,6 +343,8 @@ DELIMITER ;
 \label{lst:sql-procedure}
 \end{listing}
 
+\pagebreak
+
 Before doing any migration, the procedures must be updated:
 
 \begin{listing}[H]
@@ -354,7 +360,7 @@ mysql -u some_user -p some_database < ~/backend/db/migrate/procedures.sql
 \subsubsection{Automated Migration Convetion}
 \label{subsubsec:automated-migration-convention}
 
-Whenever changes are needed in the schema, a procedure must be used to avoid the duplicate change error. There should be a procedure for every possible schema alteration (new table, new table column, etc). Within the migration script, the procedure is called with the required parameters.
+Whenever changes are needed in the schema, a procedure must be used to avoid the duplicate change error. There should be a procedure for all schema alterations (new table, new table column, etc). Within the migration script, the procedure is called with the required parameters.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{sql}
@@ -381,7 +387,7 @@ ON DUPLICATE KEY UPDATE id=id;
 This works under the assumption that each table has a primary key called \texttt{id} which is true with the currently used ORM.
 \\
 
-Details on how database migration is handled can be found in \texttt{CONTRIBUTING.md} on the Synote repository.
+Details on how database migration is handled can be found in \texttt{CONTRIBUTING.md} in the Synote repository.
 
 \subsection{Restarting the New Build}
 \label{subsec:restarting-the-new-build}
@@ -402,7 +408,7 @@ pm2 restart synote_experiment
 \section{E2E Testing on Remote}
 \label{subsec:e2e-testing-on-remote}
 
-To run the E2E tests, we first need the latest E2E test suite (located on a different repository) and to prepare it for use (\textbf{Listing \ref{lst:configure-latest-e2e-testing-repo}}) in a similar process to Synote deployment (described in \textbf{Section \ref{sec:synote-build}}).\\
+To run the E2E tests, we first need the latest E2E test suite (located on a different repository) and prepare it for use (\textbf{Listing \ref{lst:configure-latest-e2e-testing-repo}}) in a similar process to Synote deployment (described in \textbf{Section \ref{sec:synote-build}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -425,7 +431,7 @@ npm install
 \label{lst:configure-latest-e2e-testing-repo}
 \end{listing}
 
-Synote's E2E test HTML reports are made available through a simple website (which is deployed by nginx in a similar process to \textbf{Listing \ref{lst:make-jenkins-available}}). This website is packaged with the E2E tests. So, we must redeploy for the latest reporting website (\textbf{Listing \ref{lst:deploy-latest-reporting-website}}).\\
+Synote's E2E test HTML reports are made available through a simple website (which is deployed by Nginx in a similar process to \textbf{Listing \ref{lst:make-jenkins-available}}). This website is packaged with the E2E tests. So, we must redeploy for the latest reporting website (\textbf{Listing \ref{lst:deploy-latest-reporting-website}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -463,7 +469,7 @@ sudo apt-get install chromium-browser
 \label{lst:xvfb-browser-install}
 \end{listing}
 
-Now the installed display server and a selenium server are started as PM2 daemon processes  (\textbf{Listing \ref{lst:webdriver-pm2}}), so that these steps need not be performed in future.\\
+Now the installed display server and a \textit{Selenium} server are started as PM2 daemon processes  (\textbf{Listing \ref{lst:webdriver-pm2}}), so that these steps need not be performed in the future.\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -481,7 +487,7 @@ pm2 start $SYNOTE_JENKINS/depl.sh
 \label{lst:webdriver-pm2}
 \end{listing}
 
-Finally we run the tests and send the latest report link to a Slack channel (\textbf{Listing \ref{lst:run-e2e-tests}} and \textbf{Figure \ref{fig:slack-report-link}}).\\
+Finally we run the tests and send the latest report link to a \textit{Slack} channel (\textbf{Listing \ref{lst:run-e2e-tests}} and \textbf{Figure \ref{fig:slack-report-link}}).\\
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=\parindent, linenos, breaklines, breakanywhere, bgcolor=lightgray, fontsize=\small]{bash}
@@ -506,16 +512,18 @@ curl -X POST -H 'Content-type: application/json' --data '{"text": "'"$LATEST_HTM
  	\label{fig:slack-report-link}
 \end{figure}
 
+\vspace{1cm}
+
 \section{Usefulness of Synote CI}
 \label{sec:usefulness-of-synote-ci}
 
-We have found that Synote's CI allowed us to -
+We have found that Synote's CI allowed us to:
 
 \begin{itemize}
 
   \item Write code confidently, since we can very easily run the complete deployment and be assured of regression testing.
 
-  \item Have a record of \textit{all} the previous builds and test reports. So, we could easily track when a feature was functional, or what broke a build etc. This also made debugging deployment issues more streamlined.
+  \item Have a record of \textit{all} the previous builds and test reports. So, we could easily track when a feature was functional or what broke a build etc. This also streamlined debugging deployment issues.
 
   \item Run a build without logging into the remote server itself, making deployment accessible to every team member.
 
@@ -523,4 +531,4 @@ We have found that Synote's CI allowed us to -
 
 \end{itemize}
 
-Finally, the implementation gave us self confidence in writing bash scripts and we learnt about reverse proxy servers, process managers, using remote servers and, of course, \textit{Jenkins} which is an industry favourite CI tool.
+Finally, the implementation gave us self-confidence in writing \textit{Bash} scripts and we learnt about reverse proxy servers, process managers, using remote servers and, of course, \textit{Jenkins} which is an industry favourite CI tool.
